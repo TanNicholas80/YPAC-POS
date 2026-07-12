@@ -1,6 +1,6 @@
 <!-- Section 4: Visi, Misi & Tujuan (with Metrik blocks) -->
 <section class="py-16 sm:py-24 bg-white relative overflow-hidden">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 vision-tabs-container">
         <!-- Tabs Controls -->
         <div class="flex justify-center items-center gap-3 sm:gap-4 mb-8 sm:mb-10">
             <button onclick="switchTab('visi')" id="tab-btn-visi" 
@@ -56,23 +56,23 @@
         </div>
 
         <!-- Achievement Metrics Grid with Hover Effects -->
-        <div class="mt-12 space-y-6">
+        <div class="mt-12 space-y-6 stats-container">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Stat 1: Tahun Berdiri -->
-                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-slate-50 border border-slate-100 shadow-sm cursor-default transition-all duration-300 group hover:bg-[#0073E2]">
-                    <span class="text-3xl sm:text-4xl font-extrabold text-[#0073E2] transition-colors duration-300 group-hover:text-white">1953</span>
+                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-slate-50 border border-slate-100 shadow-sm cursor-default transition-colors duration-300 group hover:bg-[#0073E2] stat-box">
+                    <span class="text-3xl sm:text-4xl font-extrabold text-[#0073E2] transition-colors duration-300 group-hover:text-white stat-counter-year">1953</span>
                     <span class="text-sm font-semibold text-gray-500 mt-2 transition-colors duration-300 group-hover:text-blue-100">Tahun Berdiri</span>
                 </div>
 
                 <!-- Stat 2: Cabang Nasional -->
-                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-slate-50 border border-slate-100 shadow-sm cursor-default transition-all duration-300 group hover:bg-[#e23cbf]">
-                    <span class="text-3xl sm:text-4xl font-extrabold text-[#e23cbf] transition-colors duration-300 group-hover:text-white">16</span>
+                <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-slate-50 border border-slate-100 shadow-sm cursor-default transition-colors duration-300 group hover:bg-[#e23cbf] stat-box">
+                    <span class="text-3xl sm:text-4xl font-extrabold text-[#e23cbf] transition-colors duration-300 group-hover:text-white stat-counter-branches">16</span>
                     <span class="text-sm font-semibold text-gray-500 mt-2 transition-colors duration-300 group-hover:text-pink-100">Cabang Nasional</span>
                 </div>
             </div>
 
             <!-- Stat 3: Karya Tercipta -->
-            <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-slate-50 border border-slate-100 shadow-sm cursor-default transition-all duration-300 group hover:bg-[#f97316]">
+            <div class="flex flex-col items-center justify-center p-8 rounded-3xl bg-slate-50 border border-slate-100 shadow-sm cursor-default transition-colors duration-300 group hover:bg-[#f97316] stat-box">
                 <span class="text-3xl sm:text-4xl font-extrabold text-[#f97316] transition-colors duration-300 group-hover:text-white">RIBUAN</span>
                 <span class="text-sm font-semibold text-gray-500 mt-2 transition-colors duration-300 group-hover:text-orange-100">Karya Tercipta</span>
             </div>

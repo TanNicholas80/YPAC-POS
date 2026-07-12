@@ -105,6 +105,155 @@
                 }
             });
         }
+
+        // GSAP ScrollTrigger Animations
+        const checkGsap = setInterval(() => {
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                clearInterval(checkGsap);
+                initGSAPAnimations();
+            }
+        }, 50);
+
+        function initGSAPAnimations() {
+            // 1. Intro Section Header Animation
+            gsap.from(".intro-header", {
+                y: 50,
+                opacity: 0,
+                duration: 1.2,
+                ease: "power3.out"
+            });
+
+            // 2. Intro Image Animation (scale & fade)
+            gsap.from(".intro-image-wrapper", {
+                scale: 0.85,
+                opacity: 0,
+                duration: 1.5,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: ".intro-image-wrapper",
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            // 3. Intro Quote Text Animation
+            gsap.from(".intro-text-column", {
+                x: 40,
+                opacity: 0,
+                duration: 1.2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: ".intro-text-column",
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            // 4. Founder Section Text
+            gsap.from(".founder-text-column", {
+                x: -50,
+                opacity: 0,
+                duration: 1.2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: ".founder-text-column",
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            // 5. Founder Section Image and Badge
+            gsap.from(".founder-image-wrapper", {
+                x: 50,
+                opacity: 0,
+                duration: 1.2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: ".founder-image-wrapper",
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            // 6. Vision/Mission Tab Section Entrance
+            gsap.from(".vision-tabs-container", {
+                y: 30,
+                opacity: 0,
+                duration: 1,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: ".vision-tabs-container",
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            // 7. Achievement Metrics - Count Up Year (1953)
+            gsap.from(".stat-counter-year", {
+                textContent: 0,
+                duration: 2,
+                ease: "power1.out",
+                snap: { textContent: 1 },
+                scrollTrigger: {
+                    trigger: ".stats-container",
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            // 8. Achievement Metrics - Count Up Branches (16)
+            gsap.from(".stat-counter-branches", {
+                textContent: 0,
+                duration: 2,
+                ease: "power1.out",
+                snap: { textContent: 1 },
+                scrollTrigger: {
+                    trigger: ".stats-container",
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            // 9. Achievement Metrics - Staggered entrance for stat boxes
+            gsap.from(".stat-box", {
+                y: 30,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: ".stats-container",
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            // 10. Video Tour Animation
+            gsap.from(".video-tour-container", {
+                scale: 0.9,
+                opacity: 0,
+                duration: 1.2,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".video-tour-container",
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            // 11. CTA Section Animations
+            gsap.from(".cta-section-anim", {
+                y: 40,
+                opacity: 0,
+                duration: 1.2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: ".cta-section-anim",
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                }
+            });
+        }
     });
 </script>
 @endpush

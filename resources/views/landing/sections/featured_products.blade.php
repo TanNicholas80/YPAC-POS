@@ -1,7 +1,7 @@
 <!-- Produk Unggulan Section -->
 <section class="py-20 lg:py-28 bg-white border-y border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-end justify-between mb-12">
+        <div class="flex items-end justify-between mb-12 featured-products-header">
             <div>
                 <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mt-1">Produk Unggulan
                 </h2>
@@ -14,7 +14,7 @@
         </div>
 
         <!-- 3 Product Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 featured-products-grid">
             @foreach ($topProducts as $product)
                 @php
                     $firstImage = $product->images->first();
@@ -22,7 +22,7 @@
                 @endphp
 
                 <div
-                    class="group bg-[#F8FAFC] border border-gray-100 rounded-3xl overflow-hidden hover:shadow-xl hover:shadow-gray-200/50 hover:bg-white hover:border-gray-200 transition-all duration-350 flex flex-col justify-between h-full">
+                    class="group bg-[#F8FAFC] border border-gray-100 rounded-3xl overflow-hidden hover:shadow-xl hover:shadow-gray-200/50 hover:bg-white hover:border-gray-200 transition-[box-shadow,border-color,background-color] duration-300 flex flex-col justify-between h-full featured-product-card-item">
                     <div>
                         <!-- Aspect ratio 4:3 Product Image -->
                         <div class="aspect-4/3 relative overflow-hidden bg-gray-100 border-b border-gray-100">

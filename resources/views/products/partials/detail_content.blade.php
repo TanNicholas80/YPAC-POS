@@ -4,11 +4,11 @@
     $isAdmin = $isAdmin ?? false;
 @endphp
 
-<div class="bg-white border border-gray-100 rounded-[2.5rem] p-6 sm:p-10 shadow-2xl relative">
+<div class="bg-white border border-gray-100 rounded-[2.5rem] p-6 sm:p-10 shadow-2xl relative product-detail-card">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-start">
         
         <!-- Left Column: Photo Gallery -->
-        <div class="md:col-span-6 space-y-4">
+        <div class="md:col-span-6 space-y-4 detail-gallery-column">
             <!-- Main Product Image -->
             <div class="aspect-square relative overflow-hidden rounded-[2rem] border border-gray-150 bg-gray-50/50 shadow-inner">
                 <img id="main-product-image" src="{{ $mainImage }}" alt="{{ $product->product_name }}"
@@ -35,7 +35,7 @@
         </div>
 
         <!-- Right Column: Product Info & Tabs -->
-        <div class="md:col-span-6 space-y-6">
+        <div class="md:col-span-6 space-y-6 detail-info-column">
             <!-- Header Title -->
             <div class="space-y-2">
                 <div class="flex items-center justify-between">

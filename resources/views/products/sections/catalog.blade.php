@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Page Title Header -->
-        <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
+        <div class="text-center max-w-3xl mx-auto mb-12 space-y-4 catalog-header">
             <h1 class="text-4xl md:text-5xl font-extrabold text-[#0073E2] tracking-tight">
                 Katalog Produk
             </h1>
@@ -13,7 +13,7 @@
         </div>
 
         <!-- Search and Filter Controls -->
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-12 border-b border-gray-105 pb-8">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-12 border-b border-gray-105 pb-8 catalog-controls">
             <!-- Search Box -->
             <div class="relative w-full md:max-w-md">
                 <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
@@ -50,7 +50,7 @@
 
                 <!-- Product Card Element -->
                 <div data-name="{{ strtolower($product->product_name) }}" data-category="{{ $product->category->category_slug ?? '' }}"
-                    class="product-card-item group bg-white border border-gray-100 rounded-3xl overflow-hidden hover:shadow-xl hover:shadow-gray-200/40 hover:border-gray-250 transition-all duration-300 flex flex-col justify-between h-full">
+                    class="product-card-item group bg-white border border-gray-100 rounded-3xl overflow-hidden hover:shadow-xl hover:shadow-gray-200/40 hover:border-gray-250 transition-[box-shadow,border-color,background-color] duration-300 flex flex-col justify-between h-full">
                     <div>
                         <!-- Product Image -->
                         <div class="aspect-4/3 relative overflow-hidden bg-gray-50 border-b border-gray-100">

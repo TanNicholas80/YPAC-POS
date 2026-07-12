@@ -1,7 +1,7 @@
 <!-- Lebih dari Sekedar Belanja CTA Section -->
 <section class="py-12 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-[#0073E2] rounded-[2.5rem] shadow-xl overflow-hidden relative p-8 sm:p-12 lg:p-16 group">
+        <div class="bg-[#0073E2] rounded-[2.5rem] shadow-xl overflow-hidden relative p-8 sm:p-12 lg:p-16 group landing-cta-card">
             <!-- Background decor circles -->
             <div class="absolute -top-16 -right-16 w-64 h-64 bg-white/10 rounded-full z-0"></div>
             <div class="absolute bottom-[-100px] left-[20%] w-[400px] h-[400px] bg-white/5 rounded-full z-0"></div>

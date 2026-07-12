@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             <!-- Text Column -->
-            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left hero-text-column">
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-[1.1]">
                     Produk Kreatif Karya <span class="text-[#0073E2]">Anak Disabilitas</span>
                 </h1>
@@ -21,7 +21,7 @@
             </div>
 
             <!-- Graphic/Image Column -->
-            <div class="lg:col-span-5 relative flex justify-center">
+            <div class="lg:col-span-5 relative flex justify-center hero-image-column">
                 <div class="relative w-full max-w-md lg:max-w-none">
                     <!-- Decorative background accents -->
                     <div

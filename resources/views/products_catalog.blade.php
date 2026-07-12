@@ -71,5 +71,48 @@
             const allBtn = document.getElementById('category-all-btn');
             filterCategory('all', allBtn);
         }
+
+        // GSAP ScrollTrigger Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkGsap = setInterval(() => {
+                if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                    clearInterval(checkGsap);
+                    initGSAPAnimations();
+                }
+            }, 50);
+
+            function initGSAPAnimations() {
+                // 1. Catalog Title Header Animation
+                gsap.from(".catalog-header", {
+                    y: 40,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power3.out"
+                });
+
+                // 2. Search & Filter Bar Animation
+                gsap.from(".catalog-controls", {
+                    y: 20,
+                    opacity: 0,
+                    duration: 1,
+                    delay: 0.2,
+                    ease: "power3.out"
+                });
+
+                // 3. Product Cards Staggered Animation
+                gsap.from(".product-card-item", {
+                    y: 40,
+                    opacity: 0,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: "#catalog-grid",
+                        start: "top 90%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            }
+        });
     </script>
 @endpush

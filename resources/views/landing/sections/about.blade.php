@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <!-- Image Column -->
-            <div class="relative order-last lg:order-first">
+            <div class="relative order-last lg:order-first landing-about-image-column">
                 <div
                     class="relative overflow-hidden rounded-[2rem] border border-gray-100 shadow-xl bg-white aspect-square">
                     <img src="{{ asset('images/2G5A2411.JPG') }}" alt="Tentang Kami KUBE YPAC"
@@ -17,7 +17,7 @@
             </div>
 
             <!-- Text Column -->
-            <div class="space-y-6">
+            <div class="space-y-6 landing-about-text-column">
                 <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
                     Mewujudkan Kemandirian <br class="hidden sm:inline">
                     <span class="text-[#e23cbf]">Melalui Pemberdayaan Kreatif</span>

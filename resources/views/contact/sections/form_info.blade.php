@@ -6,7 +6,7 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <!-- Header Title -->
-        <div class="text-center max-w-3xl mx-auto mb-16 sm:mb-20 space-y-6">
+        <div class="text-center max-w-3xl mx-auto mb-16 sm:mb-20 space-y-6 contact-header">
             <h1 class="text-4xl sm:text-5xl font-extrabold text-[#0073E2] tracking-tight">
                 Hubungi KUBE YPAC
             </h1>
@@ -20,7 +20,7 @@
         <!-- Content Grid: Info on Left, Form Card on Right -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             <!-- Info Column (Left) -->
-            <div class="lg:col-span-5 space-y-8">
+            <div class="lg:col-span-5 space-y-8 contact-info-column">
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
                     Mari Terhubung & Berkolaborasi!
                 </h2>
@@ -76,7 +76,7 @@
             </div>
 
             <!-- Form Card Column (Right) -->
-            <div class="lg:col-span-7">
+            <div class="lg:col-span-7 contact-form-column">
                 <div class="bg-white border border-gray-100 rounded-[2rem] p-8 sm:p-10 shadow-2xl relative">
                     <div class="mb-6">
                         <h3 class="text-xl sm:text-2xl font-bold text-gray-900">

@@ -3,7 +3,7 @@
     <!-- Floating decorative backgrounds -->
     <div class="absolute -top-24 right-0 w-80 h-80 bg-blue-50/50 rounded-full filter blur-3xl opacity-60 z-0"></div>
     
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center video-tour-container">
         <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
             Kunjungi Ruang Karya KUBE YPAC
         </h2>

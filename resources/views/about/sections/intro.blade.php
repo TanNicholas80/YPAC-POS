@@ -6,7 +6,7 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <!-- Section 1: Header / Intro -->
-        <div class="text-center max-w-3xl mx-auto mb-16 sm:mb-20 space-y-6">
+        <div class="text-center max-w-3xl mx-auto mb-16 sm:mb-20 space-y-6 intro-header">
             <h1 class="text-4xl sm:text-5xl font-extrabold text-[#0073E2] tracking-tight">
                 Tentang Kami
             </h1>
@@ -20,7 +20,7 @@
         <!-- Section 2: Quote & Philosophy Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             <!-- Image Column (Left) -->
-            <div class="lg:col-span-5 relative">
+            <div class="lg:col-span-5 relative intro-image-wrapper">
                 <div
                     class="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-tr from-blue-100 to-pink-100 opacity-30 blur-lg -z-10">
                 </div>
@@ -32,7 +32,7 @@
             </div>
 
             <!-- Text & Quote Column (Right) -->
-            <div class="lg:col-span-7 space-y-6">
+            <div class="lg:col-span-7 space-y-6 intro-text-column">
                 <!-- Large Quote Icon -->
                 <div class="text-6xl sm:text-7xl font-serif text-[#0073E2] leading-none select-none -mb-4">
                     “

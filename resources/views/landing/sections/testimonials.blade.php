@@ -1,18 +1,18 @@
 <!-- Testimoni Pembeli Section -->
 <section class="py-20 lg:py-28 bg-[#F8FAFC] border-t border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="text-center max-w-3xl mx-auto mb-16 testimonial-header">
             <span class="text-sm font-bold uppercase tracking-wider text-blue-600">Review Pelanggan</span>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mt-1">Testimoni Pembeli</h2>
-            <p class="text-base text-gray-500 mt-4 leading-relaxed">
+            <p class="text-base text-gray-550 mt-4 leading-relaxed">
                 Apa kata mereka yang telah merasakan kualitas produk hasil pembinaan mandiri kami.
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 testimonial-grid">
             <!-- Testimonial 1 -->
             <div
-                class="bg-white border border-gray-100 rounded-3xl p-8 space-y-6 hover:shadow-md transition-shadow">
+                class="bg-white border border-gray-100 rounded-3xl p-8 space-y-6 hover:shadow-md transition-[box-shadow] duration-300 testimonial-card-item">
                 <!-- Stars -->
                 <div class="flex text-amber-500 gap-1">
                     <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
@@ -39,7 +39,7 @@
 
             <!-- Testimonial 2 -->
             <div
-                class="bg-white border border-gray-100 rounded-3xl p-8 space-y-6 hover:shadow-md transition-shadow">
+                class="bg-white border border-gray-100 rounded-3xl p-8 space-y-6 hover:shadow-md transition-[box-shadow] duration-300 testimonial-card-item">
                 <!-- Stars -->
                 <div class="flex text-amber-500 gap-1">
                     <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
@@ -67,7 +67,7 @@
 
             <!-- Testimonial 3 -->
             <div
-                class="bg-white border border-gray-100 rounded-3xl p-8 space-y-6 hover:shadow-md transition-shadow">
+                class="bg-white border border-gray-100 rounded-3xl p-8 space-y-6 hover:shadow-md transition-[box-shadow] duration-300 testimonial-card-item">
                 <!-- Stars -->
                 <div class="flex text-amber-500 gap-1">
                     <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>

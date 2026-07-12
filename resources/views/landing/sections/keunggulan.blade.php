@@ -1,6 +1,6 @@
 <!-- Keunggulan Banner Section -->
 <section class="relative z-20 -mt-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="bg-white rounded-3xl shadow-xl shadow-gray-100/50 border border-gray-100 p-6 sm:p-8">
+<div class="bg-white rounded-3xl shadow-xl shadow-gray-100/50 border border-gray-100 p-6 sm:p-8 keunggulan-banner">
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             <!-- Card 1 -->
             <div

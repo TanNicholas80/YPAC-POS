@@ -1,7 +1,7 @@
 <!-- Section 6: CTA Section -->
 <section class="py-16 sm:py-24 bg-white relative overflow-hidden">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="bg-[#0073E2] rounded-[2.5rem] p-8 sm:p-12 md:p-16 text-center text-white space-y-8 shadow-xl shadow-blue-200 relative overflow-hidden">
+        <div class="bg-[#0073E2] rounded-[2.5rem] p-8 sm:p-12 md:p-16 text-center text-white space-y-8 shadow-xl shadow-blue-200 relative overflow-hidden cta-section-anim">
             <!-- Background accents -->
             <div class="absolute -top-12 -left-12 w-48 h-48 bg-white/10 rounded-full"></div>
             <div class="absolute bottom-[-100px] right-[-100px] w-64 h-64 bg-white/10 rounded-full"></div>

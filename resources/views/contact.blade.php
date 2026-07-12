@@ -42,6 +42,50 @@
                 // If a topic was successfully auto-selected, update the font color
                 updateSelectColor();
             }
+
+            // GSAP ScrollTrigger Animations
+            const checkGsap = setInterval(() => {
+                if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                    clearInterval(checkGsap);
+                    initGSAPAnimations();
+                }
+            }, 50);
+
+            function initGSAPAnimations() {
+                // 1. Contact Header Animation (slide-down & fade)
+                gsap.from(".contact-header", {
+                    y: -40,
+                    opacity: 0,
+                    duration: 1.2,
+                    ease: "power3.out"
+                });
+
+                // 2. Contact Info Column Animation (slide-in from left)
+                gsap.from(".contact-info-column", {
+                    x: -50,
+                    opacity: 0,
+                    duration: 1.2,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: ".contact-info-column",
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    }
+                });
+
+                // 3. Contact Form Card Animation (slide-in from right)
+                gsap.from(".contact-form-column", {
+                    x: 50,
+                    opacity: 0,
+                    duration: 1.2,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: ".contact-form-column",
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            }
         });
     </script>
 @endpush

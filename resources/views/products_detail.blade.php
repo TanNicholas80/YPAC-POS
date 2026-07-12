@@ -8,7 +8,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <!-- Breadcrumbs -->
-            <div class="flex items-center gap-2 text-xs font-bold text-gray-400 mb-8">
+            <div class="flex items-center gap-2 text-xs font-bold text-gray-400 mb-8 detail-breadcrumbs">
                 <a href="{{ route('home') }}" class="hover:text-[#0073E2]">Beranda</a>
                 <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
                 <a href="{{ route('home.products') }}" class="hover:text-[#0073E2]">Produk</a>
@@ -22,7 +22,7 @@
             <!-- Section: Temukan Produk Lainnya -->
             @if($relatedProducts->count() > 0)
                 <div class="mt-20 space-y-8">
-                    <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-4 related-products-header">
                         <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
                             Temukan Produk Lainnya
                         </h2>
@@ -40,7 +40,7 @@
                             @endphp
 
                             <!-- Card Element -->
-                            <div class="group bg-white border border-gray-100 rounded-3xl overflow-hidden hover:shadow-xl hover:shadow-gray-200/40 hover:border-gray-250 transition-all duration-300 flex flex-col justify-between h-full">
+                            <div class="group bg-white border border-gray-100 rounded-3xl overflow-hidden hover:shadow-xl hover:shadow-gray-200/40 hover:border-gray-250 transition-[box-shadow,border-color,background-color] duration-300 flex flex-col justify-between h-full related-product-card-item">
                                 <div>
                                     <!-- Image -->
                                     <div class="aspect-4/3 relative overflow-hidden bg-gray-50 border-b border-gray-100">
@@ -93,3 +93,74 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+    <script>
+        // GSAP ScrollTrigger Animations for Product Detail Page
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkGsap = setInterval(() => {
+                if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                    clearInterval(checkGsap);
+                    initGSAPAnimations();
+                }
+            }, 50);
+
+            function initGSAPAnimations() {
+                // 1. Breadcrumbs entrance (fade & slide-down)
+                gsap.from(".detail-breadcrumbs", {
+                    y: -20,
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power2.out"
+                });
+
+                // 2. Gallery Column entrance (slide-in from left)
+                gsap.from(".detail-gallery-column", {
+                    x: -40,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power3.out"
+                });
+
+                // 3. Info/Details Column entrance (slide-in from right)
+                gsap.from(".detail-info-column", {
+                    x: 40,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power3.out"
+                });
+
+                // 4. Related Section Title & Header entrance (scroll triggered)
+                if (document.querySelector(".related-products-header")) {
+                    gsap.from(".related-products-header", {
+                        y: 30,
+                        opacity: 0,
+                        duration: 1,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: ".related-products-header",
+                            start: "top 85%",
+                            toggleActions: "play none none none"
+                        }
+                    });
+                }
+
+                // 5. Related Products Cards entrance (staggered, scroll triggered)
+                if (document.querySelectorAll(".related-product-card-item").length > 0) {
+                    gsap.from(".related-product-card-item", {
+                        y: 40,
+                        opacity: 0,
+                        duration: 0.8,
+                        stagger: 0.15,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: ".related-product-card-item",
+                            start: "top 90%",
+                            toggleActions: "play none none none"
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+@endpush

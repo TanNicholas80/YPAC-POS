@@ -6,7 +6,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             <!-- Text Column (Left) -->
-            <div class="lg:col-span-7 space-y-6">
+            <div class="lg:col-span-7 space-y-6 founder-text-column">
                 <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight">
                     Berawal dari Sebuah Dedikasi
                 </h2>
@@ -27,7 +27,7 @@
             </div>
 
             <!-- Image Column (Right) -->
-            <div class="lg:col-span-5 relative flex justify-center lg:justify-end pr-6 pb-6 sm:pr-8 sm:pb-8">
+            <div class="lg:col-span-5 relative flex justify-center lg:justify-end pr-6 pb-6 sm:pr-8 sm:pb-8 founder-image-wrapper">
                 <div class="relative w-full max-w-sm lg:max-w-none">
                     <!-- Backdrop visual blur -->
                     <div class="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-tr from-blue-150 to-blue-50 opacity-20 blur-lg -z-10"></div>
