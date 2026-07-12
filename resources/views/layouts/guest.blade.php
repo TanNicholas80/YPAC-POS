@@ -40,8 +40,7 @@
     <!-- Slide-over Drawer & Cart Script Component -->
     @include('landing.sections.cart_drawer')
 
-    <!-- Product Detail Modal Component -->
-    @include('landing.sections.detail_modal')
+
 
     @stack('scripts')
     <script>

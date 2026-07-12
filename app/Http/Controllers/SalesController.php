@@ -20,7 +20,7 @@ class SalesController extends Controller
     public function index()
     {
         $products = Product::where('is_active', true)
-            ->with(['category', 'unit'])
+            ->with(['category', 'unit', 'images'])
             ->get();
             
         $categories = ProductCategory::all();

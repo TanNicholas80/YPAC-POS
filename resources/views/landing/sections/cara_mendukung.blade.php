@@ -67,8 +67,7 @@
                     </p>
                 </div>
                 <div class="pt-8">
-                    <a href="https://wa.me/6281234567890?text=Halo%20Admin%20KUBE%20YPAC%2C%20saya%20tertarik%20untuk%20menjalin%20kemitraan%20kerjasama."
-                        target="_blank"
+                    <a href="{{ route('home.contact', ['topik' => 'instansi']) }}"
                         class="inline-flex items-center gap-1.5 text-sm font-bold text-orange-600 group-hover:text-white group-hover:translate-x-1 transition-all duration-300">
                         <span>Mitra Kerjasama</span>
                         <i data-lucide="arrow-right" class="w-4 h-4"></i>

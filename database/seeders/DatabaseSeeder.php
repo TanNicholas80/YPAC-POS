@@ -40,6 +40,10 @@ class DatabaseSeeder extends Seeder
             'category_name' => 'ATK',
             'category_slug' => 'atk',
         ]);
+        $categoryKerajinan = ProductCategory::create([
+            'category_name' => 'Kerajinan',
+            'category_slug' => 'kerajinan',
+        ]);
 
         // 3. Seed Unit Products
         $unitPcs = UnitProduct::create([
@@ -114,6 +118,35 @@ class DatabaseSeeder extends Seeder
             'price' => 3000,
             'stock' => 150,
             'is_active' => true,
+        ]);
+
+        // Seed Sarung Bantal Hias Motif Bunga from mockup
+        $sarungBantal = Product::create([
+            'category_id' => $categoryKerajinan->id,
+            'unit_id' => $unitPcs->id,
+            'product_name' => 'Sarung Bantal Hias Motif Bunga',
+            'product_slug' => 'sarung-bantal-hias-motif-bunga',
+            'description' => 'Sarung bantal sofa buatan tangan dengan detail lukisan bunga. Material kain lembut dan nyaman untuk penggunaan sehari-hari. Cocok sebagai aksen dekorasi ruang tamu.',
+            'product_story' => 'Karya lukis orisinal dari siswa YPAC. Setiap pembelian mendukung keberlanjutan program pelatihan kemandirian.',
+            'price' => 85000,
+            'stock' => 10,
+            'is_active' => true,
+        ]);
+
+        // Seed images
+        $sarungBantal->images()->createMany([
+            ['image_path' => 'images/2G5A2489.JPG'],
+            ['image_path' => 'images/2G5A2411.JPG'],
+            ['image_path' => 'images/2G5A2423.JPG'],
+            ['image_path' => 'images/2G5A2426.JPG'],
+        ]);
+
+        // Seed specifications
+        $sarungBantal->specifications()->createMany([
+            ['name' => 'Dimensi', 'description' => '40 x 40 cm'],
+            ['name' => 'Material', 'description' => 'Kain Katun'],
+            ['name' => 'Teknik', 'description' => 'Lukis Tangan (Hand-painted)'],
+            ['name' => 'Perawatan', 'description' => 'Cuci manual dengan air dingin'],
         ]);
     }
 }

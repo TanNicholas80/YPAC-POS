@@ -17,7 +17,8 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             @foreach ($topProducts as $product)
                 @php
-                    $imageSrc = $product->product_image ? (str_starts_with($product->product_image, 'http') ? $product->product_image : asset($product->product_image)) : asset('images/hero_handcrafts.png');
+                    $firstImage = $product->images->first();
+                    $imageSrc = $firstImage ? (str_starts_with($firstImage->image_path, 'http') ? $firstImage->image_path : asset($firstImage->image_path)) : asset('images/hero_handcrafts.png');
                 @endphp
 
                 <div
@@ -54,12 +55,11 @@
                         <!-- Action Buttons -->
                         <div class="flex gap-2.5">
                             <!-- Button Detail -->
-                            <button
-                                onclick="openProductDetail({{ $product->id }}, '{{ addslashes($product->product_name) }}', '{{ addslashes($product->description ?? 'Produk orisinal karya KUBE YPAC.') }}', {{ $product->price }}, '{{ $imageSrc }}', '{{ $product->category->category_name ?? 'Produk' }}', '{{ $product->unit->unit_name ?? 'pcs' }}')"
-                                class="flex-1 py-3 bg-gray-50 hover:bg-gray-150 border border-gray-200 active:scale-[0.98] text-gray-700 font-bold rounded-2xl transition-all duration-200 flex items-center justify-center gap-2 text-sm cursor-pointer">
+                            <a href="{{ route('home.product.detail', $product->product_slug) }}" 
+                                class="flex-1 py-3 bg-gray-50 hover:bg-gray-150 border border-gray-200 text-gray-700 font-bold rounded-2xl transition-all duration-200 flex items-center justify-center gap-2 text-sm text-center">
                                 <i data-lucide="eye" class="w-4 h-4 text-gray-500"></i>
                                 <span>Detail</span>
-                            </button>
+                            </a>
                             <!-- Button Tambah -->
                             <button
                                 onclick="addToCart({{ $product->id }}, '{{ addslashes($product->product_name) }}', {{ $product->price }}, '{{ $imageSrc }}')"

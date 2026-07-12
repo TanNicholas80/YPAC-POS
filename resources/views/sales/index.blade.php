@@ -50,8 +50,8 @@
                     <div>
                         <!-- Product Visual / Placeholder -->
                         <div class="w-full aspect-square rounded-2xl bg-gray-100 flex items-center justify-center text-gray-400 mb-4 group-hover:scale-[1.02] transition-transform duration-200 overflow-hidden border border-gray-50">
-                            @if($product->product_image)
-                                <img src="{{ str_starts_with($product->product_image, 'http') ? $product->product_image : asset($product->product_image) }}" alt="{{ $product->product_name }}" class="w-full h-full object-cover">
+                            @if($product->images->first())
+                                <img src="{{ str_starts_with($product->images->first()->image_path, 'http') ? $product->images->first()->image_path : asset($product->images->first()->image_path) }}" alt="{{ $product->product_name }}" class="w-full h-full object-cover">
                             @else
                                 @if($product->category->category_slug === 'makanan')
                                     <i data-lucide="cookie" class="w-10 h-10"></i>

@@ -27,7 +27,7 @@
                     nyata dukungan Anda atas kemandirian, rasa percaya diri, dan apresiasi karya hebat anak bangsa.
                 </p>
                 <div class="pt-4">
-                    <a href="#tentang-kami"
+                    <a href="{{ route('home.about') }}"
                         class="inline-flex items-center gap-2 px-8 py-4 bg-[#F8FAFC] hover:bg-[#e23cbf] hover:text-white hover:border-[#e23cbf] hover:shadow-md text-gray-900 font-semibold rounded-full border border-gray-200 transition-all duration-200">
                         <span>Tentang Kami</span>
                         <i data-lucide="arrow-right" class="w-5 h-5 transition-colors"></i>

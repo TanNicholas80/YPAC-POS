@@ -51,36 +51,57 @@ class ProductController extends Controller
         $request->validate([
             'product_name' => 'required|string|max:255|unique:products,product_name',
             'description' => 'nullable|string',
+            'product_story' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'category_id' => 'required|exists:product_categories,id',
             'unit_id' => 'required|exists:unit_products,id',
-            'product_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'product_images' => 'nullable|array',
+            'product_images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
+            'specifications' => 'nullable|array',
+            'specifications.*.name' => 'required|string|max:255',
+            'specifications.*.description' => 'required|string|max:255',
         ]);
 
-        $imagePath = null;
-        $publicId = null;
-        if ($request->hasFile('product_image')) {
-            $supabase = new SupabaseStorageService();
-            $imagePath = $supabase->upload($request->file('product_image'), 'products');
-            if ($imagePath) {
-                $prefix = "https://".config('services.supabase.project_id').".supabase.co/storage/v1/object/public/".config('services.supabase.bucket')."/";
-                $publicId = str_replace($prefix, '', $imagePath);
-            }
-        }
-
-        Product::create([
+        $product = Product::create([
             'product_name' => $request->product_name,
             'product_slug' => Str::slug($request->product_name),
             'description' => $request->description,
+            'product_story' => $request->product_story,
             'price' => $request->price,
             'stock' => $request->stock,
             'category_id' => $request->category_id,
             'unit_id' => $request->unit_id,
-            'product_image' => $imagePath,
-            'product_public_id' => $publicId,
             'is_active' => $request->has('is_active'),
         ]);
+
+        // Handle multiple image uploads
+        if ($request->hasFile('product_images')) {
+            $supabase = new SupabaseStorageService();
+            foreach ($request->file('product_images') as $file) {
+                $imagePath = $supabase->upload($file, 'products');
+                if ($imagePath) {
+                    $prefix = "https://".config('services.supabase.project_id').".supabase.co/storage/v1/object/public/".config('services.supabase.bucket')."/";
+                    $publicId = str_replace($prefix, '', $imagePath);
+                    $product->images()->create([
+                        'image_path' => $imagePath,
+                        'public_id' => $publicId,
+                    ]);
+                }
+            }
+        }
+
+        // Handle specifications
+        if ($request->has('specifications')) {
+            foreach ($request->input('specifications') as $spec) {
+                if (!empty($spec['name']) && !empty($spec['description'])) {
+                    $product->specifications()->create([
+                        'name' => $spec['name'],
+                        'description' => $spec['description'],
+                    ]);
+                }
+            }
+        }
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan.');
     }
@@ -90,6 +111,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
+        $product->load(['images', 'specifications']);
         $categories = ProductCategory::all();
         $units = UnitProduct::all();
         return view('products.edit', compact('product', 'categories', 'units'));
@@ -103,48 +125,76 @@ class ProductController extends Controller
         $request->validate([
             'product_name' => 'required|string|max:255|unique:products,product_name,' . $product->id,
             'description' => 'nullable|string',
+            'product_story' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'category_id' => 'required|exists:product_categories,id',
             'unit_id' => 'required|exists:unit_products,id',
-            'product_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'product_images' => 'nullable|array',
+            'product_images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
+            'delete_images' => 'nullable|array',
+            'delete_images.*' => 'exists:product_images,id',
+            'specifications' => 'nullable|array',
+            'specifications.*.name' => 'required|string|max:255',
+            'specifications.*.description' => 'required|string|max:255',
         ]);
-
-        $imagePath = $product->product_image;
-        $publicId = $product->product_public_id;
-        if ($request->hasFile('product_image')) {
-            $supabase = new SupabaseStorageService();
-            
-            // Delete old file if exists
-            if ($product->product_image) {
-                if (str_starts_with($product->product_image, 'http')) {
-                    $supabase->delete($product->product_image);
-                } else if (File::exists(public_path($product->product_image))) {
-                    File::delete(public_path($product->product_image));
-                }
-            }
-
-            $imagePath = $supabase->upload($request->file('product_image'), 'products');
-            if ($imagePath) {
-                $prefix = "https://".config('services.supabase.project_id').".supabase.co/storage/v1/object/public/".config('services.supabase.bucket')."/";
-                $publicId = str_replace($prefix, '', $imagePath);
-            } else {
-                $publicId = null;
-            }
-        }
 
         $product->update([
             'product_name' => $request->product_name,
             'product_slug' => Str::slug($request->product_name),
             'description' => $request->description,
+            'product_story' => $request->product_story,
             'price' => $request->price,
             'stock' => $request->stock,
             'category_id' => $request->category_id,
             'unit_id' => $request->unit_id,
-            'product_image' => $imagePath,
-            'product_public_id' => $publicId,
             'is_active' => $request->has('is_active'),
         ]);
+
+        // Handle deleting selected images
+        if ($request->has('delete_images')) {
+            $supabase = new SupabaseStorageService();
+            foreach ($request->input('delete_images') as $imgId) {
+                $img = $product->images()->find($imgId);
+                if ($img) {
+                    if (str_starts_with($img->image_path, 'http')) {
+                        $supabase->delete($img->image_path);
+                    } else if (File::exists(public_path($img->image_path))) {
+                        File::delete(public_path($img->image_path));
+                    }
+                    $img->delete();
+                }
+            }
+        }
+
+        // Handle uploading new images
+        if ($request->hasFile('product_images')) {
+            $supabase = new SupabaseStorageService();
+            foreach ($request->file('product_images') as $file) {
+                $imagePath = $supabase->upload($file, 'products');
+                if ($imagePath) {
+                    $prefix = "https://".config('services.supabase.project_id').".supabase.co/storage/v1/object/public/".config('services.supabase.bucket')."/";
+                    $publicId = str_replace($prefix, '', $imagePath);
+                    $product->images()->create([
+                        'image_path' => $imagePath,
+                        'public_id' => $publicId,
+                    ]);
+                }
+            }
+        }
+
+        // Sync specifications
+        $product->specifications()->delete();
+        if ($request->has('specifications')) {
+            foreach ($request->input('specifications') as $spec) {
+                if (!empty($spec['name']) && !empty($spec['description'])) {
+                    $product->specifications()->create([
+                        'name' => $spec['name'],
+                        'description' => $spec['description'],
+                    ]);
+                }
+            }
+        }
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui.');
     }
@@ -154,19 +204,28 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        // Delete image file
-        if ($product->product_image) {
-            if (str_starts_with($product->product_image, 'http')) {
-                $supabase = new SupabaseStorageService();
-                $supabase->delete($product->product_image);
-            } else if (File::exists(public_path($product->product_image))) {
-                File::delete(public_path($product->product_image));
+        // Delete all image files from storage
+        $supabase = new SupabaseStorageService();
+        foreach ($product->images as $img) {
+            if (str_starts_with($img->image_path, 'http')) {
+                $supabase->delete($img->image_path);
+            } else if (File::exists(public_path($img->image_path))) {
+                File::delete(public_path($img->image_path));
             }
         }
 
         $product->delete();
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus.');
+    }
+
+    /**
+     * Display the specified product preview (admin side).
+     */
+    public function show(Product $product)
+    {
+        $product->load(['category', 'unit', 'images', 'specifications']);
+        return view('products.show', compact('product'));
     }
 
     /**

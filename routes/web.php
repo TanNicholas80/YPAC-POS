@@ -13,6 +13,10 @@ use App\Http\Controllers\HomeController;
 // Authentication routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/produk', [HomeController::class, 'products'])->name('home.products');
+Route::get('/produk/{slug}', [HomeController::class, 'productDetail'])->name('home.product.detail');
+Route::get('/tentang-kami', [HomeController::class, 'about'])->name('home.about');
+Route::get('/hubungi-kami', [HomeController::class, 'contact'])->name('home.contact');
+Route::post('/hubungi-kami', [HomeController::class, 'contactSubmit'])->name('home.contact.submit');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

@@ -7,7 +7,7 @@
     <!-- Keunggulan Section Component -->
     @include('landing.sections.keunggulan')
 
-    <!-- Tentang Kami Detail Component -->
+    <!-- Tentang Kami Detail Component (Links to /tentang-kami) -->
     @include('landing.sections.about')
 
     <!-- Produk Unggulan Component -->

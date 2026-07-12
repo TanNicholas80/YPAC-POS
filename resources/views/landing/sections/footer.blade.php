@@ -26,7 +26,7 @@
                     <li><a href="{{ route('home.products') }}"
                             class="text-sm font-semibold text-gray-500 hover:text-[#0073E2] transition-colors">Produk
                             Kami</a></li>
-                    <li><a href="{{ route('home') }}#tentang-kami"
+                    <li><a href="{{ route('home.about') }}"
                             class="text-sm font-semibold text-gray-500 hover:text-[#0073E2] transition-colors">Tentang
                             Kami</a></li>
                 </ul>

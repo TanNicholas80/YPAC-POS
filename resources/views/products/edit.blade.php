@@ -16,7 +16,7 @@
     <!-- Title Header -->
     <div class="max-w-4xl w-full mx-auto mb-6">
         <h1 class="text-2xl font-bold text-gray-900 leading-tight">Edit Produk</h1>
-        <p class="text-xs text-gray-500 font-medium">Ubah rincian informasi dan perbarui stock ketersediaan produk.</p>
+        <p class="text-xs text-gray-550 font-medium">Ubah rincian informasi dan perbarui stock ketersediaan produk.</p>
     </div>
 
     <!-- Form Container -->
@@ -32,7 +32,7 @@
                 <!-- Product Name -->
                 <div class="space-y-2">
                     <label for="product_name" class="text-sm font-semibold text-gray-700">Nama Produk</label>
-                    <input type="text" name="product_name" id="product_name" required value="{{ old('product_name', $product->product_name) }}" placeholder="Contoh: Snack Coklat YPAC"
+                    <input type="text" name="product_name" id="product_name" required value="{{ old('product_name', $product->product_name) }}" placeholder="Contoh: Sarung Bantal Hias Motif Bunga"
                         class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-gray-955 placeholder-gray-405 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white transition-all font-semibold text-sm">
                 </div>
 
@@ -90,33 +90,81 @@
                 <!-- Description -->
                 <div class="space-y-2">
                     <label for="description" class="text-sm font-semibold text-gray-700">Deskripsi Produk (Opsional)</label>
-                    <textarea name="description" id="description" rows="4" placeholder="Tuliskan keterangan detail produk..."
+                    <textarea name="description" id="description" rows="3" placeholder="Tuliskan keterangan detail produk..."
                         class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-gray-955 placeholder-gray-405 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white transition-all font-semibold text-sm resize-none">{{ old('description', $product->description) }}</textarea>
                 </div>
+
+                <!-- Product Story (Maker Story) -->
+                <div class="space-y-2">
+                    <label for="product_story" class="text-sm font-semibold text-gray-700">Kisah Pembuat (Opsional)</label>
+                    <textarea name="product_story" id="product_story" rows="3" placeholder="Tuliskan kisah menginspirasi di balik pembuatan produk ini..."
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-gray-955 placeholder-gray-405 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white transition-all font-semibold text-sm resize-none">{{ old('product_story', $product->product_story) }}</textarea>
+                </div>
+
+                <!-- Specifications Panel -->
+                <div class="space-y-4 pt-4 border-t border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <label class="text-sm font-semibold text-gray-700">Spesifikasi Produk</label>
+                        <button type="button" onclick="addSpecificationRow()" 
+                            class="px-3 py-1.5 bg-blue-50 text-[#0073E2] hover:bg-blue-100 font-bold rounded-xl text-xs flex items-center gap-1 cursor-pointer transition-colors">
+                            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                            <span>Tambah Baris</span>
+                        </button>
+                    </div>
+
+                    <div id="specifications-container" class="space-y-3">
+                        <!-- Dynamic rows append here -->
+                    </div>
+                </div>
+
             </div>
 
             <!-- Right Panel: Image & Status (md:col-span-4) -->
             <div class="md:col-span-4 space-y-6">
+                
+                <!-- Existing Images Card -->
+                @if($product->images->count() > 0)
+                    <div class="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm space-y-4">
+                        <h3 class="text-sm font-bold text-gray-800">Foto Saat Ini</h3>
+                        <span class="text-[10px] text-gray-400 block -mt-2">Pilih foto yang ingin dihapus</span>
+                        
+                        <div class="grid grid-cols-3 gap-2">
+                            @foreach($product->images as $img)
+                                @php
+                                    $imgSrc = str_starts_with($img->image_path, 'http') ? $img->image_path : asset($img->image_path);
+                                @endphp
+                                <div class="relative aspect-square rounded-xl overflow-hidden border border-gray-100 bg-gray-50 group">
+                                    <img src="{{ $imgSrc }}" class="object-cover w-full h-full">
+                                    <label class="absolute top-1 right-1 bg-black/50 hover:bg-black/80 text-white p-1 rounded-lg cursor-pointer flex items-center justify-center">
+                                        <input type="checkbox" name="delete_images[]" value="{{ $img->id }}" class="w-3.5 h-3.5 accent-red-500">
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
                 <!-- Image Upload Card -->
-                <div class="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm space-y-4 flex flex-col items-center">
-                    <h3 class="text-sm font-bold text-gray-800 w-full text-left">Foto Produk</h3>
+                <div class="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm space-y-4">
+                    <h3 class="text-sm font-bold text-gray-800">Unggah Foto Baru</h3>
                     
                     <!-- File input preview dropzone wrapper -->
-                    <label for="product_image" id="product-image-drop-zone"
-                        class="w-full aspect-square border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-2xl flex flex-col items-center justify-center p-4 text-center cursor-pointer transition-all relative overflow-hidden bg-gray-50/50">
+                    <label for="product_images" id="product-image-drop-zone"
+                        class="w-full aspect-[4/3] border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-2xl flex flex-col items-center justify-center p-4 text-center cursor-pointer transition-all relative overflow-hidden bg-gray-50/50">
                         
-                        <div id="upload-placeholder" class="space-y-2 flex flex-col items-center {{ $product->product_image ? 'hidden' : '' }}">
+                        <div id="upload-placeholder" class="space-y-2 flex flex-col items-center">
                             <i data-lucide="image-up" class="w-10 h-10 text-gray-400"></i>
-                            <span class="text-xs font-bold text-gray-700 block">Pilih / Seret Gambar Baru</span>
-                            <span class="text-[10px] text-gray-400">Format: PNG, JPG, JPEG (Maks 2MB)</span>
+                            <span class="text-xs font-bold text-gray-700 block">Pilih / Seret Gambar</span>
+                            <span class="text-[10px] text-gray-400">PNG, JPG, JPEG</span>
                         </div>
-
-                        <!-- Image Preview element -->
-                        <img id="image-preview" src="{{ $product->product_image ? (str_starts_with($product->product_image, 'http') ? $product->product_image : asset($product->product_image)) : '#' }}" alt="Preview Foto" 
-                            class="absolute inset-0 w-full h-full object-cover {{ $product->product_image ? '' : 'hidden' }} bg-white">
                     </label>
                     
-                    <input type="file" name="product_image" id="product_image" accept="image/*" class="hidden" onchange="previewFile()">
+                    <input type="file" name="product_images[]" id="product_images" accept="image/*" multiple class="hidden" onchange="previewFiles()">
+                
+                    <!-- Image Preview Grid -->
+                    <div id="image-previews-grid" class="grid grid-cols-3 gap-2 pt-2">
+                        <!-- Thumbnails -->
+                    </div>
                 </div>
 
                 <!-- Settings/Status Card -->
@@ -146,27 +194,71 @@
 </div>
 
 <script>
-    // Live Image Upload Preview
-    function previewFile() {
-        const fileInput = document.getElementById('product_image');
-        const preview = document.getElementById('image-preview');
-        const placeholder = document.getElementById('upload-placeholder');
+    // Live Image Upload Preview for multiple files
+    function previewFiles() {
+        const fileInput = document.getElementById('product_images');
+        const grid = document.getElementById('image-previews-grid');
+        grid.innerHTML = ''; // Clear previous previews
         
-        if (fileInput.files && fileInput.files[0]) {
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-                preview.classList.remove('hidden');
-                placeholder.classList.add('hidden');
-            }
-            
-            reader.readAsDataURL(fileInput.files[0]);
+        if (fileInput.files && fileInput.files.length > 0) {
+            Array.from(fileInput.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.className = 'relative aspect-square rounded-xl overflow-hidden border border-gray-100 bg-gray-50';
+                    div.innerHTML = `<img src="${e.target.result}" class="object-cover w-full h-full">`;
+                    grid.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
         }
     }
 
-    // Drag and Drop implementation
+    // Specifications Dynamic Inputs
+    let specIndex = 0;
+    function addSpecificationRow(name = '', description = '') {
+        const container = document.getElementById('specifications-container');
+        const rowId = `spec-row-${specIndex}`;
+        
+        const rowHtml = `
+            <div id="${rowId}" class="flex items-center gap-2.5 bg-gray-50 p-3 rounded-2xl border border-gray-100">
+                <input type="text" name="specifications[${specIndex}][name]" value="${name}" placeholder="Nama (Cth: Dimensi)" required
+                    class="flex-1 px-3.5 py-2.5 bg-white border border-gray-150 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0073E2] font-semibold text-xs">
+                <input type="text" name="specifications[${specIndex}][description]" value="${description}" placeholder="Nilai (Cth: 40 x 40 cm)" required
+                    class="flex-1 px-3.5 py-2.5 bg-white border border-gray-150 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0073E2] font-semibold text-xs">
+                <button type="button" onclick="removeSpecificationRow('${rowId}')" 
+                    class="p-2.5 text-gray-400 hover:text-red-500 rounded-xl hover:bg-red-50 transition-all cursor-pointer">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+            </div>
+        `;
+        
+        container.insertAdjacentHTML('beforeend', rowHtml);
+        specIndex++;
+
+        // Refresh icons
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    }
+
+    function removeSpecificationRow(rowId) {
+        const row = document.getElementById(rowId);
+        if (row) {
+            row.remove();
+        }
+    }
+
+    // Load existing product specifications
     document.addEventListener("DOMContentLoaded", () => {
+        @forelse($product->specifications as $spec)
+            addSpecificationRow('{{ addslashes($spec->name) }}', '{{ addslashes($spec->description) }}');
+        @empty
+            addSpecificationRow('Dimensi', '');
+            addSpecificationRow('Material', '');
+        @endforelse
+
+        // Drag and Drop integration
         const dropZone = document.getElementById('product-image-drop-zone');
         if (dropZone) {
             ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -191,11 +283,11 @@
             dropZone.addEventListener('drop', e => {
                 const dt = e.dataTransfer;
                 const files = dt.files;
-                const fileInput = document.getElementById('product_image');
+                const fileInput = document.getElementById('product_images');
                 
                 if (files && files.length > 0) {
                     fileInput.files = files;
-                    previewFile();
+                    previewFiles();
                 }
             }, false);
         }

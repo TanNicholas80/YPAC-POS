@@ -159,18 +159,18 @@
     }
 
     // Add Product to Cart
-    function addToCart(id, name, price, image) {
+    function addToCart(id, name, price, image, qty = 1) {
         const existingItem = cart.find(item => item.id === id);
 
         if (existingItem) {
-            existingItem.qty += 1;
+            existingItem.qty += qty;
         } else {
             cart.push({
                 id: id,
                 name: name,
                 price: parseFloat(price),
                 image: image,
-                qty: 1
+                qty: qty
             });
         }
 

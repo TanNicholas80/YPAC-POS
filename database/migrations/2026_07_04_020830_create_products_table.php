@@ -20,8 +20,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->float('price');
             $table->integer('stock');
-            $table->string('product_image')->nullable();
-            $table->string('product_public_id')->nullable();
+            $table->text('product_story')->nullable();
             $table->boolean('is_active')->default(false);
 
             $table->timestamps();

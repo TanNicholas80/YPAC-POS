@@ -14,8 +14,8 @@
             <nav class="hidden md:flex space-x-8 items-center">
                 <a href="{{ route('home') }}"
                     class="text-base font-semibold transition-all duration-200 border-b-2 pb-1 {{ Route::is('home') && !request()->is('*produk*') ? 'text-[#0073E2] border-[#0073E2]' : 'text-gray-600 border-transparent hover:text-[#0073E2] hover:border-[#0073E2]' }}">Beranda</a>
-                <a href="{{ route('home') }}#tentang-kami"
-                    class="text-base font-semibold text-gray-600 border-b-2 border-transparent hover:text-[#0073E2] hover:border-[#0073E2] pb-1 transition-all duration-200">Tentang Kami</a>
+                <a href="{{ route('home.about') }}"
+                    class="text-base font-semibold transition-all duration-200 border-b-2 pb-1 {{ Route::is('home.about') ? 'text-[#0073E2] border-[#0073E2]' : 'text-gray-600 border-transparent hover:text-[#0073E2] hover:border-[#0073E2]' }}">Tentang Kami</a>
                 <a href="{{ route('home.products') }}"
                     class="text-base font-semibold transition-all duration-200 border-b-2 pb-1 {{ request()->is('*produk*') || Route::is('home.products') ? 'text-[#0073E2] border-[#0073E2]' : 'text-gray-600 border-transparent hover:text-[#0073E2] hover:border-[#0073E2]' }}">Produk Kami</a>
             </nav>
@@ -32,7 +32,7 @@
                 </button>
 
                 <!-- Kontak Kami Button -->
-                <a href="#hubungi-kami"
+                <a href="{{ route('home.contact') }}"
                     class="hidden sm:flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-white bg-[#e23cbf] hover:bg-[#c92fa9] rounded-full shadow-sm hover:shadow transition-all duration-200">
                     <span>Kontak Kami</span>
                 </a>
@@ -51,8 +51,8 @@
         class="hidden md:hidden border-t border-gray-100 bg-white px-4 py-4 space-y-3 shadow-inner">
         <a href="{{ route('home') }}" onclick="toggleMobileMenu()"
             class="block text-base font-semibold text-gray-600 hover:text-[#0073E2] py-2">Beranda</a>
-        <a href="{{ route('home') }}#tentang-kami" onclick="toggleMobileMenu()"
-            class="block text-base font-semibold text-gray-600 hover:text-[#0073E2] py-2">Tentang Kami</a>
+        <a href="{{ route('home.about') }}" onclick="toggleMobileMenu()"
+            class="block text-base font-semibold py-2 {{ Route::is('home.about') ? 'text-[#0073E2]' : 'text-gray-600 hover:text-[#0073E2]' }}">Tentang Kami</a>
         <a href="{{ route('home.products') }}" onclick="toggleMobileMenu()"
             class="block text-base font-semibold text-gray-600 hover:text-[#0073E2] py-2">Produk Kami</a>
         <a href="{{ route('login') }}" class="flex items-center gap-2 text-base font-semibold text-[#0073E2] py-2">
@@ -60,7 +60,7 @@
             <span>Kasir Portal</span>
         </a>
         <div class="pt-2">
-            <a href="#hubungi-kami" onclick="toggleMobileMenu()"
+            <a href="{{ route('home.contact') }}" onclick="toggleMobileMenu()"
                 class="flex items-center justify-center w-full px-6 py-2.5 text-sm font-semibold text-white bg-[#e23cbf] hover:bg-[#c92fa9] rounded-full shadow-sm transition-all duration-200">
                 Kontak Kami
             </a>

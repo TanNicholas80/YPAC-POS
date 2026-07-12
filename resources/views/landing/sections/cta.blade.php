@@ -17,9 +17,9 @@
                         yang lebih inklusif.
                     </p>
                     <div class="pt-2">
-                        <a href="#tentang-kami"
+                        <a href="{{ route('home.products') }}"
                             class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white hover:bg-blue-50 text-[#0073E2] font-bold rounded-2xl shadow-lg transition-all transform hover:-translate-y-0.5 cursor-pointer">
-                            <span>Lihat Koleksi Mereka</span>
+                            <span>Lihat Koleksi Produk</span>
                             <i data-lucide="arrow-right" class="w-5 h-5"></i>
                         </a>
                     </div>

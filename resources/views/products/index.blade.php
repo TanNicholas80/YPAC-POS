@@ -87,8 +87,8 @@
                                 <!-- Thumbnail -->
                                 <td class="p-5 w-20">
                                     <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-100 overflow-hidden">
-                                        @if($product->product_image)
-                                            <img src="{{ str_starts_with($product->product_image, 'http') ? $product->product_image : asset($product->product_image) }}" alt="{{ $product->product_name }}" class="w-full h-full object-cover">
+                                        @if($product->images->first())
+                                            <img src="{{ str_starts_with($product->images->first()->image_path, 'http') ? $product->images->first()->image_path : asset($product->images->first()->image_path) }}" alt="{{ $product->product_name }}" class="w-full h-full object-cover">
                                         @else
                                             @if($product->category->category_slug === 'makanan')
                                                 <i data-lucide="cookie" class="w-6 h-6 text-gray-400"></i>
@@ -141,6 +141,13 @@
                                 <!-- Actions -->
                                 <td class="p-5">
                                     <div class="flex items-center justify-center gap-2">
+                                        <!-- Preview Detail -->
+                                        <a href="{{ route('products.show', $product->id) }}" 
+                                            class="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50/50 rounded-xl transition-all"
+                                            title="Preview Detail">
+                                            <i data-lucide="eye" class="w-5 h-5"></i>
+                                        </a>
+
                                         <!-- Edit -->
                                         <a href="{{ route('products.edit', $product->id) }}" 
                                             class="p-2 text-gray-400 hover:text-[#0073E2] hover:bg-blue-50/50 rounded-xl transition-all">
