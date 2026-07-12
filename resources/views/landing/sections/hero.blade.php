@@ -35,7 +35,7 @@
                     <div
                         class="relative z-10 overflow-hidden rounded-3xl border border-gray-100 shadow-2xl shadow-gray-200 bg-gray-50 aspect-4/3 flex items-center justify-center">
                         <img src="{{ asset('images/2G5A2423.JPG') }}" alt="Produk Kerajinan KUBE YPAC"
-                            class="object-cover w-full h-full transform hover:scale-105 transition-transform duration-500">
+                            class="object-cover w-full h-full transform hover:scale-105 transition-transform duration-500" loading="lazy">
                     </div>
                 </div>
             </div>

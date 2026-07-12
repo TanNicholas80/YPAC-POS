@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use Artesaos\SEOTools\Facades\SEOTools;
 
 class HomeController extends Controller
 {
@@ -13,6 +14,15 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // Set SEO Meta
+        SEOTools::setTitle('KUBE YPAC - Produk Kreatif Karya Anak Disabilitas');
+        SEOTools::setDescription('Dukung kemandirian siswa disabilitas dengan berbelanja kerajinan tangan, kudapan lezat, dan karya seni buatan siswa di KUBE YPAC.');
+        SEOTools::setCanonical(url('/'));
+        SEOTools::opengraph()->setUrl(url('/'));
+        SEOTools::opengraph()->addProperty('type', 'website');
+        SEOTools::opengraph()->addImage(asset('images/LogoYPAC.png'));
+        SEOTools::twitter()->setSite('@KubeYpac');
+
         // 1. Get top 3 best-selling products (completed transactions)
         $topProducts = Product::where('is_active', true)
             ->with(['category', 'unit', 'images', 'specifications'])
@@ -57,6 +67,15 @@ class HomeController extends Controller
      */
     public function products()
     {
+        // Set SEO Meta
+        SEOTools::setTitle('Katalog Produk Kreatif - KUBE YPAC');
+        SEOTools::setDescription('Telusuri berbagai kerajinan tangan, kudapan kuliner, dan karya seni unik buatan siswa disabilitas YPAC. Dibuat dengan penuh dedikasi.');
+        SEOTools::setCanonical(route('home.products'));
+        SEOTools::opengraph()->setUrl(route('home.products'));
+        SEOTools::opengraph()->addProperty('type', 'website');
+        SEOTools::opengraph()->addImage(asset('images/LogoYPAC.png'));
+        SEOTools::twitter()->setSite('@KubeYpac');
+
         $allProducts = Product::where('is_active', true)
             ->with(['category', 'unit', 'images', 'specifications'])
             ->get();
@@ -76,6 +95,21 @@ class HomeController extends Controller
             ->with(['category', 'unit', 'images', 'specifications'])
             ->firstOrFail();
 
+        // Dynamic SEO Configuration
+        $mainImage = $product->images->first() 
+            ? (str_starts_with($product->images->first()->image_path, 'http') 
+                ? $product->images->first()->image_path 
+                : asset($product->images->first()->image_path))
+            : asset('images/LogoYPAC.png');
+
+        SEOTools::setTitle($product->product_name . ' - KUBE YPAC');
+        SEOTools::setDescription("Beli {$product->product_name} berkualitas tinggi di KUBE YPAC. Harga: Rp " . number_format($product->price, 0, ',', '.') . ". Karya kreatif luar biasa siswa disabilitas.");
+        SEOTools::setCanonical(route('home.product.detail', $product->product_slug));
+        SEOTools::opengraph()->setUrl(route('home.product.detail', $product->product_slug));
+        SEOTools::opengraph()->addProperty('type', 'og:product');
+        SEOTools::opengraph()->addImage($mainImage);
+        SEOTools::twitter()->setSite('@KubeYpac');
+
         // Get 3 other related products for 'Temukan Produk Lainnya'
         $relatedProducts = Product::where('is_active', true)
             ->where('id', '!=', $product->id)
@@ -91,6 +125,15 @@ class HomeController extends Controller
      */
     public function about()
     {
+        // Set SEO Meta
+        SEOTools::setTitle('Tentang Kami - KUBE YPAC');
+        SEOTools::setDescription('Pelajari visi, misi, dan latar belakang Koperasi Usaha Bersama (KUBE) YPAC dalam memberdayakan siswa disabilitas agar mandiri secara ekonomi.');
+        SEOTools::setCanonical(route('home.about'));
+        SEOTools::opengraph()->setUrl(route('home.about'));
+        SEOTools::opengraph()->addProperty('type', 'website');
+        SEOTools::opengraph()->addImage(asset('images/LogoYPAC.png'));
+        SEOTools::twitter()->setSite('@KubeYpac');
+
         return view('about');
     }
 
@@ -99,6 +142,15 @@ class HomeController extends Controller
      */
     public function contact()
     {
+        // Set SEO Meta
+        SEOTools::setTitle('Hubungi Kami - KUBE YPAC');
+        SEOTools::setDescription('Hubungi KUBE YPAC untuk pemesanan khusus, kerjasama kemitraan, atau pertanyaan terkait produk karya anak-anak disabilitas.');
+        SEOTools::setCanonical(route('home.contact'));
+        SEOTools::opengraph()->setUrl(route('home.contact'));
+        SEOTools::opengraph()->addProperty('type', 'website');
+        SEOTools::opengraph()->addImage(asset('images/LogoYPAC.png'));
+        SEOTools::twitter()->setSite('@KubeYpac');
+
         return view('contact');
     }
 

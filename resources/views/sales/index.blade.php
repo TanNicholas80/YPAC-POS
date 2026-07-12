@@ -239,7 +239,13 @@
             if (cart[productId].qty < stock) {
                 cart[productId].qty += 1;
             } else {
-                alert(`Stok maksimal untuk ${name} tercapai (Tersedia: ${stock})`);
+                Swal.fire({
+                    title: 'Stok Terbatas',
+                    text: `Stok maksimal untuk ${name} tercapai (Tersedia: ${stock})`,
+                    icon: 'warning',
+                    confirmButtonColor: '#0073E2',
+                    customClass: { popup: 'rounded-3xl' }
+                });
             }
         } else {
             cart[productId] = {
@@ -262,7 +268,13 @@
         if (newQty <= 0) {
             delete cart[productId];
         } else if (newQty > cart[productId].stock) {
-            alert(`Stok maksimal untuk ${cart[productId].name} tercapai (Tersedia: ${cart[productId].stock})`);
+            Swal.fire({
+                title: 'Stok Terbatas',
+                text: `Stok maksimal untuk ${cart[productId].name} tercapai (Tersedia: ${cart[productId].stock})`,
+                icon: 'warning',
+                confirmButtonColor: '#0073E2',
+                customClass: { popup: 'rounded-3xl' }
+            });
         } else {
             cart[productId].qty = newQty;
         }
@@ -276,7 +288,13 @@
         if (newQty <= 0) {
             delete cart[productId];
         } else if (newQty > cart[productId].stock) {
-            alert(`Stok maksimal untuk ${cart[productId].name} tercapai (Tersedia: ${cart[productId].stock})`);
+            Swal.fire({
+                title: 'Stok Terbatas',
+                text: `Stok maksimal untuk ${cart[productId].name} tercapai (Tersedia: ${cart[productId].stock})`,
+                icon: 'warning',
+                confirmButtonColor: '#0073E2',
+                customClass: { popup: 'rounded-3xl' }
+            });
             newQty = cart[productId].stock;
         }
         cart[productId].qty = newQty;

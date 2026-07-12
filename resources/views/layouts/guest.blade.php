@@ -4,11 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'KUBE YPAC - Produk Kreatif Karya Anak Disabilitas')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    {!! SEO::generate() !!}
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('images/LogoYPAC.png') }}">
     <!-- Tailwind CSS & JS via Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Google Fonts: Instrument Sans -->

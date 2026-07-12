@@ -9,6 +9,8 @@
     <link rel="icon" type="image/png" href="{{ asset('images/LogoYPAC.png') }}">
     <!-- Vite Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Lucide Icons for premium visual feel -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -49,6 +51,22 @@
                     class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-all duration-200 {{ Route::is('products.*') ? 'bg-[#0073E2] text-white shadow-sm shadow-blue-200' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                     <i data-lucide="box" class="w-5 h-5"></i>
                     <span>Products</span>
+                </a>
+
+                <a href="{{ route('admin.approvals.index') }}"
+                    class="flex items-center justify-between px-4 py-3 rounded-xl font-semibold transition-all duration-200 {{ Route::is('admin.approvals.*') ? 'bg-[#0073E2] text-white shadow-sm shadow-blue-200' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                        <span>Approval WA</span>
+                    </div>
+                    @php
+                        $pendingCount = \App\Models\Transaction::where('is_whatsapp', true)->where('status', 'pending')->count();
+                    @endphp
+                    @if($pendingCount > 0)
+                        <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full {{ Route::is('admin.approvals.*') ? 'bg-white text-[#0073E2]' : 'bg-red-500 text-white' }}">
+                            {{ $pendingCount }}
+                        </span>
+                    @endif
                 </a>
 
                 <a href="{{ route('reports.index') }}"

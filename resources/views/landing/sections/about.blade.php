@@ -7,7 +7,7 @@
                 <div
                     class="relative overflow-hidden rounded-[2rem] border border-gray-100 shadow-xl bg-white aspect-square">
                     <img src="{{ asset('images/2G5A2411.JPG') }}" alt="Tentang Kami KUBE YPAC"
-                        class="object-cover w-full h-full">
+                        class="object-cover w-full h-full" loading="lazy">
                 </div>
                 <div
                     class="absolute -bottom-6 -right-4 bg-[#e23cbf] text-white p-6 rounded-3xl shadow-xl max-w-[260px]">

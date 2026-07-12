@@ -34,7 +34,7 @@
                     <!-- Profile Image -->
                     <div class="overflow-hidden rounded-[2.5rem] border border-gray-200/50 shadow-2xl bg-white aspect-[4/5] sm:aspect-square lg:aspect-[4/5] xl:aspect-square">
                         <img src="{{ asset('images/prof_soeharso.png') }}" alt="Prof. Dr. Soeharso" 
-                            class="object-cover w-full h-full transform hover:scale-102 transition-transform duration-500">
+                            class="object-cover w-full h-full transform hover:scale-102 transition-transform duration-500" loading="lazy">
                     </div>
                     <!-- Overlay Badge card outside the overflow-hidden container to allow offset overflow -->
                     <div class="absolute -bottom-6 -right-6 sm:-right-8 bg-[#0073E2] text-white px-8 py-5 rounded-[1.5rem] shadow-2xl shadow-blue-200/50 max-w-[260px] z-20">

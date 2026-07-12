@@ -49,8 +49,9 @@ class ReportController extends Controller
             ->take(10)
             ->get();
 
-        // 4. Transaction History Table with filters & pagination
-        $query = Transaction::with(['user', 'details.product.category', 'details.product.unit']);
+        // 4. Transaction History Table with filters & pagination (completed transactions only)
+        $query = Transaction::with(['user', 'details.product.category', 'details.product.unit'])
+            ->where('status', 'completed');
 
         // Filter: Start Date
         if ($request->filled('start_date')) {

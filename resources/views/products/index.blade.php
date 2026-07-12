@@ -155,11 +155,10 @@
                                         </a>
 
                                         <!-- Delete -->
-                                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" 
-                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?')" class="inline">
+                                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all cursor-pointer">
+                                            <button type="button" onclick="confirmDelete(this, 'produk')" class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all cursor-pointer">
                                                 <i data-lucide="trash-2" class="w-5 h-5"></i>
                                             </button>
                                         </form>
@@ -258,14 +257,13 @@
                                                     <i data-lucide="trash-2" class="w-5 h-5"></i>
                                                 </button>
                                             @else
-                                                <form action="{{ route('products.categories.destroy', $category->id) }}" method="POST" 
-                                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')" class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all cursor-pointer">
-                                                        <i data-lucide="trash-2" class="w-5 h-5"></i>
-                                                    </button>
-                                                </form>
+                                                 <form action="{{ route('products.categories.destroy', $category->id) }}" method="POST" class="inline">
+                                                     @csrf
+                                                     @method('DELETE')
+                                                     <button type="button" onclick="confirmDelete(this, 'kategori')" class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all cursor-pointer">
+                                                         <i data-lucide="trash-2" class="w-5 h-5"></i>
+                                                     </button>
+                                                 </form>
                                             @endif
                                         </div>
                                     </td>
@@ -337,6 +335,27 @@
         document.getElementById('category-form-method').value = 'POST';
         document.getElementById('category_name_input').value = '';
         document.getElementById('category-cancel-btn').classList.add('hidden');
+    }
+
+    // Reusable SweetAlert2 confirmation dialog for deletion
+    function confirmDelete(button, type) {
+        Swal.fire({
+            title: `Hapus ${type.charAt(0).toUpperCase() + type.slice(1)}?`,
+            text: `Apakah Anda yakin ingin menghapus ${type} ini? Tindakan ini tidak dapat dibatalkan.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#EF4444',
+            cancelButtonColor: '#6B7280',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal',
+            customClass: {
+                popup: 'rounded-3xl'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                button.closest('form').submit();
+            }
+        });
     }
 </script>
 @endsection

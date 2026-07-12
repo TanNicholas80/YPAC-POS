@@ -12,7 +12,7 @@
             <!-- Main Product Image -->
             <div class="aspect-square relative overflow-hidden rounded-[2rem] border border-gray-150 bg-gray-50/50 shadow-inner">
                 <img id="main-product-image" src="{{ $mainImage }}" alt="{{ $product->product_name }}"
-                    class="object-cover w-full h-full transform hover:scale-102 transition-transform duration-500">
+                    class="object-cover w-full h-full transform hover:scale-102 transition-transform duration-500" loading="lazy">
                 <span class="absolute top-4 left-4 inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold bg-[#0073E2] text-white shadow-sm">
                     {{ $product->category->category_name ?? 'Produk' }}
                 </span>
@@ -27,7 +27,7 @@
                         @endphp
                         <button onclick="changeMainImage('{{ $thumbnailSrc }}')" 
                             class="aspect-square rounded-2xl border-2 border-gray-100 hover:border-[#0073E2] overflow-hidden bg-white shadow-sm focus:outline-none transition-all cursor-pointer">
-                            <img src="{{ $thumbnailSrc }}" class="object-cover w-full h-full">
+                            <img src="{{ $thumbnailSrc }}" class="object-cover w-full h-full" loading="lazy">
                         </button>
                     @endforeach
                 </div>
@@ -193,7 +193,13 @@
             val += change;
             if (val < 1) val = 1;
             if (val > {{ $product->stock }}) {
-                alert('Stok yang tersedia tidak mencukupi.');
+                Swal.fire({
+                    title: 'Stok Terbatas',
+                    text: 'Stok yang tersedia tidak mencukupi.',
+                    icon: 'warning',
+                    confirmButtonColor: '#0073E2',
+                    customClass: { popup: 'rounded-3xl' }
+                });
                 val = {{ $product->stock }};
             }
             input.value = val;

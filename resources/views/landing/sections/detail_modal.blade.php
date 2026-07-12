@@ -13,7 +13,7 @@
 
             <!-- Product Image Left -->
             <div class="w-full md:w-1/2 aspect-square md:aspect-auto bg-gray-50 border-r border-gray-100 relative">
-                <img id="modal-product-image" src="" alt="Product Image" class="object-cover w-full h-full">
+                <img id="modal-product-image" src="" alt="Product Image" class="object-cover w-full h-full" loading="lazy">
                 <span id="modal-product-category" class="absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#0073E2] text-white shadow-sm">
                     Kategori
                 </span>

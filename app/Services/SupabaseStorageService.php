@@ -36,7 +36,7 @@ class SupabaseStorageService
         $fileContents = file_get_contents($file->getRealPath());
 
         try {
-            $response = Http::withHeaders([
+            $response = Http::withoutVerifying()->withHeaders([
                 'Authorization' => "Bearer {$this->key}",
                 'apikey' => $this->key,
                 'Content-Type' => $mimeType,
@@ -73,7 +73,7 @@ class SupabaseStorageService
         $url = "https://{$this->projectId}.supabase.co/storage/v1/object/{$this->bucket}/{$filename}";
 
         try {
-            $response = Http::withHeaders([
+            $response = Http::withoutVerifying()->withHeaders([
                 'Authorization' => "Bearer {$this->key}",
                 'apikey' => $this->key,
             ])->delete($url);

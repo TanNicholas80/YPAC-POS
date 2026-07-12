@@ -68,16 +68,19 @@
         </div>
     </div>
 
-    <!-- Drawer Footer (Sticky Summary & Checkout Action) -->
     <div id="cart-footer-section" class="p-6 border-t border-gray-100 space-y-4 bg-gray-50/50 flex-shrink-0 hidden">
         <div class="space-y-2">
             <div class="flex items-center justify-between text-sm">
                 <span class="text-gray-500 font-semibold">Subtotal</span>
                 <span id="cart-subtotal" class="font-extrabold text-gray-900">Rp 0</span>
             </div>
-            <div class="flex items-center justify-between text-xs">
-                <span class="text-gray-400 font-medium">Ongkos Kirim</span>
-                <span class="text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded-md">Dikonfirmasi via WA</span>
+            <div class="flex items-center justify-between text-sm">
+                <span class="text-gray-500 font-semibold">PPN (10%)</span>
+                <span id="cart-ppn" class="font-extrabold text-gray-900">Rp 0</span>
+            </div>
+            <div class="flex items-center justify-between text-sm">
+                <span class="text-gray-500 font-semibold">Ongkos Kirim</span>
+                <span id="cart-shipping" class="font-extrabold text-gray-900">Rp 15.000</span>
             </div>
             <div class="border-t border-gray-200/60 my-2 pt-2 flex items-baseline justify-between">
                 <span class="text-base font-extrabold text-gray-900">Total Pembayaran</span>
@@ -262,7 +265,7 @@
                 itemEl.innerHTML = `
                     <!-- Product thumbnail -->
                     <div class="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 flex-shrink-0">
-                        <img src="${item.image}" alt="${item.name}" class="object-cover w-full h-full">
+                        <img src="${item.image}" alt="${item.name}" class="object-cover w-full h-full" loading="lazy">
                     </div>
                     <!-- Info -->
                     <div class="flex-1 min-w-0">
@@ -287,8 +290,14 @@
                 itemsList.appendChild(itemEl);
             });
 
+            const tax = subtotal * 0.10;
+            const shipping = 15000;
+            const total = subtotal + tax + shipping;
+
             subtotalText.textContent = formatIDR(subtotal);
-            totalText.textContent = formatIDR(subtotal);
+            document.getElementById('cart-ppn').textContent = formatIDR(tax);
+            document.getElementById('cart-shipping').textContent = formatIDR(shipping);
+            totalText.textContent = formatIDR(total);
 
             lucide.createIcons();
         }
@@ -300,50 +309,135 @@
         const customerAddress = document.getElementById('customer-address').value.trim();
 
         if (!customerName) {
-            alert('Silakan masukkan nama lengkap Anda terlebih dahulu.');
+            Swal.fire({
+                title: 'Perhatian!',
+                text: 'Silakan masukkan nama lengkap Anda terlebih dahulu.',
+                icon: 'warning',
+                confirmButtonColor: '#0073E2',
+                customClass: { popup: 'rounded-3xl' }
+            });
             document.getElementById('customer-name').focus();
             return;
         }
 
         if (!customerAddress) {
-            alert('Silakan masukkan alamat pengiriman / catatan pesanan.');
+            Swal.fire({
+                title: 'Perhatian!',
+                text: 'Silakan masukkan alamat pengiriman / catatan pesanan.',
+                icon: 'warning',
+                confirmButtonColor: '#0073E2',
+                customClass: { popup: 'rounded-3xl' }
+            });
             document.getElementById('customer-address').focus();
             return;
         }
 
-        const whatsappNumber = '6281234567890';
+        if (cart.length === 0) {
+            Swal.fire({
+                title: 'Keranjang Kosong',
+                text: 'Keranjang belanja Anda kosong.',
+                icon: 'info',
+                confirmButtonColor: '#0073E2',
+                customClass: { popup: 'rounded-3xl' }
+            });
+            return;
+        }
 
-        let message = `*PESANAN BARU - KUBE YPAC*\n`;
-        message += `--------------------------------------\n`;
-        message += `*Nama Pemesan:* ${customerName}\n`;
-        message += `*Alamat / Catatan:* ${customerAddress}\n`;
-        message += `--------------------------------------\n\n`;
-        message += `*Detail Belanja:*\n`;
+        // Show loading state
+        const btn = document.querySelector('button[onclick="checkoutWhatsApp()"]');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `<i data-lucide="loader-2" class="w-5.5 h-5.5 animate-spin"></i> <span>Memproses...</span>`;
+        if (window.lucide) lucide.createIcons();
 
-        let grandTotal = 0;
-        cart.forEach((item, index) => {
-            const subtotal = item.price * item.qty;
-            grandTotal += subtotal;
-            message += `${index + 1}. *${item.name}* (${item.qty}x) @ ${formatIDR(item.price)}\n`;
-            message += `   Subtotal: ${formatIDR(subtotal)}\n`;
+        const payload = {
+            customer_name: customerName,
+            customer_address: customerAddress,
+            items: cart.map(item => ({
+                product_id: item.id,
+                qty: item.qty
+            }))
+        };
+
+        fetch('/checkout/whatsapp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw err; });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                const whatsappNumber = '6281234567890';
+                let message = `*PESANAN BARU - KUBE YPAC*\n`;
+                message += `*Nomor Invoice:* ${data.invoice_number}\n`;
+                message += `--------------------------------------\n`;
+                message += `*Nama Pemesan:* ${customerName}\n`;
+                message += `*Alamat / Catatan:* ${customerAddress}\n`;
+                message += `--------------------------------------\n\n`;
+                message += `*Detail Belanja:*\n`;
+
+                cart.forEach((item, index) => {
+                    const subtotal = item.price * item.qty;
+                    message += `${index + 1}. *${item.name}* (${item.qty}x) @ ${formatIDR(item.price)}\n`;
+                    message += `   Subtotal: ${formatIDR(subtotal)}\n`;
+                });
+
+                message += `\n--------------------------------------\n`;
+                message += `*Subtotal:* ${formatIDR(data.subtotal)}\n`;
+                message += `*PPN (10%):* ${formatIDR(data.tax)}\n`;
+                message += `*Ongkos Kirim:* ${formatIDR(data.shipping_cost)}\n`;
+                message += `--------------------------------------\n`;
+                message += `*Total Pembayaran:* ${formatIDR(data.total)}\n`;
+                message += `--------------------------------------\n\n`;
+                message += `Mohon segera diproses ya admin. Terima kasih!`;
+
+                const encodedText = encodeURIComponent(message);
+                const waUrl = `https://wa.me/${whatsappNumber}?text=${encodedText}`;
+
+                window.open(waUrl, '_blank');
+
+                // Clear cart
+                cart = [];
+                saveCart();
+                toggleCart(false);
+
+                // Reset fields
+                document.getElementById('customer-name').value = '';
+                document.getElementById('customer-address').value = '';
+
+                Swal.fire({
+                    title: 'Pesanan Berhasil!',
+                    text: 'Pesanan Anda berhasil dicatat dan sedang dialihkan ke WhatsApp. Silakan kirim chat tersebut untuk memproses pembayaran.',
+                    icon: 'success',
+                    confirmButtonColor: '#0073E2',
+                    customClass: { popup: 'rounded-3xl' }
+                });
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            Swal.fire({
+                title: 'Gagal!',
+                text: err.message || 'Terjadi kesalahan saat memproses pesanan Anda. Silakan coba lagi.',
+                icon: 'error',
+                confirmButtonColor: '#0073E2',
+                customClass: { popup: 'rounded-3xl' }
+            });
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+            if (window.lucide) lucide.createIcons();
         });
-
-        message += `\n--------------------------------------\n`;
-        message += `*Total Belanja:* ${formatIDR(grandTotal)}\n`;
-        message += `*Ongkir:* (Akan dikonfirmasi oleh admin)\n`;
-        message += `--------------------------------------\n\n`;
-        message += `Mohon segera diproses ya admin. Terima kasih!`;
-
-        const encodedText = encodeURIComponent(message);
-        const waUrl = `https://wa.me/${whatsappNumber}?text=${encodedText}`;
-
-        window.open(waUrl, '_blank');
-
-        cart = [];
-        saveCart();
-        toggleCart(false);
-
-        alert('Pesanan Anda sedang dialihkan ke WhatsApp. Silakan kirim chat tersebut untuk memproses order.');
     }
 
     // Share Page Functionality
@@ -363,7 +457,13 @@
             dummy.select();
             document.execCommand('copy');
             document.body.removeChild(dummy);
-            alert('Tautan halaman berhasil disalin ke clipboard! Silakan bagikan ke teman-teman Anda.');
+            Swal.fire({
+                title: 'Disalin!',
+                text: 'Tautan halaman berhasil disalin ke clipboard! Silakan bagikan ke teman-teman Anda.',
+                icon: 'success',
+                confirmButtonColor: '#0073E2',
+                customClass: { popup: 'rounded-3xl' }
+            });
         }
     }
 </script>

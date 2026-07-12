@@ -4,6 +4,29 @@
 
 @section('content')
     <div class="flex-1 flex flex-col items-center justify-center p-8 md:p-12">
+        @php
+            $pendingCount = \App\Models\Transaction::where('is_whatsapp', true)->where('status', 'pending')->count();
+        @endphp
+
+        @if($pendingCount > 0)
+            <!-- Quick Notification Alert for Pending Approvals -->
+            <div class="w-full max-w-5xl mb-8 bg-amber-50 border border-amber-200 rounded-3xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-600 flex-shrink-0 animate-pulse">
+                        <i data-lucide="bell" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-amber-900 text-base md:text-lg">Persetujuan Transaksi Baru</h3>
+                        <p class="text-amber-700 text-xs md:text-sm mt-0.5">Ada <strong>{{ $pendingCount }} transaksi WhatsApp</strong> yang menunggu persetujuan Anda untuk memotong stok gudang.</p>
+                    </div>
+                </div>
+                <a href="{{ route('admin.approvals.index') }}" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs md:text-sm rounded-xl shadow-md shadow-amber-100 transition-all flex items-center gap-2 flex-shrink-0 cursor-pointer">
+                    <span>Lihat & Proses</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+        @endif
+
         <!-- Welcome Heading -->
         <div class="text-center max-w-xl mb-12">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3 tracking-tight">Welcome Back</h1>

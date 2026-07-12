@@ -27,7 +27,7 @@
                 <div
                     class="overflow-hidden rounded-[2rem] border border-gray-100 shadow-2xl bg-white aspect-[4/3] sm:aspect-square lg:aspect-[4/5] xl:aspect-square">
                     <img src="{{ asset('images/2G5A2489.JPG') }}" alt="Gedung Pusat Rehabilitasi YPAC"
-                        class="object-cover w-full h-full transform hover:scale-102 transition-transform duration-500">
+                        class="object-cover w-full h-full transform hover:scale-102 transition-transform duration-500" loading="lazy">
                 </div>
             </div>
 

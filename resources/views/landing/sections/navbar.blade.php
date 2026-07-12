@@ -5,7 +5,7 @@
             <!-- Logo -->
             <div class="flex-shrink-0">
                 <a href="{{ route('home') }}" class="text-2xl font-bold tracking-tight text-[#0073E2] flex items-center gap-2">
-                    <img src="{{ asset('images/LogoYPAC.png') }}" alt="Logo YPAC" class="w-8 h-8 object-contain">
+                    <img src="{{ asset('images/LogoYPAC.png') }}" alt="Logo YPAC" class="w-8 h-8 object-contain" loading="lazy">
                     <span>KUBE YPAC</span>
                 </a>
             </div>

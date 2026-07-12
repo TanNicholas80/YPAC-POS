@@ -5,10 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SalesController;
-
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WhatsAppCheckoutController;
+use App\Http\Controllers\AdminApprovalController;
 
 // Authentication routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -21,6 +22,8 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/logout', [AuthController::class, 'logout']); // For ease of logout testing
+
+Route::post('/checkout/whatsapp', [WhatsAppCheckoutController::class, 'checkout'])->name('checkout.whatsapp');
 
 // Protected routes (Only authenticated users can access)
 Route::middleware('auth')->group(function () {
@@ -42,4 +45,10 @@ Route::middleware('auth')->group(function () {
 
     // Report & Wawasan routes
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+
+    // WhatsApp Approval routes
+    Route::get('/admin/approvals', [AdminApprovalController::class, 'index'])->name('admin.approvals.index');
+    Route::get('/admin/approvals/{transaction}', [AdminApprovalController::class, 'show'])->name('admin.approvals.show');
+    Route::post('/admin/approvals/{transaction}/approve', [AdminApprovalController::class, 'approve'])->name('admin.approvals.approve');
+    Route::post('/admin/approvals/{transaction}/reject', [AdminApprovalController::class, 'reject'])->name('admin.approvals.reject');
 });

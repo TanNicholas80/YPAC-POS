@@ -251,6 +251,10 @@
                                         <span class="bg-green-50 text-green-600 border border-green-100 text-xs px-2.5 py-1 rounded-full font-bold">
                                             Tunai
                                         </span>
+                                    @elseif($trx->payment_method === 'transfer_bank')
+                                        <span class="bg-blue-50 text-blue-600 border border-blue-100 text-xs px-2.5 py-1 rounded-full font-bold">
+                                            Transfer Bank
+                                        </span>
                                     @else
                                         <span class="bg-purple-50 text-purple-600 border border-purple-100 text-xs px-2.5 py-1 rounded-full font-bold">
                                             QRIS
@@ -420,6 +424,8 @@
         const payVal = document.getElementById('modal-payment-val');
         if(trx.payment_method === 'cash') {
             payVal.innerHTML = `<span class="bg-green-50 text-green-600 border border-green-100 text-[10px] px-2.5 py-0.5 rounded-full font-bold">Tunai</span>`;
+        } else if(trx.payment_method === 'transfer_bank') {
+            payVal.innerHTML = `<span class="bg-blue-50 text-blue-600 border border-blue-100 text-[10px] px-2.5 py-0.5 rounded-full font-bold">Transfer Bank</span>`;
         } else {
             payVal.innerHTML = `<span class="bg-purple-50 text-purple-600 border border-purple-100 text-[10px] px-2.5 py-0.5 rounded-full font-bold">QRIS</span>`;
         }
@@ -468,20 +474,21 @@
                 </div>
             `;
         } else {
-            if(trx.qris_image) {
-                const imgUrl = trx.qris_image.startsWith('http') ? trx.qris_image : `${window.location.origin}/${trx.qris_image}`;
+            const imgPath = trx.payment_proof || trx.qris_image;
+            if(imgPath) {
+                const imgUrl = imgPath.startsWith('http') ? imgPath : `${window.location.origin}/${imgPath}`;
                 paymentDetail.innerHTML = `
                     <div class="space-y-2">
                         <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Bukti Transfer / QRIS:</span>
                         <div class="w-full bg-gray-50 p-2 border border-gray-100 rounded-2xl flex items-center justify-center overflow-hidden">
-                            <img src="${imgUrl}" alt="Bukti Pembayaran QRIS" class="max-h-56 object-contain rounded-xl shadow-xs">
+                            <img src="${imgUrl}" alt="Bukti Pembayaran" class="max-h-56 object-contain rounded-xl shadow-xs">
                         </div>
                     </div>
                 `;
             } else {
                 paymentDetail.innerHTML = `
                     <div class="p-3 bg-gray-50 border border-gray-100 rounded-2xl text-center text-xs text-gray-400 font-semibold italic">
-                        Bukti pembayaran QRIS tidak diunggah oleh kasir.
+                        Bukti pembayaran tidak diunggah oleh kasir.
                     </div>
                 `;
             }

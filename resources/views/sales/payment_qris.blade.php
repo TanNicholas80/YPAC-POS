@@ -248,8 +248,13 @@
                 lucide.createIcons();
             })
             .catch(err => {
-                console.error("Gagal mengakses kamera: ", err);
-                alert("Gagal mengakses kamera perangkat. Pastikan izin kamera telah diberikan atau coba gunakan opsi Upload File.");
+                Swal.fire({
+                    title: 'Akses Kamera Gagal',
+                    text: 'Gagal mengakses kamera perangkat. Pastikan izin kamera telah diberikan atau coba gunakan opsi Upload File.',
+                    icon: 'error',
+                    confirmButtonColor: '#0073E2',
+                    customClass: { popup: 'rounded-3xl' }
+                });
             });
     }
 
@@ -339,13 +344,25 @@
     document.getElementById('qris-checkout-form').addEventListener('submit', function(e) {
         if (activeTab === 'scan') {
             e.preventDefault();
-            alert('Silakan pindah ke tab Bukti Screenshot dan unggah/foto bukti pembayaran terlebih dahulu.');
+            Swal.fire({
+                title: 'Bukti Pembayaran Diperlukan',
+                text: 'Silakan pindah ke tab Bukti Screenshot dan unggah/foto bukti pembayaran terlebih dahulu.',
+                icon: 'warning',
+                confirmButtonColor: '#0073E2',
+                customClass: { popup: 'rounded-3xl' }
+            });
         } else {
             const fileInput = document.getElementById('payment_proof_file');
             const hasFile = fileInput.files && fileInput.files[0];
             if (!hasFile) {
                 e.preventDefault();
-                alert('Silakan unggah atau ambil foto bukti screenshot pembayaran QRIS terlebih dahulu.');
+                Swal.fire({
+                    title: 'Bukti Pembayaran Diperlukan',
+                    text: 'Silakan unggah atau ambil foto bukti screenshot pembayaran QRIS terlebih dahulu.',
+                    icon: 'warning',
+                    confirmButtonColor: '#0073E2',
+                    customClass: { popup: 'rounded-3xl' }
+                });
             }
         }
     });

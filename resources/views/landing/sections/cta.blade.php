@@ -30,7 +30,7 @@
                     <div
                         class="w-48 h-48 sm:w-60 sm:h-60 rounded-full bg-white/10 border-8 border-white/20 shadow-inner flex items-center justify-center overflow-hidden">
                         <img src="{{ asset('images/2G5A2426.JPG') }}" alt="Visual Kreasi Anak"
-                            class="object-cover w-full h-full transform group-hover:scale-110 transition-transform duration-500">
+                            class="object-cover w-full h-full transform group-hover:scale-110 transition-transform duration-500" loading="lazy">
                     </div>
                 </div>
             </div>

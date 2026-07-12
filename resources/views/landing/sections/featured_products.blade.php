@@ -27,7 +27,7 @@
                         <!-- Aspect ratio 4:3 Product Image -->
                         <div class="aspect-4/3 relative overflow-hidden bg-gray-100 border-b border-gray-100">
                             <img src="{{ $imageSrc }}" alt="{{ $product->product_name }}"
-                                class="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500">
+                                class="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500" loading="lazy">
                             <span
                                 class="absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#0073E2] text-white shadow-sm">
                                 {{ $product->category->category_name ?? 'Produk' }}

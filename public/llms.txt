@@ -1,0 +1,10 @@
+# YPAC POS & KUBE Store
+
+Welcome to the KUBE YPAC Store. A system built to support disabled students in Semarang YPAC by selling their handicrafts, cookies, and creative products.
+
+## Routes
+- / (Home Page)
+- /produk (Product Catalog)
+- /produk/{slug} (Product details)
+- /tentang-kami (About Us)
+- /hubungi-kami (Contact Us)

@@ -45,7 +45,7 @@
                                     <!-- Image -->
                                     <div class="aspect-4/3 relative overflow-hidden bg-gray-50 border-b border-gray-100">
                                         <img src="{{ $rImageSrc }}" alt="{{ $related->product_name }}"
-                                            class="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500">
+                                            class="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500" loading="lazy">
                                         <span class="absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold bg-white text-[#0073E2] shadow-sm border border-gray-100">
                                             {{ $related->category->category_name ?? 'Produk' }}
                                         </span>
