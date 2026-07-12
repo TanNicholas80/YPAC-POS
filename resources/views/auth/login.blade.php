@@ -7,7 +7,6 @@
     <title>Masuk - SIKAS YPAC</title>
     <link rel="icon" type="image/png" href="{{ asset('images/LogoYPAC.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body {
             font-family: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -85,7 +84,11 @@
     </div>
 
     <script>
-        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
 
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');

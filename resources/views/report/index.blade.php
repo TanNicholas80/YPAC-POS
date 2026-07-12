@@ -378,10 +378,7 @@
                 Tutup
             </button>
         </div>
-    </div>
 </div>
-<!-- SweetAlert2 library for premium notification toast -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     // Copy Invoice Helper

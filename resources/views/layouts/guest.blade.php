@@ -10,10 +10,6 @@
     <link rel="icon" type="image/png" href="{{ asset('images/LogoYPAC.png') }}">
     <!-- Tailwind CSS & JS via Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Google Fonts: Instrument Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

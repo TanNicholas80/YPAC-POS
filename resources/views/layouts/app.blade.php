@@ -9,10 +9,6 @@
     <link rel="icon" type="image/png" href="{{ asset('images/LogoYPAC.png') }}">
     <!-- Vite Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Lucide Icons for premium visual feel -->
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body {
             font-family: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -96,9 +92,10 @@
         @yield('content')
     </main>
 
-    <!-- Lucide Icons initialization -->
     <script>
-        lucide.createIcons();
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
     </script>
 </body>
 

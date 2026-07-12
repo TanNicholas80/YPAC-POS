@@ -106,9 +106,6 @@
 
 <!-- Client-Side Shopping Cart Script -->
 <script>
-    // Init Lucide
-    lucide.createIcons();
-
     // Mobile Menu Toggle
     function toggleMobileMenu() {
         const menu = document.getElementById('mobile-menu');
