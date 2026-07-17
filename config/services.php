@@ -41,4 +41,10 @@ return [
         'key' => env('SUPABASE_KEY'),
     ],
 
+    'mailtrap' => [
+        'api_key' => env('MAILTRAP_API_KEY'),
+        'use_sandbox' => env('MAILTRAP_USE_SANDBOX', false),
+        'inbox_id' => env('MAILTRAP_INBOX_ID'),
+    ],
+
 ];

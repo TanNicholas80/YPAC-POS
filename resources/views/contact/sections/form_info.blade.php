@@ -92,10 +92,22 @@
                     @if(session('success'))
                         <div
                             class="mb-6 p-4 bg-green-50 border border-green-200 rounded-2xl text-green-800 text-sm flex items-start gap-3">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5"></i>
+                            <i data-lucide="check-circle" class="w-5 h-6 text-green-600 flex-shrink-0 mt-0.5"></i>
                             <div>
                                 <p class="font-extrabold text-green-900">Berhasil!</p>
                                 <p class="mt-0.5 font-semibold text-green-700">{{ session('success') }}</p>
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Error Alert Message -->
+                    @if(session('error'))
+                        <div
+                            class="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl text-red-800 text-sm flex items-start gap-3">
+                            <i data-lucide="alert-circle" class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5"></i>
+                            <div>
+                                <p class="font-extrabold text-red-900">Gagal!</p>
+                                <p class="mt-0.5 font-semibold text-red-700">{{ session('error') }}</p>
                             </div>
                         </div>
                     @endif

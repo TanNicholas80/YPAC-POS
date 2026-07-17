@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOTools;
+use App\Services\MailtrapService;
 
 class HomeController extends Controller
 {
@@ -157,14 +158,27 @@ class HomeController extends Controller
     /**
      * Process contact form submission.
      */
-    public function contactSubmit(Request $request)
+    public function contactSubmit(Request $request, MailtrapService $mailService)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'contact_info' => 'required|string|max:255',
+            'contact_info' => 'required|email|max:255',
             'topic' => 'required|string',
             'message' => 'required|string',
         ]);
+
+        $sent = $mailService->sendContactEmail(
+            $request->name,
+            $request->contact_info,
+            $request->topic,
+            $request->message
+        );
+
+        if (!$sent) {
+            return redirect()->route('home.contact')
+                ->withInput()
+                ->with('error', 'Gagal mengirim pesan melalui email service. Silakan hubungi kami langsung via WhatsApp.');
+        }
 
         return redirect()->route('home.contact')->with('success', 'Pesan Anda berhasil dikirim! Tim kami akan segera menghubungi Anda.');
     }
