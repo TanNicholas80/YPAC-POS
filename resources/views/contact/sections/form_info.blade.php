@@ -35,9 +35,9 @@
                         </div>
                         <div>
                             <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Telepon</p>
-                            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer"
+                            <a href="https://wa.me/6289682010990" target="_blank" rel="noopener noreferrer"
                                 class="text-base sm:text-lg font-bold text-gray-700 hover:text-[#0073E2] transition-colors mt-0.5 block">
-                                +62 812-3456-7890
+                                +62 896-8201-0990
                             </a>
                             <p class="text-xs text-gray-400 font-semibold mt-0.5">WhatsApp Admin</p>
                         </div>
@@ -51,9 +51,9 @@
                         </div>
                         <div>
                             <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Email</p>
-                            <a href="mailto:halo@kubeypac.id"
+                            <a href="mailto:ypacsemarangyes@gmail.com"
                                 class="text-base sm:text-lg font-bold text-gray-700 hover:text-[#e23cbf] transition-colors mt-0.5 block">
-                                halo@kubeypac.id
+                                ypacsemarangyes@gmail.com
                             </a>
                         </div>
                     </div>
@@ -112,12 +112,11 @@
                                 class="w-full px-4 py-3 sm:py-3.5 bg-gray-50 border border-gray-250 rounded-2xl text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white transition-all font-semibold text-gray-800">
                         </div>
 
-                        <!-- Email / Nomor WhatsApp -->
+                        <!-- Email -->
                         <div class="space-y-2">
-                            <label for="contact-info" class="text-xs sm:text-sm font-bold text-gray-700">Email / Nomor
-                                WhatsApp</label>
-                            <input type="text" id="contact-info" name="contact_info" required
-                                placeholder="Cth: budi@gmail.com atau 0812..."
+                            <label for="contact-info" class="text-xs sm:text-sm font-bold text-gray-700">Email</label>
+                            <input type="email" id="contact-info" name="contact_info" required
+                                placeholder="Cth: budi@gmail.com"
                                 class="w-full px-4 py-3 sm:py-3.5 bg-gray-50 border border-gray-250 rounded-2xl text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white transition-all font-semibold text-gray-800">
                         </div>
 
@@ -128,12 +127,16 @@
                             <div class="relative">
                                 <select id="contact-topic" name="topic" required onchange="updateSelectColor()"
                                     class="w-full px-4 py-3 sm:py-3.5 bg-gray-50 border border-gray-255 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white transition-all font-semibold text-gray-400 appearance-none cursor-pointer">
-                                    <option value="" disabled selected class="text-gray-400 bg-white">Pilih Topik Kerja Sama...</option>
-                                    <option value="Kerja Sama Instansi" class="text-gray-800 bg-white font-semibold">Kerja Sama Instansi</option>
+                                    <option value="" disabled selected class="text-gray-400 bg-white">Pilih Topik Kerja
+                                        Sama...</option>
+                                    <option value="Kerja Sama Instansi" class="text-gray-800 bg-white font-semibold">
+                                        Kerja Sama Instansi</option>
                                     <option value="Donasi" class="text-gray-800 bg-white font-semibold">Donasi</option>
                                     <option value="Magang" class="text-gray-800 bg-white font-semibold">Magang</option>
-                                    <option value="Pesanan Jumlah Besar" class="text-gray-800 bg-white font-semibold">Pesanan Jumlah Besar (Bulk Order)</option>
-                                    <option value="Pertanyaan Umum" class="text-gray-800 bg-white font-semibold">Pertanyaan Umum / E-Katalog</option>
+                                    <option value="Pesanan Jumlah Besar" class="text-gray-800 bg-white font-semibold">
+                                        Pesanan Jumlah Besar (Bulk Order)</option>
+                                    <option value="Pertanyaan Umum" class="text-gray-800 bg-white font-semibold">
+                                        Pertanyaan Umum / E-Katalog</option>
                                 </select>
                                 <span
                                     class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gray-400">

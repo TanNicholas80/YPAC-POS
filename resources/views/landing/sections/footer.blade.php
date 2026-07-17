@@ -39,9 +39,9 @@
                     <li class="flex items-start gap-3">
                         <i data-lucide="phone" class="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5"></i>
                         <div>
-                            <a href="https://wa.me/6281234567890" target="_blank"
+                            <a href="https://wa.me/6289682010990" target="_blank"
                                 class="text-sm font-bold text-gray-700 hover:text-[#0073E2] transition-colors">
-                                +62 812-3456-7890
+                                +62 896-8201-0990
                             </a>
                             <p class="text-[10px] text-gray-400 font-semibold mt-0.5">WhatsApp Admin</p>
                         </div>

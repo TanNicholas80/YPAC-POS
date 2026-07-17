@@ -373,7 +373,7 @@
         })
         .then(data => {
             if (data.success) {
-                const whatsappNumber = '6281234567890';
+                const whatsappNumber = '6289682010990';
                 let message = `*PESANAN BARU - KUBE YPAC*\n`;
                 message += `*Nomor Invoice:* ${data.invoice_number}\n`;
                 message += `--------------------------------------\n`;
