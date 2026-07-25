@@ -3,7 +3,7 @@
 @section('title', 'Pembayaran Tunai - SIKAS YPAC')
 
 @section('content')
-<div class="flex-1 flex flex-col p-6 overflow-y-auto bg-[#F5F8FC]">
+<div class="flex-1 flex flex-col p-6 overflow-y-auto">
     <!-- Header -->
     <div class="flex items-center gap-4 mb-6">
         <a href="{{ route('sales.index') }}" class="flex items-center gap-2 text-[#0073E2] hover:text-blue-600 transition-colors font-bold text-sm">

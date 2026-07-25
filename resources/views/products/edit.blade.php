@@ -3,7 +3,7 @@
 @section('title', 'Edit Produk - SIKAS YPAC')
 
 @section('content')
-<div class="flex-1 flex flex-col p-6 overflow-y-auto bg-[#F5F8FC]">
+<div class="flex-1 flex flex-col p-6 overflow-y-auto">
     
     <!-- Back Header -->
     <div class="flex items-center gap-4 mb-6">

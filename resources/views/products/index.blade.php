@@ -3,7 +3,7 @@
 @section('title', 'Manajemen Produk - SIKAS YPAC')
 
 @section('content')
-<div class="flex-1 flex flex-col p-6 overflow-y-auto bg-[#F5F8FC]">
+<div class="flex-1 flex flex-col p-6 overflow-y-auto">
     
     <!-- Top Tabs Header -->
     <div class="flex items-center justify-between border-b border-gray-200 pb-3 mb-6 shrink-0">

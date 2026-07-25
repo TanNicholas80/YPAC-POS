@@ -3,7 +3,7 @@
 @section('title', 'Laporan & Insight - SIKAS YPAC')
 
 @section('content')
-<div class="flex-1 flex flex-col p-6 overflow-y-auto bg-[#F5F8FC]">
+<div class="flex-1 flex flex-col p-6 overflow-y-auto">
 
     <!-- Top Header -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-gray-200 pb-4 mb-6 shrink-0 gap-3">

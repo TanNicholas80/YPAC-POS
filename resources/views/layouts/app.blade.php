@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-[#F5F8FC]">
+<html lang="id" class="h-full">
 
 <head>
     <meta charset="UTF-8">
@@ -16,9 +16,12 @@
     </style>
 </head>
 
-<body class="h-full flex text-gray-800 antialiased">
+<body class="min-h-screen flex text-gray-800 antialiased bg-cover bg-center bg-no-repeat bg-fixed relative" style="background-image: url('{{ asset('images/2G5A2489.JPG') }}');">
+    <!-- Overlay Transparan Dashboard -->
+    <div class="fixed inset-0 bg-slate-50/85 backdrop-blur-[2px] z-0 pointer-events-none"></div>
+
     <!-- Sidebar -->
-    <aside class="w-64 bg-white border-r border-gray-100 flex flex-col justify-between flex-shrink-0">
+    <aside class="relative z-10 w-64 bg-white/95 backdrop-blur-md border-r border-gray-100 flex flex-col justify-between flex-shrink-0 min-h-screen shadow-sm">
         <!-- Sidebar Top -->
         <div>
             <!-- Profile/Brand Section -->
@@ -88,7 +91,7 @@
     </aside>
 
     <!-- Main Content Pane -->
-    <main class="flex-1 flex flex-col overflow-y-auto">
+    <main class="relative z-10 flex-1 flex flex-col overflow-y-auto">
         @yield('content')
     </main>
 
