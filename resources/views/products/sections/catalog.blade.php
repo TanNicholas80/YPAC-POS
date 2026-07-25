@@ -1,17 +1,25 @@
-<!-- Catalog Page Main Section -->
-<section class="py-12 md:py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+<!-- Catalog Page Hero Banner Section -->
+<section class="relative py-16 sm:py-24 bg-cover bg-center bg-no-repeat overflow-hidden" style="background-image: url('{{ asset('images/bg_katalog_produk.png') }}');">
+    <!-- Overlay Hitam Transparan -->
+    <div class="absolute inset-0 bg-black/60 z-0"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <!-- Page Title Header -->
-        <div class="text-center max-w-3xl mx-auto mb-12 space-y-4 catalog-header">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-[#0073E2] tracking-tight">
+        <div class="text-center max-w-3xl mx-auto space-y-4 catalog-header">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
                 Katalog Produk
             </h1>
-            <p class="text-base text-gray-550 leading-relaxed">
+            <p class="text-base text-gray-100 leading-relaxed">
                 Temukan berbagai produk berkualitas karya pemuda disabilitas. Setiap pembelian Anda secara langsung mendukung kemandirian dan kreativitas mereka dalam membangun masa depan yang lebih baik.
             </p>
         </div>
+    </div>
+</section>
 
+<!-- Catalog Page Main Controls & Grid Section -->
+<section class="py-12 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         <!-- Search and Filter Controls -->
         <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-12 border-b border-gray-105 pb-8 catalog-controls">
             <!-- Search Box -->

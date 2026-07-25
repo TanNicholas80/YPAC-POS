@@ -1,11 +1,25 @@
 <!-- Header / Navbar -->
-<header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100">
+<header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
+    <!-- Top Bar / Partner Logos -->
+    <div class="border-b border-gray-100 py-3 bg-white/95">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center gap-6 sm:gap-8">
+            <img src="{{ asset('images/LogoYPAC.png') }}" alt="Logo YPAC" class="h-8 sm:h-12 w-auto object-contain"
+                loading="lazy">
+            <img src="{{ asset('images/dikti_saintek.png') }}" alt="Logo Dikti Saintek"
+                class="h-8 sm:h-12 w-auto object-contain" loading="lazy">
+            <img src="{{ asset('images/unkartur_logo.png') }}" alt="Logo Universitas Karangturi"
+                class="h-8 sm:h-12 w-auto object-contain" loading="lazy">
+        </div>
+    </div>
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20">
             <!-- Logo -->
             <div class="flex-shrink-0">
-                <a href="{{ route('home') }}" class="text-2xl font-bold tracking-tight text-[#0073E2] flex items-center gap-2">
-                    <img src="{{ asset('images/LogoYPAC.png') }}" alt="Logo YPAC" class="w-8 h-8 object-contain" loading="lazy">
+                <a href="{{ route('home') }}"
+                    class="text-2xl font-bold tracking-tight text-[#0073E2] flex items-center gap-2">
+                    <img src="{{ asset('images/LogoYPAC.png') }}" alt="Logo YPAC" class="w-8 h-8 object-contain"
+                        loading="lazy">
                     <span>KUBE YPAC</span>
                 </a>
             </div>
@@ -15,9 +29,11 @@
                 <a href="{{ route('home') }}"
                     class="text-base font-semibold transition-all duration-200 border-b-2 pb-1 {{ Route::is('home') && !request()->is('*produk*') ? 'text-[#0073E2] border-[#0073E2]' : 'text-gray-600 border-transparent hover:text-[#0073E2] hover:border-[#0073E2]' }}">Beranda</a>
                 <a href="{{ route('home.about') }}"
-                    class="text-base font-semibold transition-all duration-200 border-b-2 pb-1 {{ Route::is('home.about') ? 'text-[#0073E2] border-[#0073E2]' : 'text-gray-600 border-transparent hover:text-[#0073E2] hover:border-[#0073E2]' }}">Tentang Kami</a>
+                    class="text-base font-semibold transition-all duration-200 border-b-2 pb-1 {{ Route::is('home.about') ? 'text-[#0073E2] border-[#0073E2]' : 'text-gray-600 border-transparent hover:text-[#0073E2] hover:border-[#0073E2]' }}">Tentang
+                    Kami</a>
                 <a href="{{ route('home.products') }}"
-                    class="text-base font-semibold transition-all duration-200 border-b-2 pb-1 {{ request()->is('*produk*') || Route::is('home.products') ? 'text-[#0073E2] border-[#0073E2]' : 'text-gray-600 border-transparent hover:text-[#0073E2] hover:border-[#0073E2]' }}">Produk Kami</a>
+                    class="text-base font-semibold transition-all duration-200 border-b-2 pb-1 {{ request()->is('*produk*') || Route::is('home.products') ? 'text-[#0073E2] border-[#0073E2]' : 'text-gray-600 border-transparent hover:text-[#0073E2] hover:border-[#0073E2]' }}">Produk
+                    Kami</a>
             </nav>
 
             <!-- Actions (Cart & Admin Portal) -->
@@ -47,12 +63,12 @@
     </div>
 
     <!-- Mobile Navigation Menu -->
-    <div id="mobile-menu"
-        class="hidden md:hidden border-t border-gray-100 bg-white px-4 py-4 space-y-3 shadow-inner">
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white px-4 py-4 space-y-3 shadow-inner">
         <a href="{{ route('home') }}" onclick="toggleMobileMenu()"
             class="block text-base font-semibold text-gray-600 hover:text-[#0073E2] py-2">Beranda</a>
         <a href="{{ route('home.about') }}" onclick="toggleMobileMenu()"
-            class="block text-base font-semibold py-2 {{ Route::is('home.about') ? 'text-[#0073E2]' : 'text-gray-600 hover:text-[#0073E2]' }}">Tentang Kami</a>
+            class="block text-base font-semibold py-2 {{ Route::is('home.about') ? 'text-[#0073E2]' : 'text-gray-600 hover:text-[#0073E2]' }}">Tentang
+            Kami</a>
         <a href="{{ route('home.products') }}" onclick="toggleMobileMenu()"
             class="block text-base font-semibold text-gray-600 hover:text-[#0073E2] py-2">Produk Kami</a>
         <a href="{{ route('login') }}" class="flex items-center gap-2 text-base font-semibold text-[#0073E2] py-2">

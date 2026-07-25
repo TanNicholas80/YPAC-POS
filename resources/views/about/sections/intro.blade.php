@@ -1,23 +1,29 @@
-<!-- Section 1: Header / Intro & Section 2: Quote & Philosophy Grid -->
+<!-- Section 1: Header / Intro Banner -->
+<section class="relative py-16 sm:py-24 bg-cover bg-center bg-no-repeat overflow-hidden" style="background-image: url('{{ asset('images/bg_tentang_kami.png') }}');">
+    <!-- Overlay Hitam Transparan -->
+    <div class="absolute inset-0 bg-black/60 z-0"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center max-w-3xl mx-auto space-y-6 intro-header">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+                Tentang Kami
+            </h1>
+            <p class="text-base sm:text-lg text-gray-100 leading-relaxed">
+                Kelompok Usaha Bersama (KUBE) YPAC Jakarta dibentuk untuk memberikan pelatihan kerja nyata kepada
+                siswa-siswi disabilitas agar mereka memiliki keahlian hidup mandiri. Melalui program ini, mereka belajar
+                menghasilkan kerajinan bernilai jual serta makanan & minuman higienis.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Section 2: Quote & Philosophy Grid -->
 <section class="py-16 sm:py-24 bg-white relative overflow-hidden">
     <!-- Floating decorative backgrounds for premium UI look -->
     <div class="absolute -top-24 -left-24 w-80 h-80 bg-blue-50 rounded-full filter blur-3xl opacity-60 z-0"></div>
     <div class="absolute bottom-10 right-0 w-96 h-96 bg-pink-50 rounded-full filter blur-3xl opacity-50 z-0"></div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <!-- Section 1: Header / Intro -->
-        <div class="text-center max-w-3xl mx-auto mb-16 sm:mb-20 space-y-6 intro-header">
-            <h1 class="text-4xl sm:text-5xl font-extrabold text-[#0073E2] tracking-tight">
-                Tentang Kami
-            </h1>
-            <p class="text-base sm:text-lg text-gray-550 leading-relaxed">
-                Kelompok Usaha Bersama (KUBE) YPAC Jakarta dibentuk untuk memberikan pelatihan kerja nyata kepada
-                siswa-siswi disabilitas agar mereka memiliki keahlian hidup mandiri. Melalui program ini, mereka belajar
-                menghasilkan kerajinan bernilai jual serta makanan & minuman higienis.
-            </p>
-        </div>
-
-        <!-- Section 2: Quote & Philosophy Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             <!-- Image Column (Left) -->
             <div class="lg:col-span-5 relative intro-image-wrapper">
@@ -27,7 +33,8 @@
                 <div
                     class="overflow-hidden rounded-[2rem] border border-gray-100 shadow-2xl bg-white aspect-[4/3] sm:aspect-square lg:aspect-[4/5] xl:aspect-square">
                     <img src="{{ asset('images/2G5A2489.JPG') }}" alt="Gedung Pusat Rehabilitasi YPAC"
-                        class="object-cover w-full h-full transform hover:scale-102 transition-transform duration-500" loading="lazy">
+                        class="object-cover w-full h-full transform hover:scale-102 transition-transform duration-500"
+                        loading="lazy">
                 </div>
             </div>
 

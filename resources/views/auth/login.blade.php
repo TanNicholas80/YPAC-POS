@@ -14,9 +14,13 @@
     </style>
 </head>
 
-<body class="h-full flex items-center justify-center p-4">
+<body class="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center p-4 relative"
+    style="background-image: url('{{ asset('images/login.jpg') }}');">
+    <!-- Overlay Putih Transparan -->
+    <div class="absolute inset-0 bg-white/65 z-0"></div>
+
     <div
-        class="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-gray-100 border border-gray-100 p-8 md:p-10 flex flex-col items-center">
+        class="relative z-10 w-full max-w-md bg-white/95 rounded-3xl shadow-2xl border border-white/50 p-8 md:p-10 flex flex-col items-center">
         <!-- Logo / App Icon -->
         <div
             class="w-16 h-16 rounded-2xl bg-[#0073E2] flex items-center justify-center text-white mb-6 shadow-md shadow-blue-200">

@@ -1,22 +1,30 @@
-<!-- Main Contact Us Section -->
+<!-- Header Banner Section -->
+<section class="relative py-16 sm:py-24 bg-cover bg-center bg-no-repeat overflow-hidden" style="background-image: url('{{ asset('images/bg_hubungi_kami.png') }}');">
+    <!-- Overlay Hitam Transparan -->
+    <div class="absolute inset-0 bg-black/60 z-0"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <!-- Header Title -->
+        <div class="text-center max-w-3xl mx-auto space-y-6 contact-header">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+                Hubungi KUBE YPAC
+            </h1>
+            <p class="text-base sm:text-lg text-gray-100 leading-relaxed">
+                Kami selalu senang mendengar dari Anda! Baik untuk pertanyaan seputar E-Katalog, pesanan suvenir dalam
+                jumlah besar (bulk order), maupun peluang kemitraan. Setiap dukungan Anda berarti besar bagi kemandirian
+                siswa YPAC.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Main Contact Content Section -->
 <section class="py-16 sm:py-24 bg-white relative overflow-hidden">
     <!-- Floating decorative backgrounds for premium UI look -->
     <div class="absolute -top-24 -left-24 w-80 h-80 bg-blue-50 rounded-full filter blur-3xl opacity-60 z-0"></div>
     <div class="absolute bottom-10 right-0 w-96 h-96 bg-pink-50 rounded-full filter blur-3xl opacity-50 z-0"></div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <!-- Header Title -->
-        <div class="text-center max-w-3xl mx-auto mb-16 sm:mb-20 space-y-6 contact-header">
-            <h1 class="text-4xl sm:text-5xl font-extrabold text-[#0073E2] tracking-tight">
-                Hubungi KUBE YPAC
-            </h1>
-            <p class="text-base sm:text-lg text-gray-550 leading-relaxed">
-                Kami selalu senang mendengar dari Anda! Baik untuk pertanyaan seputar E-Katalog, pesanan suvenir dalam
-                jumlah besar (bulk order), maupun peluang kemitraan. Setiap dukungan Anda berarti besar bagi kemandirian
-                siswa YPAC.
-            </p>
-        </div>
-
         <!-- Content Grid: Info on Left, Form Card on Right -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             <!-- Info Column (Left) -->
