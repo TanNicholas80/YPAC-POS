@@ -28,7 +28,7 @@ class ProductController extends Controller
         }
 
         $categories = ProductCategory::withCount('products')->get();
-        $units = UnitProduct::all();
+        $units = UnitProduct::withCount('products')->get();
 
         return view('products.index', compact('products', 'categories', 'units', 'search'));
     }
@@ -276,5 +276,53 @@ class ProductController extends Controller
         $category->delete();
 
         return redirect()->route('products.index', ['tab' => 'category'])->with('success', 'Kategori berhasil dihapus.');
+    }
+
+    /**
+     * Store a newly created unit.
+     */
+    public function storeUnit(Request $request)
+    {
+        $request->validate([
+            'unit_name' => 'required|string|max:255|unique:unit_products,unit_name',
+        ]);
+
+        UnitProduct::create([
+            'unit_name' => $request->unit_name,
+        ]);
+
+        return redirect()->route('products.index', ['tab' => 'unit'])->with('success', 'Satuan produk berhasil ditambahkan.');
+    }
+
+    /**
+     * Update the specified unit.
+     */
+    public function updateUnit(Request $request, UnitProduct $unit)
+    {
+        $request->validate([
+            'unit_name' => 'required|string|max:255|unique:unit_products,unit_name,' . $unit->id,
+        ]);
+
+        $unit->update([
+            'unit_name' => $request->unit_name,
+        ]);
+
+        return redirect()->route('products.index', ['tab' => 'unit'])->with('success', 'Satuan produk berhasil diperbarui.');
+    }
+
+    /**
+     * Remove the specified unit.
+     */
+    public function destroyUnit(UnitProduct $unit)
+    {
+        if ($unit->products()->count() > 0) {
+            return redirect()->route('products.index', ['tab' => 'unit'])->withErrors([
+                'unit_delete' => 'Satuan ini tidak dapat dihapus karena masih terhubung dengan beberapa produk.'
+            ]);
+        }
+
+        $unit->delete();
+
+        return redirect()->route('products.index', ['tab' => 'unit'])->with('success', 'Satuan produk berhasil dihapus.');
     }
 }

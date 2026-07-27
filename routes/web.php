@@ -43,6 +43,11 @@ Route::middleware('auth')->group(function () {
     Route::put('/products/categories/{category}', [ProductController::class, 'updateCategory'])->name('products.categories.update');
     Route::delete('/products/categories/{category}', [ProductController::class, 'destroyCategory'])->name('products.categories.destroy');
 
+    // Unit Product CRUD routes
+    Route::post('/products/units', [ProductController::class, 'storeUnit'])->name('products.units.store');
+    Route::put('/products/units/{unit}', [ProductController::class, 'updateUnit'])->name('products.units.update');
+    Route::delete('/products/units/{unit}', [ProductController::class, 'destroyUnit'])->name('products.units.destroy');
+
     // Report & Wawasan routes
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 

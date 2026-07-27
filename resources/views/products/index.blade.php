@@ -16,6 +16,10 @@
                 class="pb-3 text-lg font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition-all cursor-pointer">
                 Kategori Produk
             </button>
+            <button onclick="switchTab('unit')" id="tab-btn-unit"
+                class="pb-3 text-lg font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition-all cursor-pointer">
+                Satuan Produk
+            </button>
         </div>
     </div>
 
@@ -284,6 +288,110 @@
         </div>
     </div>
 
+    <!-- TAB CONTAINER 3: UNITS -->
+    <div id="tab-content-unit" class="max-w-6xl w-full mx-auto hidden">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+            
+            <!-- Left: Add/Edit Unit Form Card (md:col-span-5) -->
+            <div class="md:col-span-5 bg-white border border-gray-100 rounded-3xl p-6 shadow-sm space-y-6">
+                <div>
+                    <h3 class="font-bold text-gray-900 text-lg leading-tight" id="unit-form-title">Tambah Satuan</h3>
+                    <span class="text-xs text-gray-400 font-medium">Manajemen satuan produk</span>
+                </div>
+
+                <form id="unit-form" action="{{ route('products.units.store') }}" method="POST" class="space-y-5">
+                    @csrf
+                    <input type="hidden" name="_method" id="unit-form-method" value="POST">
+
+                    <div class="space-y-2">
+                        <label for="unit_name_input" class="text-sm font-semibold text-gray-700">Nama Satuan</label>
+                        <input type="text" name="unit_name" id="unit_name_input" required placeholder="Contoh: Pcs, Kg, Box"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-gray-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white transition-all font-semibold text-sm">
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button type="button" onclick="resetUnitForm()" id="unit-cancel-btn"
+                            class="flex-1 py-3.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-2xl text-sm transition-colors hidden cursor-pointer">
+                            Batal
+                        </button>
+                        <button type="submit" class="flex-2 py-3.5 bg-[#0073E2] hover:bg-blue-600 text-white font-bold rounded-2xl text-sm transition-colors shadow-md shadow-blue-100 cursor-pointer">
+                            Simpan Satuan
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right: Units Table Card (md:col-span-7) -->
+            <div class="md:col-span-7 bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm">
+                <div class="p-6 border-b border-gray-50">
+                    <h3 class="font-bold text-gray-900 text-base leading-tight">Daftar Satuan</h3>
+                    <span class="text-xs text-gray-400 font-semibold">Tersedia {{ count($units) }} satuan terdaftar</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-100 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                <th class="p-5">Nama Satuan</th>
+                                <th class="p-5 text-center">Jumlah Produk</th>
+                                <th class="p-5 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50 text-sm font-semibold text-gray-700">
+                            @forelse($units as $unit)
+                                <tr class="hover:bg-gray-50/50 transition-colors">
+                                    <!-- Name -->
+                                    <td class="p-5">
+                                        <span class="text-gray-900 font-bold block">{{ $unit->unit_name }}</span>
+                                    </td>
+                                    <!-- Product Count -->
+                                    <td class="p-5 text-center font-bold text-gray-700">
+                                        {{ $unit->products_count }} item
+                                    </td>
+                                    <!-- Actions -->
+                                    <td class="p-5">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <!-- Edit trigger (JS populated) -->
+                                            <button type="button" 
+                                                onclick="editUnit({{ $unit->id }}, '{{ addslashes($unit->unit_name) }}', '{{ route('products.units.update', $unit->id) }}')"
+                                                class="p-2 text-gray-400 hover:text-[#0073E2] hover:bg-blue-50/50 rounded-xl transition-all cursor-pointer">
+                                                <i data-lucide="edit-3" class="w-5 h-5"></i>
+                                            </button>
+
+                                            <!-- Delete -->
+                                            @if($unit->products_count > 0)
+                                                <button type="button" disabled title="Satuan masih memiliki produk aktif"
+                                                    class="p-2 text-gray-250 cursor-not-allowed rounded-xl transition-all">
+                                                    <i data-lucide="trash-2" class="w-5 h-5"></i>
+                                                </button>
+                                            @else
+                                                 <form action="{{ route('products.units.destroy', $unit->id) }}" method="POST" class="inline">
+                                                     @csrf
+                                                     @method('DELETE')
+                                                     <button type="button" onclick="confirmDelete(this, 'satuan')" class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all cursor-pointer">
+                                                         <i data-lucide="trash-2" class="w-5 h-5"></i>
+                                                     </button>
+                                                 </form>
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3" class="p-10 text-center text-gray-400 font-semibold">
+                                        <i data-lucide="tag" class="w-12 h-12 mx-auto mb-3 stroke-[1.5]"></i>
+                                        <span>Belum ada satuan terdaftar</span>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -298,22 +406,22 @@
     function switchTab(tab) {
         const btnProduct = document.getElementById('tab-btn-product');
         const btnCategory = document.getElementById('tab-btn-category');
+        const btnUnit = document.getElementById('tab-btn-unit');
+
         const contentProduct = document.getElementById('tab-content-product');
         const contentCategory = document.getElementById('tab-content-category');
+        const contentUnit = document.getElementById('tab-content-unit');
 
-        if (tab === 'product') {
-            btnProduct.className = "pb-3 text-lg font-bold text-[#0073E2] border-b-2 border-[#0073E2] transition-all cursor-pointer";
-            btnCategory.className = "pb-3 text-lg font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition-all cursor-pointer";
-            
-            contentProduct.classList.remove('hidden');
-            contentCategory.classList.add('hidden');
-        } else {
-            btnCategory.className = "pb-3 text-lg font-bold text-[#0073E2] border-b-2 border-[#0073E2] transition-all cursor-pointer";
-            btnProduct.className = "pb-3 text-lg font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition-all cursor-pointer";
-            
-            contentCategory.classList.remove('hidden');
-            contentProduct.classList.add('hidden');
-        }
+        const activeClass = "pb-3 text-lg font-bold text-[#0073E2] border-b-2 border-[#0073E2] transition-all cursor-pointer";
+        const inactiveClass = "pb-3 text-lg font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition-all cursor-pointer";
+
+        btnProduct.className = tab === 'product' ? activeClass : inactiveClass;
+        btnCategory.className = tab === 'category' ? activeClass : inactiveClass;
+        btnUnit.className = tab === 'unit' ? activeClass : inactiveClass;
+
+        contentProduct.classList.toggle('hidden', tab !== 'product');
+        contentCategory.classList.toggle('hidden', tab !== 'category');
+        contentUnit.classList.toggle('hidden', tab !== 'unit');
     }
 
     // Load category into Form for updates
@@ -335,6 +443,26 @@
         document.getElementById('category-form-method').value = 'POST';
         document.getElementById('category_name_input').value = '';
         document.getElementById('category-cancel-btn').classList.add('hidden');
+    }
+
+    // Load unit into Form for updates
+    function editUnit(id, name, updateUrl) {
+        document.getElementById('unit-form-title').innerText = 'Edit Satuan';
+        document.getElementById('unit-form').action = updateUrl;
+        document.getElementById('unit-form-method').value = 'PUT';
+        document.getElementById('unit_name_input').value = name;
+        document.getElementById('unit-cancel-btn').classList.remove('hidden');
+        
+        document.getElementById('unit_name_input').focus();
+    }
+
+    // Reset Unit Form back to create/store mode
+    function resetUnitForm() {
+        document.getElementById('unit-form-title').innerText = 'Tambah Satuan';
+        document.getElementById('unit-form').action = "{{ route('products.units.store') }}";
+        document.getElementById('unit-form-method').value = 'POST';
+        document.getElementById('unit_name_input').value = '';
+        document.getElementById('unit-cancel-btn').classList.add('hidden');
     }
 
     // Reusable SweetAlert2 confirmation dialog for deletion
