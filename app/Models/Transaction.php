@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['invoice_number', 'subtotal', 'tax', 'total', 'payment_method', 'amount_paid', 'change_amount', 'status', 'user_id', 'qris_image', 'qris_public_id', 'is_whatsapp', 'customer_name', 'customer_address', 'shipping_cost', 'payment_proof', 'payment_proof_public_id'])]
+#[Fillable(['invoice_number', 'subtotal', 'tax', 'total', 'payment_method', 'amount_paid', 'change_amount', 'status', 'delivery_status', 'user_id', 'qris_image', 'qris_public_id', 'is_whatsapp', 'customer_name', 'customer_phone', 'customer_address', 'customer_notes', 'shipping_cost', 'payment_proof', 'payment_proof_public_id'])]
 class Transaction extends Model
 {
     /**

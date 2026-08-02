@@ -47,10 +47,25 @@
                 <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 leading-tight">
                     {{ $product->product_name }}
                 </h1>
-                <p class="text-2xl font-extrabold text-[#0073E2]">
+                <p id="product-detail-price" class="text-2xl font-extrabold text-[#0073E2]">
                     Rp {{ number_format($product->price, 0, ',', '.') }}
                 </p>
             </div>
+
+            @if($product->variants->count() > 0)
+                <div class="space-y-2 pt-2 border-t border-gray-100">
+                    <span class="text-xs font-extrabold text-gray-700 block uppercase tracking-wider">Pilih Variasi:</span>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach($product->variants as $index => $variant)
+                            <button type="button" onclick="selectVariant({{ $variant->id }}, '{{ addslashes($variant->variant_name) }}', {{ $variant->price }}, {{ $variant->stock }}, '{{ $variant->image_path ? (str_starts_with($variant->image_path, 'http') ? $variant->image_path : asset($variant->image_path)) : '' }}')"
+                                id="variant-btn-{{ $variant->id }}"
+                                class="variant-pill-btn px-4 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer {{ $index === 0 ? 'bg-[#0073E2] text-white border-[#0073E2] shadow-sm' : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100' }}">
+                                {{ $variant->variant_name }}
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
 
             <!-- Info Tabs -->
             <div class="space-y-4">
@@ -68,6 +83,13 @@
                         class="flex-1 pb-3 text-sm font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition-colors focus:outline-none cursor-pointer">
                         Spesifikasi
                     </button>
+                    @if($product->video_path || $product->video_url)
+                        <button onclick="switchDetailTab('video')" id="detail-tab-btn-video"
+                            class="flex-1 pb-3 text-sm font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition-colors focus:outline-none cursor-pointer flex items-center justify-center gap-1">
+                            <i data-lucide="video" class="w-4 h-4"></i>
+                            <span>Video</span>
+                        </button>
+                    @endif
                 </div>
 
                 <!-- Tab Content Containers -->
@@ -93,6 +115,39 @@
                             <p>Spesifikasi produk belum ditambahkan.</p>
                         @endforelse
                     </div>
+
+                    <!-- Video Produk -->
+                    @if($product->video_path || $product->video_url)
+                        <div id="detail-tab-content-video" class="detail-tab-pane text-sm text-gray-500 leading-relaxed hidden space-y-3">
+                            @if($product->video_path)
+                                @php
+                                    $vSrc = str_starts_with($product->video_path, 'http') ? $product->video_path : asset($product->video_path);
+                                @endphp
+                                <video src="{{ $vSrc }}" controls class="w-full rounded-2xl max-h-72 bg-black object-contain shadow-sm"></video>
+                            @elseif($product->video_url)
+                                @php
+                                    $url = $product->video_url;
+                                    $embedUrl = null;
+                                    if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $url, $matches)) {
+                                        $embedUrl = 'https://www.youtube.com/embed/' . $matches[1];
+                                    }
+                                @endphp
+                                @if($embedUrl)
+                                    <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+                                        <iframe src="{{ $embedUrl }}" class="w-full h-full" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    </div>
+                                @else
+                                    <div class="p-4 bg-blue-50/50 rounded-2xl border border-blue-100 flex items-center justify-between gap-3">
+                                        <span class="text-xs font-semibold text-gray-700">Tonton video produk di tautan eksternal:</span>
+                                        <a href="{{ $url }}" target="_blank" class="px-4 py-2 bg-[#0073E2] text-white rounded-xl font-bold text-xs hover:bg-blue-600 transition-colors flex items-center gap-1.5 shrink-0">
+                                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                                            <span>Buka Video</span>
+                                        </a>
+                                    </div>
+                                @endif
+                            @endif
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -152,6 +207,42 @@
 </div>
 
 <script>
+    let selectedVariantObj = @json($product->variants->first() ?? null);
+
+    function selectVariant(id, name, price, stock, imageSrc) {
+        selectedVariantObj = { id, name, price, stock, imageSrc };
+        
+        // Update price display
+        const priceEl = document.getElementById('product-detail-price');
+        if (priceEl) {
+            priceEl.innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(price);
+        }
+
+        // Update main image if variant has image
+        if (imageSrc) {
+            changeMainImage(imageSrc);
+        }
+
+        // Highlight selected pill
+        document.querySelectorAll('.variant-pill-btn').forEach(btn => {
+            btn.classList.remove('bg-[#0073E2]', 'text-white', 'border-[#0073E2]', 'shadow-sm');
+            btn.classList.add('bg-gray-50', 'text-gray-700', 'border-gray-200');
+        });
+
+        const activeBtn = document.getElementById(`variant-btn-${id}`);
+        if (activeBtn) {
+            activeBtn.classList.remove('bg-gray-50', 'text-gray-700', 'border-gray-200');
+            activeBtn.classList.add('bg-[#0073E2]', 'text-white', 'border-[#0073E2]', 'shadow-sm');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (selectedVariantObj && selectedVariantObj.image_path) {
+            const imgSrc = selectedVariantObj.image_path.startsWith('http') ? selectedVariantObj.image_path : `/storage/${selectedVariantObj.image_path}`;
+            changeMainImage(imgSrc);
+        }
+    });
+
     // Live gallery swapper
     function changeMainImage(src) {
         document.getElementById('main-product-image').src = src;
@@ -162,7 +253,8 @@
         const tabs = {
             desc: { btnId: 'detail-tab-btn-desc', contentId: 'detail-tab-content-desc' },
             story: { btnId: 'detail-tab-btn-story', contentId: 'detail-tab-content-story' },
-            spec: { btnId: 'detail-tab-btn-spec', contentId: 'detail-tab-content-spec' }
+            spec: { btnId: 'detail-tab-btn-spec', contentId: 'detail-tab-content-spec' },
+            video: { btnId: 'detail-tab-btn-video', contentId: 'detail-tab-content-video' }
         };
 
         Object.keys(tabs).forEach(key => {
@@ -192,7 +284,8 @@
             let val = parseInt(input.value) || 1;
             val += change;
             if (val < 1) val = 1;
-            if (val > {{ $product->stock }}) {
+            const maxStock = selectedVariantObj ? selectedVariantObj.stock : {{ $product->stock }};
+            if (val > maxStock) {
                 Swal.fire({
                     title: 'Stok Terbatas',
                     text: 'Stok yang tersedia tidak mencukupi.',
@@ -200,15 +293,27 @@
                     confirmButtonColor: '#0073E2',
                     customClass: { popup: 'rounded-3xl' }
                 });
-                val = {{ $product->stock }};
+                val = maxStock;
             }
             input.value = val;
         }
 
         function handleAddToCart() {
             const qty = parseInt(document.getElementById('product-qty-input').value) || 1;
+            let productName = '{{ addslashes($product->product_name) }}';
+            let price = {{ $product->price }};
+            let variantId = null;
+            let variantName = null;
+
+            if (selectedVariantObj) {
+                productName += ' (' + selectedVariantObj.name + ')';
+                price = selectedVariantObj.price;
+                variantId = selectedVariantObj.id;
+                variantName = selectedVariantObj.name;
+            }
+
             if (window.addToCart) {
-                window.addToCart({{ $product->id }}, '{{ addslashes($product->product_name) }}', {{ $product->price }}, '{{ $mainImage }}', qty);
+                window.addToCart({{ $product->id }}, productName, price, '{{ $mainImage }}', qty, variantId, variantName);
             }
         }
     @endif

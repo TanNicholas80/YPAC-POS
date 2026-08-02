@@ -100,6 +100,29 @@
                         class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-gray-955 placeholder-gray-405 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white transition-all font-semibold text-sm resize-none">{{ old('product_story') }}</textarea>
                 </div>
 
+                <!-- Variants Panel -->
+                <div class="space-y-4 pt-4 border-t border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center gap-2 cursor-pointer select-none">
+                            <input type="checkbox" name="has_variants" id="has_variants_toggle" value="1" onchange="toggleVariantsSection()"
+                                class="w-5 h-5 text-[#0073E2] border-gray-300 rounded-lg focus:ring-[#0073E2] cursor-pointer">
+                            <div class="space-y-0.5">
+                                <span class="text-sm font-bold text-gray-800 block">Produk Memiliki Variasi</span>
+                                <span class="text-[10px] text-gray-400 font-semibold block">Contoh: Warna, Pola/Motif, Ukuran dengan harga & stok khusus</span>
+                            </div>
+                        </label>
+                        <button type="button" id="add-variant-btn" onclick="addVariantRow()" 
+                            class="hidden px-3 py-1.5 bg-blue-50 text-[#0073E2] hover:bg-blue-100 font-bold rounded-xl text-xs flex items-center gap-1 cursor-pointer transition-colors">
+                            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                            <span>Tambah Variasi</span>
+                        </button>
+                    </div>
+
+                    <div id="variants-container" class="hidden space-y-3">
+                        <!-- Dynamic variant rows append here -->
+                    </div>
+                </div>
+
                 <!-- Specifications Panel -->
                 <div class="space-y-4 pt-4 border-t border-gray-100">
                     <div class="flex items-center justify-between">
@@ -135,11 +158,40 @@
                         </div>
                     </label>
                     
-                    <input type="file" name="product_images[]" id="product_images" accept="image/*" multiple class="hidden" onchange="previewFiles()">
+                    <input type="file" name="product_images[]" id="product_images" accept="image/*" multiple class="hidden" onchange="handleFileSelect(this.files); this.value='';">
                 
                     <!-- Image Preview Grid -->
                     <div id="image-previews-grid" class="grid grid-cols-3 gap-2 pt-2">
-                        <!-- Thumbnails -->
+                        <!-- Thumbnails with X remove icon -->
+                    </div>
+                </div>
+
+                <!-- Video Upload & URL Card -->
+                <div class="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm space-y-4">
+                    <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2">
+                        <i data-lucide="video" class="w-4 h-4 text-[#0073E2]"></i>
+                        <span>Video Produk (Opsional)</span>
+                    </h3>
+                    
+                    <!-- Video URL Input -->
+                    <div class="space-y-1.5">
+                        <label for="video_url" class="text-xs font-semibold text-gray-600 block">Link Video (YouTube / Web URL)</label>
+                        <input type="url" name="video_url" id="video_url" value="{{ old('video_url') }}" placeholder="https://www.youtube.com/watch?v=..."
+                            class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0073E2] font-semibold text-xs">
+                    </div>
+
+                    <div class="flex items-center gap-2 text-[10px] text-gray-400 font-bold uppercase tracking-wider my-1">
+                        <div class="flex-1 h-px bg-gray-100"></div>
+                        <span>Atau Unggah File</span>
+                        <div class="flex-1 h-px bg-gray-100"></div>
+                    </div>
+
+                    <!-- Video File Input -->
+                    <div class="space-y-1.5">
+                        <label for="product_video" class="text-xs font-semibold text-gray-600 block">Upload File Video (MP4 / WebM)</label>
+                        <input type="file" name="product_video" id="product_video" accept="video/mp4,video/webm,video/ogg,video/quicktime"
+                            class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-[#0073E2] hover:file:bg-blue-100 transition-all cursor-pointer">
+                        <span class="text-[10px] text-gray-400 block">Maksimal 50MB</span>
                     </div>
                 </div>
 
@@ -170,24 +222,136 @@
 </div>
 
 <script>
-    // Live Image Upload Preview for multiple files
-    function previewFiles() {
+    // Variant Dynamic Inputs
+    let variantIndex = 0;
+
+    function toggleVariantsSection() {
+        const toggle = document.getElementById('has_variants_toggle');
+        const container = document.getElementById('variants-container');
+        const addBtn = document.getElementById('add-variant-btn');
+
+        if (toggle && toggle.checked) {
+            container.classList.remove('hidden');
+            addBtn.classList.remove('hidden');
+            addBtn.classList.add('flex');
+            if (container.children.length === 0) {
+                addVariantRow('Merah - Motif Batik', '');
+                addVariantRow('Biru - Motif Polkadot', '');
+            }
+        } else if (container && addBtn) {
+            container.classList.add('hidden');
+            addBtn.classList.add('hidden');
+            addBtn.classList.remove('flex');
+        }
+    }
+
+    function addVariantRow(name = '', price = '', stock = '') {
+        const container = document.getElementById('variants-container');
+        const rowId = `variant-row-${variantIndex}`;
+        const basePriceInput = document.getElementById('price');
+        const baseStockInput = document.getElementById('stock');
+
+        const defaultPrice = price !== '' ? price : (basePriceInput ? basePriceInput.value : '');
+        const defaultStock = stock !== '' ? stock : (baseStockInput ? baseStockInput.value : '10');
+
+        const rowHtml = `
+            <div id="${rowId}" class="bg-gray-50 p-3.5 rounded-2xl border border-gray-100 space-y-3">
+                <div class="flex items-center justify-between gap-2">
+                    <span class="text-xs font-extrabold text-gray-700">Variasi #${variantIndex + 1}</span>
+                    <button type="button" onclick="removeVariantRow('${rowId}')" 
+                        class="p-1.5 text-gray-400 hover:text-red-500 rounded-lg hover:bg-red-50 transition-all cursor-pointer">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end">
+                    <div class="sm:col-span-4">
+                        <label class="text-[11px] font-semibold text-gray-600 block mb-1">Nama Variasi (Warna / Motif / Ukuran)</label>
+                        <input type="text" name="variants[${variantIndex}][variant_name]" value="${name}" placeholder="Contoh: Merah - Motif Batik" required
+                            class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0073E2] font-semibold text-xs">
+                    </div>
+                    <div class="sm:col-span-3">
+                        <label class="text-[11px] font-semibold text-gray-600 block mb-1">Harga (Rp)</label>
+                        <input type="number" name="variants[${variantIndex}][price]" value="${defaultPrice}" placeholder="Harga" required min="0"
+                            class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0073E2] font-semibold text-xs">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="text-[11px] font-semibold text-gray-600 block mb-1">Stok</label>
+                        <input type="number" name="variants[${variantIndex}][stock]" value="${defaultStock}" placeholder="Stok" required min="0"
+                            class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0073E2] font-semibold text-xs">
+                    </div>
+                    <div class="sm:col-span-3">
+                        <label class="text-[11px] font-semibold text-gray-600 block mb-1">Foto Varian (Opsional)</label>
+                        <input type="file" name="variants[${variantIndex}][image]" accept="image/*"
+                            class="w-full text-[10px] text-gray-500 file:mr-2 file:py-1 file:px-2 rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-blue-50 file:text-[#0073E2] hover:file:bg-blue-100 transition-all cursor-pointer">
+                    </div>
+                </div>
+            </div>
+        `;
+
+        container.insertAdjacentHTML('beforeend', rowHtml);
+        variantIndex++;
+
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    }
+
+    function removeVariantRow(rowId) {
+        const row = document.getElementById(rowId);
+        if (row) {
+            row.remove();
+        }
+    }
+
+    // Accumulative Image Upload with Remove Icon
+    let selectedImageFiles = [];
+
+    function handleFileSelect(newFiles) {
+        if (!newFiles || newFiles.length === 0) return;
+        
+        Array.from(newFiles).forEach(file => {
+            const isDuplicate = selectedImageFiles.some(f => f.name === file.name && f.size === file.size);
+            if (!isDuplicate) {
+                selectedImageFiles.push(file);
+            }
+        });
+
+        syncAndRenderImages();
+    }
+
+    function removeImageFile(index) {
+        selectedImageFiles.splice(index, 1);
+        syncAndRenderImages();
+    }
+
+    function syncAndRenderImages() {
         const fileInput = document.getElementById('product_images');
         const grid = document.getElementById('image-previews-grid');
-        grid.innerHTML = ''; // Clear previous previews
-        
-        if (fileInput.files && fileInput.files.length > 0) {
-            Array.from(fileInput.files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const div = document.createElement('div');
-                    div.className = 'relative aspect-square rounded-xl overflow-hidden border border-gray-100 bg-gray-50';
-                    div.innerHTML = `<img src="${e.target.result}" class="object-cover w-full h-full">`;
-                    grid.appendChild(div);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
+        grid.innerHTML = '';
+
+        const dt = new DataTransfer();
+        selectedImageFiles.forEach(file => dt.items.add(file));
+        fileInput.files = dt.files;
+
+        selectedImageFiles.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.className = 'relative aspect-square rounded-xl overflow-hidden border border-gray-150 bg-gray-50 group shadow-sm';
+                div.innerHTML = `
+                    <img src="${e.target.result}" class="object-cover w-full h-full">
+                    <button type="button" onclick="removeImageFile(${index})" title="Hapus Gambar"
+                        class="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white w-5 h-5 rounded-full flex items-center justify-center shadow-md transition-all cursor-pointer">
+                        <i data-lucide="x" class="w-3 h-3"></i>
+                    </button>
+                `;
+                grid.appendChild(div);
+                if (window.lucide) {
+                    lucide.createIcons();
+                }
+            };
+            reader.readAsDataURL(file);
+        });
     }
 
     // Specifications Dynamic Inputs
@@ -255,11 +419,9 @@
             dropZone.addEventListener('drop', e => {
                 const dt = e.dataTransfer;
                 const files = dt.files;
-                const fileInput = document.getElementById('product_images');
                 
                 if (files && files.length > 0) {
-                    fileInput.files = files;
-                    previewFiles();
+                    handleFileSelect(files);
                 }
             }, false);
         }

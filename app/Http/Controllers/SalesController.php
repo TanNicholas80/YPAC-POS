@@ -20,7 +20,7 @@ class SalesController extends Controller
     public function index()
     {
         $products = Product::where('is_active', true)
-            ->with(['category', 'unit', 'images'])
+            ->with(['category', 'unit', 'images', 'variants'])
             ->get();
             
         $categories = ProductCategory::all();
@@ -36,6 +36,8 @@ class SalesController extends Controller
         $request->validate([
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:products,id',
+            'items.*.product_variant_id' => 'nullable|exists:product_variants,id',
+            'items.*.variant_name' => 'nullable|string',
             'items.*.qty' => 'required|integer|min:1',
             'payment_method' => 'required|in:cash,qris',
         ]);
@@ -49,20 +51,31 @@ class SalesController extends Controller
             $product = Product::find($cartItem['product_id']);
             if (!$product) continue;
 
+            $variant = null;
+            if (!empty($cartItem['product_variant_id'])) {
+                $variant = $product->variants()->find($cartItem['product_variant_id']);
+            }
+
+            $price = $variant ? $variant->price : $product->price;
+            $stock = $variant ? $variant->stock : $product->stock;
+            $name = $product->product_name . ($variant ? " ({$variant->variant_name})" : "");
+
             // Check if stock is sufficient
-            if ($product->stock < $cartItem['qty']) {
+            if ($stock < $cartItem['qty']) {
                 return back()->withErrors([
-                    'stock' => "Stok produk {$product->product_name} tidak mencukupi (Tersedia: {$product->stock})."
+                    'stock' => "Stok produk {$name} tidak mencukupi (Tersedia: {$stock})."
                 ]);
             }
 
-            $itemSubtotal = $product->price * $cartItem['qty'];
+            $itemSubtotal = $price * $cartItem['qty'];
             $subtotal += $itemSubtotal;
 
             $processedItems[] = [
                 'product_id' => $product->id,
-                'product_name' => $product->product_name,
-                'price' => $product->price,
+                'product_variant_id' => $variant ? $variant->id : null,
+                'variant_name' => $variant ? $variant->variant_name : null,
+                'product_name' => $name,
+                'price' => $price,
                 'qty' => $cartItem['qty'],
                 'subtotal' => $itemSubtotal,
             ];
@@ -189,19 +202,28 @@ class SalesController extends Controller
                 'user_id' => Auth::id(),
             ]);
 
-            // 3. Create Transaction details & decrease product stock
+            // 3. Create Transaction details & decrease product/variant stock
             foreach ($pending['items'] as $item) {
                 TransactionDetails::create([
                     'transaction_id' => $trx->id,
                     'product_id' => $item['product_id'],
+                    'product_variant_id' => $item['product_variant_id'] ?? null,
+                    'variant_name' => $item['variant_name'] ?? null,
                     'qty' => $item['qty'],
                     'price' => $item['price'],
                     'subtotal' => $item['subtotal'],
                 ]);
 
                 // Decrement stock
-                $product = Product::findOrFail($item['product_id']);
-                $product->decrement('stock', $item['qty']);
+                if (!empty($item['product_variant_id'])) {
+                    $variant = \App\Models\ProductVariant::find($item['product_variant_id']);
+                    if ($variant) {
+                        $variant->decrement('stock', $item['qty']);
+                    }
+                } else {
+                    $product = Product::findOrFail($item['product_id']);
+                    $product->decrement('stock', $item['qty']);
+                }
             }
 
             return $trx;

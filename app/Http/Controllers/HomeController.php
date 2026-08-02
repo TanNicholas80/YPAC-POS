@@ -26,7 +26,7 @@ class HomeController extends Controller
 
         // 1. Get top 3 best-selling products (completed transactions)
         $topProducts = Product::where('is_active', true)
-            ->with(['category', 'unit', 'images', 'specifications'])
+            ->with(['category', 'unit', 'images', 'specifications', 'variants'])
             ->withSum(['transactionDetails as total_sold' => function ($query) {
                 $query->whereHas('transaction', function ($q) {
                     $q->where('status', 'completed');
@@ -40,7 +40,7 @@ class HomeController extends Controller
         if ($topProducts->count() < 3) {
             $existingIds = $topProducts->pluck('id')->toArray();
             $fillProducts = Product::where('is_active', true)
-                ->with(['category', 'unit', 'images', 'specifications'])
+                ->with(['category', 'unit', 'images', 'specifications', 'variants'])
                 ->whereNotIn('id', $existingIds)
                 ->take(3 - count($existingIds))
                 ->get();
@@ -54,7 +54,7 @@ class HomeController extends Controller
 
         // 2. Get all active products for the catalog
         $allProducts = Product::where('is_active', true)
-            ->with(['category', 'unit', 'images', 'specifications'])
+            ->with(['category', 'unit', 'images', 'specifications', 'variants'])
             ->get();
 
         // 3. Get all categories (optional, for filtering or display)
@@ -78,7 +78,7 @@ class HomeController extends Controller
         SEOTools::twitter()->setSite('@KubeYpac');
 
         $allProducts = Product::where('is_active', true)
-            ->with(['category', 'unit', 'images', 'specifications'])
+            ->with(['category', 'unit', 'images', 'specifications', 'variants'])
             ->get();
 
         $categories = ProductCategory::all();
@@ -93,7 +93,7 @@ class HomeController extends Controller
     {
         $product = Product::where('product_slug', $slug)
             ->where('is_active', true)
-            ->with(['category', 'unit', 'images', 'specifications'])
+            ->with(['category', 'unit', 'images', 'specifications', 'variants'])
             ->firstOrFail();
 
         // Dynamic SEO Configuration

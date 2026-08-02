@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['category_id', 'unit_id', 'product_name', 'product_slug', 'description', 'product_story', 'price', 'stock', 'is_active'])]
+#[Fillable(['category_id', 'unit_id', 'product_name', 'product_slug', 'description', 'product_story', 'price', 'stock', 'is_active', 'video_url', 'video_path'])]
 class Product extends Model
 {
     /**
@@ -63,5 +63,21 @@ class Product extends Model
     public function specifications(): HasMany
     {
         return $this->hasMany(SpecificationProduct::class, 'product_id');
+    }
+
+    /**
+     * Get the variants associated with the product.
+     */
+    public function variants(): HasMany
+    {
+        return $this->hasMany(ProductVariant::class, 'product_id');
+    }
+
+    /**
+     * Check if product has active variants.
+     */
+    public function hasVariants(): bool
+    {
+        return $this->variants()->where('is_active', true)->count() > 0;
     }
 }

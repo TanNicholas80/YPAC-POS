@@ -10,6 +10,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WhatsAppCheckoutController;
 use App\Http\Controllers\AdminApprovalController;
+use App\Http\Controllers\ProfileController;
 
 // Authentication routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -51,9 +52,15 @@ Route::middleware('auth')->group(function () {
     // Report & Wawasan routes
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
-    // WhatsApp Approval routes
+    // WhatsApp Approval & Tracking routes
     Route::get('/admin/approvals', [AdminApprovalController::class, 'index'])->name('admin.approvals.index');
+    Route::post('/admin/approvals/bulk-delivery-status', [AdminApprovalController::class, 'bulkUpdateDeliveryStatus'])->name('admin.approvals.bulk_delivery_status');
     Route::get('/admin/approvals/{transaction}', [AdminApprovalController::class, 'show'])->name('admin.approvals.show');
     Route::post('/admin/approvals/{transaction}/approve', [AdminApprovalController::class, 'approve'])->name('admin.approvals.approve');
     Route::post('/admin/approvals/{transaction}/reject', [AdminApprovalController::class, 'reject'])->name('admin.approvals.reject');
+    Route::patch('/admin/approvals/{transaction}/delivery-status', [AdminApprovalController::class, 'updateDeliveryStatus'])->name('admin.approvals.delivery_status');
+
+    // Profile routes
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });

@@ -78,6 +78,11 @@
 
         <!-- Sidebar Bottom -->
         <div class="p-4 border-t border-gray-50 space-y-1">
+            <a href="{{ route('profile.edit') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-all duration-200 {{ Route::is('profile.*') ? 'bg-[#0073E2] text-white shadow-sm shadow-blue-200' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                <i data-lucide="user-cog" class="w-5 h-5"></i>
+                <span>Edit Profile</span>
+            </a>
             <!-- Form Logout -->
             <form action="{{ route('logout') }}" method="POST" id="logout-form" class="hidden">
                 @csrf
