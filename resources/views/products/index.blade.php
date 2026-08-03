@@ -117,7 +117,7 @@
                                 </td>
                                 <!-- Price -->
                                 <td class="p-5 text-right font-bold text-gray-900">
-                                    Rp {{ number_format($product->price, 0, ',', '.') }}
+                                    {{ $product->price_range }}
                                 </td>
                                 <!-- Stock -->
                                 <td class="p-5 text-center">

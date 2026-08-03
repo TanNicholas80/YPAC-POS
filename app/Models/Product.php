@@ -80,4 +80,31 @@ class Product extends Model
     {
         return $this->variants()->where('is_active', true)->count() > 0;
     }
+
+    /**
+     * Get the formatted price range for the product.
+     */
+    public function getPriceRangeAttribute(): string
+    {
+        if ($this->variants && $this->variants->count() > 0) {
+            $min = $this->variants->min('price');
+            $max = $this->variants->max('price');
+            if ($min !== null && $max !== null && $min != $max) {
+                return 'Rp ' . number_format($min, 0, ',', '.') . ' - Rp ' . number_format($max, 0, ',', '.');
+            }
+            return 'Rp ' . number_format($min ?? $this->price, 0, ',', '.');
+        }
+        return 'Rp ' . number_format($this->price, 0, ',', '.');
+    }
+
+    /**
+     * Get total stock including variants if present.
+     */
+    public function getTotalStockAttribute(): int
+    {
+        if ($this->variants && $this->variants->count() > 0) {
+            return (int) $this->variants->sum('stock');
+        }
+        return (int) $this->stock;
+    }
 }

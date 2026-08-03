@@ -49,7 +49,7 @@
                         <div class="flex items-baseline justify-between">
                             <span class="text-xs font-bold text-gray-400">Harga</span>
                             <span class="text-xl font-extrabold text-gray-900">
-                                Rp {{ number_format($product->price, 0, ',', '.') }}
+                                {{ $product->price_range }}
                             </span>
                         </div>
                         <!-- Action Buttons -->

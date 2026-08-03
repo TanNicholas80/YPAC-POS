@@ -48,12 +48,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $hasVariants = $request->boolean('has_variants');
+
         $request->validate([
             'product_name' => 'required|string|max:255|unique:products,product_name',
             'description' => 'nullable|string',
             'product_story' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
+            'price' => $hasVariants ? 'nullable|numeric|min:0' : 'required|numeric|min:0',
+            'stock' => $hasVariants ? 'nullable|integer|min:0' : 'required|integer|min:0',
             'category_id' => 'required|exists:product_categories,id',
             'unit_id' => 'required|exists:unit_products,id',
             'video_url' => 'nullable|url',
@@ -77,13 +79,30 @@ class ProductController extends Controller
             $videoPath = $supabase->upload($request->file('product_video'), 'products');
         }
 
+        $price = $request->price;
+        $stock = $request->stock;
+
+        if ($hasVariants && $request->has('variants')) {
+            $variantPrices = array_column($request->input('variants'), 'price');
+            $variantStocks = array_column($request->input('variants'), 'stock');
+            $numericPrices = array_filter($variantPrices, fn($v) => is_numeric($v));
+            $numericStocks = array_filter($variantStocks, fn($v) => is_numeric($v));
+
+            if ($price === null || $price === '') {
+                $price = !empty($numericPrices) ? min($numericPrices) : 0;
+            }
+            if ($stock === null || $stock === '') {
+                $stock = !empty($numericStocks) ? array_sum($numericStocks) : 0;
+            }
+        }
+
         $product = Product::create([
             'product_name' => $request->product_name,
             'product_slug' => Str::slug($request->product_name),
             'description' => $request->description,
             'product_story' => $request->product_story,
-            'price' => $request->price,
-            'stock' => $request->stock,
+            'price' => $price ?? 0,
+            'stock' => $stock ?? 0,
             'category_id' => $request->category_id,
             'unit_id' => $request->unit_id,
             'is_active' => $request->has('is_active'),
@@ -159,12 +178,14 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        $hasVariants = $request->boolean('has_variants');
+
         $request->validate([
             'product_name' => 'required|string|max:255|unique:products,product_name,' . $product->id,
             'description' => 'nullable|string',
             'product_story' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
+            'price' => $hasVariants ? 'nullable|numeric|min:0' : 'required|numeric|min:0',
+            'stock' => $hasVariants ? 'nullable|integer|min:0' : 'required|integer|min:0',
             'category_id' => 'required|exists:product_categories,id',
             'unit_id' => 'required|exists:unit_products,id',
             'video_url' => 'nullable|url',
@@ -208,13 +229,30 @@ class ProductController extends Controller
             $videoPath = $supabase->upload($request->file('product_video'), 'products');
         }
 
+        $price = $request->price;
+        $stock = $request->stock;
+
+        if ($hasVariants && $request->has('variants')) {
+            $variantPrices = array_column($request->input('variants'), 'price');
+            $variantStocks = array_column($request->input('variants'), 'stock');
+            $numericPrices = array_filter($variantPrices, fn($v) => is_numeric($v));
+            $numericStocks = array_filter($variantStocks, fn($v) => is_numeric($v));
+
+            if ($price === null || $price === '') {
+                $price = !empty($numericPrices) ? min($numericPrices) : 0;
+            }
+            if ($stock === null || $stock === '') {
+                $stock = !empty($numericStocks) ? array_sum($numericStocks) : 0;
+            }
+        }
+
         $product->update([
             'product_name' => $request->product_name,
             'product_slug' => Str::slug($request->product_name),
             'description' => $request->description,
             'product_story' => $request->product_story,
-            'price' => $request->price,
-            'stock' => $request->stock,
+            'price' => $price ?? 0,
+            'stock' => $stock ?? 0,
             'category_id' => $request->category_id,
             'unit_id' => $request->unit_id,
             'is_active' => $request->has('is_active'),
@@ -289,6 +327,16 @@ class ProductController extends Controller
                     $vId = $varData['id'] ?? null;
                     $variantObj = $vId ? $product->variants()->find($vId) : null;
                     $varImagePath = $variantObj ? $variantObj->image_path : null;
+
+                    // Handle deleting existing variant image if requested
+                    if (!empty($varData['remove_image']) && $varImagePath) {
+                        if (str_starts_with($varImagePath, 'http')) {
+                            $supabase->delete($varImagePath);
+                        } else if (File::exists(public_path($varImagePath))) {
+                            File::delete(public_path($varImagePath));
+                        }
+                        $varImagePath = null;
+                    }
 
                     if ($request->hasFile("variants.{$index}.image")) {
                         if ($varImagePath) {

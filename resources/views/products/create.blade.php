@@ -3,6 +3,27 @@
 @section('title', 'Tambah Produk - SIKAS YPAC')
 
 @section('content')
+<style>
+    .ql-toolbar.ql-snow {
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+        border-color: #f3f4f6;
+        background-color: #f9fafb;
+    }
+    .ql-container.ql-snow {
+        border-bottom-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        border-color: #f3f4f6;
+        background-color: #ffffff;
+        font-family: inherit;
+        min-height: 120px;
+    }
+    .ql-editor {
+        min-height: 120px;
+        font-size: 0.875rem;
+    }
+</style>
+
 <div class="flex-1 flex flex-col p-6 overflow-y-auto">
     
     <!-- Back Header -->
@@ -67,37 +88,42 @@
                 </div>
 
                 <!-- Price & Stock row -->
-                <div class="grid grid-cols-2 gap-4">
-                    <!-- Price -->
-                    <div class="space-y-2">
-                        <label for="price" class="text-sm font-semibold text-gray-700">Harga Jual (Rupiah)</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500 font-bold">Rp</span>
-                            <input type="number" name="price" id="price" required min="0" value="{{ old('price') }}" placeholder="Contoh: 85000"
-                                class="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-gray-955 placeholder-gray-405 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white transition-all font-semibold text-sm">
+                <div class="space-y-2">
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Price -->
+                        <div class="space-y-2">
+                            <label for="price" class="text-sm font-semibold text-gray-700">Harga Jual (Rupiah)</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500 font-bold">Rp</span>
+                                <input type="number" name="price" id="price" required min="0" value="{{ old('price') }}" placeholder="Contoh: 85000"
+                                    class="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-gray-955 placeholder-gray-405 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white transition-all font-semibold text-sm">
+                            </div>
+                        </div>
+
+                        <!-- Stock -->
+                        <div class="space-y-2">
+                            <label for="stock" class="text-sm font-semibold text-gray-700">Stok Awal</label>
+                            <input type="number" name="stock" id="stock" required min="0" value="{{ old('stock', 0) }}" placeholder="Contoh: 10"
+                                class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-gray-955 placeholder-gray-405 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white transition-all font-semibold text-sm">
                         </div>
                     </div>
-
-                    <!-- Stock -->
-                    <div class="space-y-2">
-                        <label for="stock" class="text-sm font-semibold text-gray-700">Stok Awal</label>
-                        <input type="number" name="stock" id="stock" required min="0" value="{{ old('stock', 0) }}" placeholder="Contoh: 10"
-                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-gray-955 placeholder-gray-405 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white transition-all font-semibold text-sm">
-                    </div>
+                    <p id="variant-price-hint" class="hidden text-xs text-[#0073E2] font-semibold bg-blue-50/60 p-2.5 rounded-xl border border-blue-100">
+                        💡 <strong>Catatan Variasi:</strong> Karena produk memiliki variasi, Rentang Harga & Total Stok dihitung otomatis dari harga & stok tiap varian. Field di atas opsional.
+                    </p>
                 </div>
 
                 <!-- Description -->
                 <div class="space-y-2">
-                    <label for="description" class="text-sm font-semibold text-gray-700">Deskripsi Produk (Opsional)</label>
-                    <textarea name="description" id="description" rows="3" placeholder="Tuliskan keterangan detail produk..."
-                        class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-gray-955 placeholder-gray-405 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white transition-all font-semibold text-sm resize-none">{{ old('description') }}</textarea>
+                    <label class="text-sm font-semibold text-gray-700">Deskripsi Produk (Opsional)</label>
+                    <input type="hidden" name="description" id="description" value="{{ old('description') }}">
+                    <div id="quill-description" class="rounded-2xl">{!! old('description') !!}</div>
                 </div>
 
                 <!-- Product Story (Maker Story) -->
                 <div class="space-y-2">
-                    <label for="product_story" class="text-sm font-semibold text-gray-700">Kisah Pembuat (Opsional)</label>
-                    <textarea name="product_story" id="product_story" rows="3" placeholder="Tuliskan kisah menginspirasi di balik pembuatan produk ini..."
-                        class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-gray-955 placeholder-gray-405 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white transition-all font-semibold text-sm resize-none">{{ old('product_story') }}</textarea>
+                    <label class="text-sm font-semibold text-gray-700">Kisah Pembuat (Opsional)</label>
+                    <input type="hidden" name="product_story" id="product_story" value="{{ old('product_story') }}">
+                    <div id="quill-product_story" class="rounded-2xl">{!! old('product_story') !!}</div>
                 </div>
 
                 <!-- Variants Panel -->
@@ -158,7 +184,7 @@
                         </div>
                     </label>
                     
-                    <input type="file" name="product_images[]" id="product_images" accept="image/*" multiple class="hidden" onchange="handleFileSelect(this.files); this.value='';">
+                    <input type="file" name="product_images[]" id="product_images" accept="image/*" multiple class="hidden" onchange="handleFileSelect(this.files)">
                 
                     <!-- Image Preview Grid -->
                     <div id="image-previews-grid" class="grid grid-cols-3 gap-2 pt-2">
@@ -219,8 +245,6 @@
 
         </div>
     </form>
-</div>
-
 <script>
     // Variant Dynamic Inputs
     let variantIndex = 0;
@@ -229,11 +253,18 @@
         const toggle = document.getElementById('has_variants_toggle');
         const container = document.getElementById('variants-container');
         const addBtn = document.getElementById('add-variant-btn');
+        const priceInput = document.getElementById('price');
+        const stockInput = document.getElementById('stock');
+        const variantHint = document.getElementById('variant-price-hint');
 
         if (toggle && toggle.checked) {
             container.classList.remove('hidden');
             addBtn.classList.remove('hidden');
             addBtn.classList.add('flex');
+            if (priceInput) priceInput.removeAttribute('required');
+            if (stockInput) stockInput.removeAttribute('required');
+            if (variantHint) variantHint.classList.remove('hidden');
+
             if (container.children.length === 0) {
                 addVariantRow('Merah - Motif Batik', '');
                 addVariantRow('Biru - Motif Polkadot', '');
@@ -242,12 +273,16 @@
             container.classList.add('hidden');
             addBtn.classList.add('hidden');
             addBtn.classList.remove('flex');
+            if (priceInput) priceInput.setAttribute('required', 'required');
+            if (stockInput) stockInput.setAttribute('required', 'required');
+            if (variantHint) variantHint.classList.add('hidden');
         }
     }
 
     function addVariantRow(name = '', price = '', stock = '') {
         const container = document.getElementById('variants-container');
-        const rowId = `variant-row-${variantIndex}`;
+        const currentIndex = variantIndex;
+        const rowId = `variant-row-${currentIndex}`;
         const basePriceInput = document.getElementById('price');
         const baseStockInput = document.getElementById('stock');
 
@@ -255,34 +290,78 @@
         const defaultStock = stock !== '' ? stock : (baseStockInput ? baseStockInput.value : '10');
 
         const rowHtml = `
-            <div id="${rowId}" class="bg-gray-50 p-3.5 rounded-2xl border border-gray-100 space-y-3">
-                <div class="flex items-center justify-between gap-2">
-                    <span class="text-xs font-extrabold text-gray-700">Variasi #${variantIndex + 1}</span>
+            <div id="${rowId}" class="bg-white p-4 sm:p-5 rounded-2xl border border-gray-200 shadow-xs space-y-4 relative transition-all hover:border-gray-300">
+                <input type="hidden" id="remove-img-input-${currentIndex}" name="variants[${currentIndex}][remove_image]" value="0">
+
+                <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-lg bg-blue-50 text-[#0073E2] font-extrabold text-xs flex items-center justify-center">${currentIndex + 1}</span>
+                        <h4 class="text-xs font-bold text-gray-800">Variasi #${currentIndex + 1}</h4>
+                    </div>
                     <button type="button" onclick="removeVariantRow('${rowId}')" 
-                        class="p-1.5 text-gray-400 hover:text-red-500 rounded-lg hover:bg-red-50 transition-all cursor-pointer">
-                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        class="px-2.5 py-1 text-xs font-bold text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-xl transition-colors cursor-pointer flex items-center gap-1">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        <span>Hapus Variasi</span>
                     </button>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end">
-                    <div class="sm:col-span-4">
-                        <label class="text-[11px] font-semibold text-gray-600 block mb-1">Nama Variasi (Warna / Motif / Ukuran)</label>
-                        <input type="text" name="variants[${variantIndex}][variant_name]" value="${name}" placeholder="Contoh: Merah - Motif Batik" required
-                            class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0073E2] font-semibold text-xs">
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
+                    <div class="md:col-span-8 space-y-3">
+                        <div>
+                            <label class="text-xs font-bold text-gray-700 block mb-1">Nama Variasi <span class="text-red-500">*</span></label>
+                            <input type="text" name="variants[${currentIndex}][variant_name]" value="${name}" placeholder="Contoh: Merah - Motif Batik / Ukuran XL" required
+                                class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white font-semibold text-xs transition-all">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs font-bold text-gray-700 block mb-1">Harga Variasi (Rp) <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 text-xs font-bold">Rp</span>
+                                    <input type="number" name="variants[${currentIndex}][price]" value="${defaultPrice}" placeholder="700000" required min="0"
+                                        class="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white font-semibold text-xs transition-all">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-bold text-gray-700 block mb-1">Stok Variasi <span class="text-red-500">*</span></label>
+                                <input type="number" name="variants[${currentIndex}][stock]" value="${defaultStock}" placeholder="10" required min="0"
+                                    class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0073E2] focus:bg-white font-semibold text-xs transition-all">
+                            </div>
+                        </div>
                     </div>
-                    <div class="sm:col-span-3">
-                        <label class="text-[11px] font-semibold text-gray-600 block mb-1">Harga (Rp)</label>
-                        <input type="number" name="variants[${variantIndex}][price]" value="${defaultPrice}" placeholder="Harga" required min="0"
-                            class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0073E2] font-semibold text-xs">
-                    </div>
-                    <div class="sm:col-span-2">
-                        <label class="text-[11px] font-semibold text-gray-600 block mb-1">Stok</label>
-                        <input type="number" name="variants[${variantIndex}][stock]" value="${defaultStock}" placeholder="Stok" required min="0"
-                            class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0073E2] font-semibold text-xs">
-                    </div>
-                    <div class="sm:col-span-3">
-                        <label class="text-[11px] font-semibold text-gray-600 block mb-1">Foto Varian (Opsional)</label>
-                        <input type="file" name="variants[${variantIndex}][image]" accept="image/*"
-                            class="w-full text-[10px] text-gray-500 file:mr-2 file:py-1 file:px-2 rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-blue-50 file:text-[#0073E2] hover:file:bg-blue-100 transition-all cursor-pointer">
+
+                    <div class="md:col-span-4 space-y-1">
+                        <label class="text-xs font-bold text-gray-700 block">Foto Varian (Opsional)</label>
+                        <input type="file" id="variant-file-input-${currentIndex}" name="variants[${currentIndex}][image]" accept="image/*" class="hidden" onchange="handleVariantImageChange(this, ${currentIndex})">
+                        
+                        <div id="variant-dropzone-${currentIndex}" 
+                            onclick="document.getElementById('variant-file-input-${currentIndex}').click()"
+                            ondragenter="handleVariantDrag(event, ${currentIndex}, true)"
+                            ondragover="handleVariantDrag(event, ${currentIndex}, true)"
+                            ondragleave="handleVariantDrag(event, ${currentIndex}, false)"
+                            ondrop="handleVariantDrop(event, ${currentIndex})"
+                            class="border-2 border-dashed border-gray-200 hover:border-[#0073E2] bg-gray-50/70 hover:bg-blue-50/20 rounded-xl p-3 text-center cursor-pointer transition-all min-h-[110px] flex flex-col items-center justify-center group relative overflow-hidden">
+                            
+                            <div id="variant-upload-placeholder-${currentIndex}" class="flex flex-col items-center gap-1">
+                                <div class="w-8 h-8 rounded-full bg-blue-50 text-[#0073E2] flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i data-lucide="image-plus" class="w-4 h-4"></i>
+                                </div>
+                                <span class="text-[11px] font-bold text-gray-700 group-hover:text-[#0073E2] transition-colors">Pilih / Drag Foto</span>
+                                <span class="text-[9px] font-medium text-gray-400">PNG, JPG, WEBP</span>
+                            </div>
+
+                            <div id="variant-preview-container-${currentIndex}" class="hidden flex-col items-center w-full h-full relative">
+                                <img id="variant-img-preview-${currentIndex}" src="" class="w-20 h-20 object-cover rounded-xl border border-gray-200 shadow-xs">
+                                <div class="flex items-center gap-1.5 mt-2">
+                                    <span class="text-[10px] font-bold text-[#0073E2] hover:underline">Ganti Foto</span>
+                                    <span class="text-gray-300 text-xs">•</span>
+                                    <button type="button" onclick="clearVariantImage(event, ${currentIndex})" class="text-[10px] font-bold text-red-500 hover:text-red-700 hover:underline cursor-pointer">
+                                        Hapus Foto
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -300,6 +379,79 @@
         const row = document.getElementById(rowId);
         if (row) {
             row.remove();
+        }
+    }
+
+    function handleVariantImageChange(input, idx) {
+        const file = input.files && input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgPreview = document.getElementById(`variant-img-preview-${idx}`);
+                const placeholder = document.getElementById(`variant-upload-placeholder-${idx}`);
+                const container = document.getElementById(`variant-preview-container-${idx}`);
+                const removeInput = document.getElementById(`remove-img-input-${idx}`);
+
+                if (imgPreview) imgPreview.src = e.target.result;
+                if (placeholder) placeholder.classList.add('hidden');
+                if (container) {
+                    container.classList.remove('hidden');
+                    container.classList.add('flex');
+                }
+                if (removeInput) removeInput.value = "0";
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function clearVariantImage(event, idx) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        const fileInput = document.getElementById(`variant-file-input-${idx}`);
+        const imgPreview = document.getElementById(`variant-img-preview-${idx}`);
+        const placeholder = document.getElementById(`variant-upload-placeholder-${idx}`);
+        const container = document.getElementById(`variant-preview-container-${idx}`);
+        const removeInput = document.getElementById(`remove-img-input-${idx}`);
+
+        if (fileInput) fileInput.value = '';
+        if (imgPreview) imgPreview.src = '';
+        if (placeholder) placeholder.classList.remove('hidden');
+        if (container) {
+            container.classList.add('hidden');
+            container.classList.remove('flex');
+        }
+        if (removeInput) removeInput.value = "1";
+    }
+
+    function handleVariantDrag(e, idx, isDragging) {
+        e.preventDefault();
+        e.stopPropagation();
+        const dropzone = document.getElementById(`variant-dropzone-${idx}`);
+        if (dropzone) {
+            if (isDragging) {
+                dropzone.classList.add('border-[#0073E2]', 'bg-blue-50/40');
+            } else {
+                dropzone.classList.remove('border-[#0073E2]', 'bg-blue-50/40');
+            }
+        }
+    }
+
+    function handleVariantDrop(e, idx) {
+        e.preventDefault();
+        e.stopPropagation();
+        const dropzone = document.getElementById(`variant-dropzone-${idx}`);
+        if (dropzone) {
+            dropzone.classList.remove('border-[#0073E2]', 'bg-blue-50/40');
+        }
+
+        const dt = e.dataTransfer;
+        if (dt && dt.files && dt.files.length > 0) {
+            const fileInput = document.getElementById(`variant-file-input-${idx}`);
+            if (fileInput) {
+                fileInput.files = dt.files;
+                handleVariantImageChange(fileInput, idx);
+            }
         }
     }
 
@@ -324,6 +476,31 @@
         syncAndRenderImages();
     }
 
+    // Main Product Image Drag & Drop
+    document.addEventListener('DOMContentLoaded', () => {
+        const mainDropZone = document.getElementById('product-image-drop-zone');
+        if (mainDropZone) {
+            mainDropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                mainDropZone.classList.add('border-[#0073E2]', 'bg-blue-50/40');
+            });
+            mainDropZone.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                mainDropZone.classList.remove('border-[#0073E2]', 'bg-blue-50/40');
+            });
+            mainDropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                mainDropZone.classList.remove('border-[#0073E2]', 'bg-blue-50/40');
+                if (e.dataTransfer && e.dataTransfer.files) {
+                    handleFileSelect(e.dataTransfer.files);
+                }
+            });
+        }
+    });
+
     function syncAndRenderImages() {
         const fileInput = document.getElementById('product_images');
         const grid = document.getElementById('image-previews-grid');
@@ -337,12 +514,12 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const div = document.createElement('div');
-                div.className = 'relative aspect-square rounded-xl overflow-hidden border border-gray-150 bg-gray-50 group shadow-sm';
+                div.className = 'relative aspect-square rounded-2xl overflow-hidden border border-gray-200 bg-gray-50 group shadow-xs transition-all';
                 div.innerHTML = `
-                    <img src="${e.target.result}" class="object-cover w-full h-full">
-                    <button type="button" onclick="removeImageFile(${index})" title="Hapus Gambar"
-                        class="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white w-5 h-5 rounded-full flex items-center justify-center shadow-md transition-all cursor-pointer">
-                        <i data-lucide="x" class="w-3 h-3"></i>
+                    <img src="${e.target.result}" class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105">
+                    <button type="button" onclick="removeImageFile(${index})" title="Hapus Foto Ini"
+                        class="absolute top-1.5 right-1.5 w-7 h-7 bg-red-500/90 hover:bg-red-600 active:scale-90 text-white rounded-xl flex items-center justify-center shadow-md transition-all cursor-pointer">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                     </button>
                 `;
                 grid.appendChild(div);
@@ -389,8 +566,54 @@
         }
     }
 
-    // Initialize with 2 default specification rows for easier use
+    // Initialize Quill Editors & Spec rows
+    let quillDesc, quillStory;
+
     document.addEventListener("DOMContentLoaded", () => {
+        if (window.Quill) {
+            quillDesc = new Quill('#quill-description', {
+                theme: 'snow',
+                placeholder: 'Tuliskan keterangan detail produk...',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        ['clean']
+                    ]
+                }
+            });
+
+            quillStory = new Quill('#quill-product_story', {
+                theme: 'snow',
+                placeholder: 'Tuliskan kisah menginspirasi di balik pembuatan produk ini...',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        ['clean']
+                    ]
+                }
+            });
+
+            const productForm = document.querySelector('form');
+            if (productForm) {
+                productForm.addEventListener('submit', () => {
+                    if (quillDesc) {
+                        const html = quillDesc.root.innerHTML;
+                        document.getElementById('description').value = html === '<p><br></p>' ? '' : html;
+                    }
+                    if (quillStory) {
+                        const html = quillStory.root.innerHTML;
+                        document.getElementById('product_story').value = html === '<p><br></p>' ? '' : html;
+                    }
+                });
+            }
+        }
+
         addSpecificationRow('Dimensi', '');
         addSpecificationRow('Material', '');
 

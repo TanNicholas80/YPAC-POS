@@ -85,7 +85,7 @@
                         <div class="flex items-baseline justify-between">
                             <span class="text-xs font-bold text-gray-400">Harga ({{ $product->unit->unit_name ?? 'pcs' }})</span>
                             <span class="text-xl font-extrabold text-[#0073E2]">
-                                Rp {{ number_format($product->price, 0, ',', '.') }}
+                                {{ $product->price_range }}
                             </span>
                         </div>
 

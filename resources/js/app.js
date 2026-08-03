@@ -3,11 +3,14 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import { createIcons, icons } from 'lucide';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 // Expose to window object for global availability in Blade templates
 window.Swal = Swal;
+window.Quill = Quill;
 window.lucide = {
     createIcons: (options = {}) => {
         createIcons({
