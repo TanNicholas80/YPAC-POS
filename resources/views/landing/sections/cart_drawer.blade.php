@@ -274,6 +274,11 @@
         if (savedCart) {
             try {
                 cart = JSON.parse(savedCart);
+                cart.forEach(item => {
+                    if (!item.cartKey) {
+                        item.cartKey = item.variantId ? `${item.id}_v${item.variantId}` : `${item.id}`;
+                    }
+                });
             } catch (e) {
                 cart = [];
             }
@@ -306,7 +311,7 @@
     // Add Product / Variant to Cart
     function addToCart(id, name, price, image, qty = 1, variantId = null, variantName = null) {
         const cartKey = variantId ? `${id}_v${variantId}` : `${id}`;
-        const existingItem = cart.find(item => item.cartKey === cartKey);
+        const existingItem = cart.find(item => String(item.cartKey || item.id) === String(cartKey));
 
         if (existingItem) {
             existingItem.qty += qty;
@@ -329,13 +334,13 @@
 
     // Update quantity of an item
     function updateQty(cartKey, delta) {
-        const item = cart.find(item => item.cartKey === cartKey || item.id === cartKey);
+        const item = cart.find(item => String(item.cartKey || item.id) === String(cartKey));
         if (!item) return;
 
         item.qty += delta;
 
         if (item.qty <= 0) {
-            cart = cart.filter(i => (i.cartKey || i.id) !== cartKey);
+            cart = cart.filter(i => String(i.cartKey || i.id) !== String(cartKey));
         }
 
         saveCart();
@@ -343,7 +348,7 @@
 
     // Remove item from cart
     function removeFromCart(cartKey) {
-        cart = cart.filter(i => (i.cartKey || i.id) !== cartKey);
+        cart = cart.filter(i => String(i.cartKey || i.id) !== String(cartKey));
         saveCart();
     }
 
