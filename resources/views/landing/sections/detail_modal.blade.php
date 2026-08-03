@@ -35,9 +35,9 @@
                     </div>
                     <div class="border-t border-gray-100 pt-4">
                         <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Deskripsi Produk</h4>
-                        <p id="modal-product-description" class="text-sm text-gray-500 leading-relaxed max-h-[150px] overflow-y-auto pr-2 scrollbar-thin">
+                        <div id="modal-product-description" class="text-sm text-gray-500 leading-relaxed max-h-[150px] overflow-y-auto pr-2 scrollbar-thin rich-text-content">
                             Deskripsi produk...
-                        </p>
+                        </div>
                     </div>
                 </div>
 
@@ -62,7 +62,7 @@
         document.getElementById('modal-product-name').textContent = name;
         document.getElementById('modal-product-price').textContent = 'Rp ' + Number(price).toLocaleString('id-ID');
         document.getElementById('modal-product-unit').textContent = '/ ' + (unitName || 'pcs');
-        document.getElementById('modal-product-description').textContent = description || 'Produk orisinal karya KUBE YPAC.';
+        document.getElementById('modal-product-description').innerHTML = description || 'Produk orisinal karya KUBE YPAC.';
         
         // Setup cart button onclick handler
         const cartBtn = document.getElementById('modal-add-to-cart-btn');

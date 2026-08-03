@@ -44,6 +44,20 @@
     <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="max-w-4xl w-full mx-auto">
         @csrf
 
+        @if ($errors->any())
+            <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl">
+                <div class="flex items-center gap-2 text-red-700 font-bold text-sm mb-2">
+                    <i data-lucide="alert-circle" class="w-5 h-5"></i>
+                    <span>Gagal Menyimpan Produk! Mohon periksa kesalahan berikut:</span>
+                </div>
+                <ul class="list-disc list-inside text-xs text-red-600 space-y-1 font-medium">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
             
             <!-- Left Panel: Main Attributes (md:col-span-8) -->

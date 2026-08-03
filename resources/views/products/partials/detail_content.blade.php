@@ -160,12 +160,12 @@
                 <!-- Tab Content Containers -->
                 <div class="relative min-h-[120px]">
                     <!-- Deskripsi -->
-                    <div id="detail-tab-content-desc" class="detail-tab-pane text-sm text-gray-600 leading-relaxed block space-y-2">
+                    <div id="detail-tab-content-desc" class="detail-tab-pane text-sm text-gray-600 leading-relaxed block rich-text-content">
                         {!! $product->description ?? '<p>Tidak ada deskripsi untuk produk ini.</p>' !!}
                     </div>
 
                     <!-- Kisah Pembuat -->
-                    <div id="detail-tab-content-story" class="detail-tab-pane text-sm text-gray-600 leading-relaxed hidden space-y-2">
+                    <div id="detail-tab-content-story" class="detail-tab-pane text-sm text-gray-600 leading-relaxed hidden rich-text-content">
                         {!! $product->product_story ?? '<p>Kisah pembuat belum ditambahkan untuk produk ini.</p>' !!}
                     </div>
 

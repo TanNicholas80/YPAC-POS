@@ -8,6 +8,7 @@ use App\Models\UnitProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use App\Services\SupabaseStorageService;
 
 class ProductController extends Controller
@@ -75,8 +76,23 @@ class ProductController extends Controller
 
         $videoPath = null;
         if ($request->hasFile('product_video')) {
+            $videoFile = $request->file('product_video');
+            Log::info("Attempting product_video upload", [
+                'original_name' => $videoFile->getClientOriginalName(),
+                'mime_type' => $videoFile->getClientMimeType(),
+                'size_bytes' => $videoFile->getSize(),
+                'is_valid' => $videoFile->isValid(),
+                'error_code' => $videoFile->getError()
+            ]);
+
             $supabase = new SupabaseStorageService();
-            $videoPath = $supabase->upload($request->file('product_video'), 'products');
+            $videoPath = $supabase->upload($videoFile, 'products');
+
+            if ($videoPath) {
+                Log::info("product_video upload success: " . $videoPath);
+            } else {
+                Log::warning("product_video upload to Supabase returned null!");
+            }
         }
 
         $price = $request->price;
@@ -219,6 +235,15 @@ class ProductController extends Controller
 
         // Handle uploading new video file
         if ($request->hasFile('product_video')) {
+            $videoFile = $request->file('product_video');
+            Log::info("Attempting product_video update upload", [
+                'original_name' => $videoFile->getClientOriginalName(),
+                'mime_type' => $videoFile->getClientMimeType(),
+                'size_bytes' => $videoFile->getSize(),
+                'is_valid' => $videoFile->isValid(),
+                'error_code' => $videoFile->getError()
+            ]);
+
             if ($videoPath) {
                 if (str_starts_with($videoPath, 'http')) {
                     $supabase->delete($videoPath);
@@ -226,7 +251,13 @@ class ProductController extends Controller
                     File::delete(public_path($videoPath));
                 }
             }
-            $videoPath = $supabase->upload($request->file('product_video'), 'products');
+            $videoPath = $supabase->upload($videoFile, 'products');
+
+            if ($videoPath) {
+                Log::info("product_video update upload success: " . $videoPath);
+            } else {
+                Log::warning("product_video update upload to Supabase returned null!");
+            }
         }
 
         $price = $request->price;
