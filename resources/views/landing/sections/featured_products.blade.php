@@ -40,7 +40,7 @@
                                 {{ $product->product_name }}
                             </h3>
                             <p class="text-xs text-gray-500 font-medium line-clamp-2">
-                                {{ $product->description ?? 'Produk orisinal karya KUBE YPAC.' }}
+                                {{ strip_tags($product->description) ?: 'Produk orisinal karya KUBE YPAC.' }}
                             </p>
                         </div>
                     </div>
@@ -53,20 +53,13 @@
                             </span>
                         </div>
                         <!-- Action Buttons -->
-                        <div class="flex gap-2.5">
-                            <!-- Button Detail -->
+                        <div>
+                            <!-- Button Detail Only -->
                             <a href="{{ route('home.product.detail', $product->product_slug) }}" 
-                                class="flex-1 py-3 bg-gray-50 hover:bg-gray-150 border border-gray-200 text-gray-700 font-bold rounded-2xl transition-all duration-200 flex items-center justify-center gap-2 text-sm text-center">
-                                <i data-lucide="eye" class="w-4 h-4 text-gray-500"></i>
-                                <span>Detail</span>
+                                class="w-full py-3 bg-[#0073E2] hover:bg-blue-600 active:scale-[0.98] text-white font-bold rounded-2xl shadow-md shadow-blue-100 hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 text-sm text-center">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                                <span>Lihat Detail Produk</span>
                             </a>
-                            <!-- Button Tambah -->
-                            <button
-                                onclick="addToCart({{ $product->id }}, '{{ addslashes($product->product_name) }}', {{ $product->price }}, '{{ $imageSrc }}')"
-                                class="flex-1 py-3 bg-[#0073E2] hover:bg-blue-600 active:scale-[0.98] text-white font-bold rounded-2xl shadow-md shadow-blue-100 hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 text-sm cursor-pointer">
-                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-                                <span>+ Keranjang</span>
-                            </button>
                         </div>
                     </div>
                 </div>

@@ -178,18 +178,25 @@
 
                         <div>
                             <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Update Status Barang</label>
-                            <select name="delivery_status" required
-                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-[#0073E2] rounded-xl text-sm font-bold text-gray-800 focus:outline-none transition-colors">
-                                <option value="belum_dikirim" {{ $transaction->delivery_status === 'belum_dikirim' ? 'selected' : '' }}>⏳ Belum Dikirim</option>
-                                <option value="sedang_dikirim" {{ $transaction->delivery_status === 'sedang_dikirim' ? 'selected' : '' }}>🚚 Sedang Dikirim</option>
+                            <select name="delivery_status" required {{ $transaction->delivery_status === 'sudah_terkirim' ? 'disabled' : '' }}
+                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-[#0073E2] rounded-xl text-sm font-bold text-gray-800 focus:outline-none transition-colors {{ $transaction->delivery_status === 'sudah_terkirim' ? 'cursor-not-allowed opacity-80' : '' }}">
+                                <option value="belum_dikirim" {{ $transaction->delivery_status === 'belum_dikirim' ? 'selected' : '' }} {{ $transaction->delivery_status !== 'belum_dikirim' ? 'disabled' : '' }}>⏳ Belum Dikirim</option>
+                                <option value="sedang_dikirim" {{ $transaction->delivery_status === 'sedang_dikirim' ? 'selected' : '' }} {{ $transaction->delivery_status === 'sudah_terkirim' ? 'disabled' : '' }}>🚚 Sedang Dikirim</option>
                                 <option value="sudah_terkirim" {{ $transaction->delivery_status === 'sudah_terkirim' ? 'selected' : '' }}>✅ Sudah Terkirim (Selesai)</option>
                             </select>
                         </div>
 
-                        <button type="submit" class="w-full py-3.5 bg-[#0073E2] hover:bg-blue-600 active:scale-[0.98] text-white font-bold text-sm rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
-                            <i data-lucide="save" class="w-4 h-4"></i>
-                            <span>Simpan Status Pengiriman</span>
-                        </button>
+                        @if($transaction->delivery_status !== 'sudah_terkirim')
+                            <button type="submit" class="w-full py-3.5 bg-[#0073E2] hover:bg-blue-600 active:scale-[0.98] text-white font-bold text-sm rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                <i data-lucide="save" class="w-4 h-4"></i>
+                                <span>Simpan Status Pengiriman</span>
+                            </button>
+                        @else
+                            <div class="p-3 bg-green-50 border border-green-200 rounded-xl text-center text-xs font-bold text-green-700 flex items-center justify-center gap-1.5">
+                                <i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i>
+                                <span>Status Pengiriman Sudah Selesai (Final)</span>
+                            </div>
+                        @endif
                     </form>
                 </div>
 

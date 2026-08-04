@@ -115,7 +115,9 @@
                                         <!-- Checkbox -->
                                         <td class="py-4 px-4 text-center">
                                             <input type="checkbox" name="transaction_ids[]" value="{{ $trx->id }}" onchange="updateBulkBarState()"
-                                                class="trx-checkbox w-4 h-4 text-[#0073E2] bg-white border-gray-300 rounded focus:ring-[#0073E2] cursor-pointer"
+                                                {{ $trx->delivery_status === 'sudah_terkirim' ? 'disabled' : '' }}
+                                                class="trx-checkbox w-4 h-4 text-[#0073E2] bg-white border-gray-300 rounded focus:ring-[#0073E2] {{ $trx->delivery_status === 'sudah_terkirim' ? 'cursor-not-allowed opacity-50' : 'cursor-pointer' }}"
+                                                data-status="{{ $trx->delivery_status }}"
                                                 data-invoice="{{ $trx->invoice_number }}"
                                                 data-customer="{{ $trx->customer_name }}"
                                                 data-phone="{{ $trx->customer_phone ?? '' }}"
@@ -164,13 +166,13 @@
                                             <form action="{{ route('admin.approvals.delivery_status', $trx->id) }}" method="POST" class="inline-block">
                                                 @csrf
                                                 @method('PATCH')
-                                                <select name="delivery_status" onchange="this.form.submit()" 
-                                                    class="text-xs font-extrabold px-3 py-1.5 rounded-xl border transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#0073E2]
-                                                    {{ $trx->delivery_status === 'belum_dikirim' ? 'bg-amber-50 text-amber-700 border-amber-200' : '' }}
-                                                    {{ $trx->delivery_status === 'sedang_dikirim' ? 'bg-blue-50 text-blue-700 border-blue-200' : '' }}
-                                                    {{ $trx->delivery_status === 'sudah_terkirim' ? 'bg-green-50 text-green-700 border-green-200' : '' }}">
+                                                <select name="delivery_status" onchange="this.form.submit()" {{ $trx->delivery_status === 'sudah_terkirim' ? 'disabled' : '' }}
+                                                    class="text-xs font-extrabold px-3 py-1.5 rounded-xl border transition-all focus:outline-none focus:ring-2 focus:ring-[#0073E2]
+                                                    {{ $trx->delivery_status === 'belum_dikirim' ? 'bg-amber-50 text-amber-700 border-amber-200 cursor-pointer' : '' }}
+                                                    {{ $trx->delivery_status === 'sedang_dikirim' ? 'bg-blue-50 text-blue-700 border-blue-200 cursor-pointer' : '' }}
+                                                    {{ $trx->delivery_status === 'sudah_terkirim' ? 'bg-green-50 text-green-700 border-green-200 cursor-not-allowed opacity-90' : '' }}">
                                                     <option value="belum_dikirim" {{ $trx->delivery_status === 'belum_dikirim' ? 'selected' : '' }}>⏳ Belum Dikirim</option>
-                                                    <option value="sedang_dikirim" {{ $trx->delivery_status === 'sedang_dikirim' ? 'selected' : '' }}>🚚 Sedang Dikirim</option>
+                                                    <option value="sedang_dikirim" {{ $trx->delivery_status === 'sedang_dikirim' ? 'selected' : '' }} {{ $trx->delivery_status === 'sudah_terkirim' ? 'disabled' : '' }}>🚚 Sedang Dikirim</option>
                                                     <option value="sudah_terkirim" {{ $trx->delivery_status === 'sudah_terkirim' ? 'selected' : '' }}>✅ Sudah Terkirim</option>
                                                 </select>
                                             </form>
@@ -277,7 +279,7 @@
     <script>
         // Checkbox Select All Handler
         function toggleSelectAll(masterCheckbox) {
-            const checkboxes = document.querySelectorAll('.trx-checkbox');
+            const checkboxes = document.querySelectorAll('.trx-checkbox:not(:disabled)');
             checkboxes.forEach(cb => {
                 cb.checked = masterCheckbox.checked;
             });
@@ -305,9 +307,9 @@
             }
 
             // Sync master select all checkbox state
-            const totalCbs = document.querySelectorAll('.trx-checkbox').length;
+            const totalActiveCbs = document.querySelectorAll('.trx-checkbox:not(:disabled)').length;
             if (selectAllCb) {
-                selectAllCb.checked = (totalCbs > 0 && checkedCount === totalCbs);
+                selectAllCb.checked = (totalActiveCbs > 0 && checkedCount === totalActiveCbs);
             }
         }
 
@@ -318,48 +320,44 @@
             const deliveryStatus = document.getElementById('bulk-delivery-status').value;
 
             if (ids.length === 0) {
-                Swal.fire({
-                    title: 'Pilih Transaksi',
-                    text: 'Centang minimal satu transaksi terlebih dahulu.',
-                    icon: 'warning',
-                    confirmButtonColor: '#0073E2',
-                    customClass: { popup: 'rounded-3xl' }
-                });
+                if (window.Swal) {
+                    Swal.fire({
+                        title: 'Pilih Transaksi',
+                        text: 'Centang minimal satu transaksi terlebih dahulu.',
+                        icon: 'warning',
+                        confirmButtonColor: '#0073E2',
+                        customClass: { popup: 'rounded-3xl' }
+                    });
+                } else {
+                    alert('Centang minimal satu transaksi terlebih dahulu.');
+                }
                 return;
             }
 
-            Swal.fire({
-                title: `Update ${ids.length} Transaksi?`,
-                text: 'Status pengiriman seluruh transaksi yang dipilih akan diperbarui di database.',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#10B981',
-                cancelButtonColor: '#6B7280',
-                confirmButtonText: 'Ya, Perbarui & Buka WA!',
-                cancelButtonText: 'Batal',
-                customClass: { popup: 'rounded-3xl' }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.showLoading();
+            const executeUpdate = () => {
+                if (window.Swal) Swal.showLoading();
 
-                    fetch("{{ route('admin.approvals.bulk_delivery_status') }}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            transaction_ids: ids,
-                            delivery_status: deliveryStatus
-                        })
+                const csrfToken = document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').getAttribute('content') : '';
+
+                fetch("{{ route('admin.approvals.bulk_delivery_status') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        transaction_ids: ids,
+                        delivery_status: deliveryStatus
                     })
-                    .then(res => res.json())
-                    .then(data => {
-                        Swal.close();
-                        if (data.success) {
-                            renderWaQueueModal(data.queue);
-                        } else {
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (window.Swal) Swal.close();
+                    if (data.success) {
+                        renderWaQueueModal(data.queue);
+                    } else {
+                        if (window.Swal) {
                             Swal.fire({
                                 title: 'Gagal',
                                 text: data.message || 'Terjadi kesalahan saat mengupdate transaksi.',
@@ -367,10 +365,15 @@
                                 confirmButtonColor: '#0073E2',
                                 customClass: { popup: 'rounded-3xl' }
                             });
+                        } else {
+                            alert(data.message || 'Terjadi kesalahan saat mengupdate.');
                         }
-                    })
-                    .catch(err => {
-                        Swal.close();
+                    }
+                })
+                .catch(err => {
+                    console.error("Bulk Update Error:", err);
+                    if (window.Swal) Swal.close();
+                    if (window.Swal) {
                         Swal.fire({
                             title: 'Error',
                             text: 'Terjadi kesalahan koneksi server.',
@@ -378,9 +381,33 @@
                             confirmButtonColor: '#0073E2',
                             customClass: { popup: 'rounded-3xl' }
                         });
-                    });
+                    } else {
+                        alert('Terjadi kesalahan koneksi server.');
+                    }
+                });
+            };
+
+            if (window.Swal) {
+                Swal.fire({
+                    title: `Update ${ids.length} Transaksi?`,
+                    text: 'Status pengiriman transaksi yang dipilih akan diperbarui di database.',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#10B981',
+                    cancelButtonColor: '#6B7280',
+                    confirmButtonText: 'Ya, Perbarui & Buka WA!',
+                    cancelButtonText: 'Batal',
+                    customClass: { popup: 'rounded-3xl' }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        executeUpdate();
+                    }
+                });
+            } else {
+                if (confirm(`Update ${ids.length} Transaksi?`)) {
+                    executeUpdate();
                 }
-            });
+            }
         }
 
         // Render & Open WA Queue Modal

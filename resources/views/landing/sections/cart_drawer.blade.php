@@ -213,8 +213,8 @@
 
         <!-- QRIS Information Card -->
         <div id="payment-info-qris" class="hidden bg-gray-50 border border-gray-150 p-4 rounded-2xl text-center space-y-3">
-            <div class="w-36 h-36 mx-auto bg-white p-2 border border-gray-200 rounded-xl shadow-xs flex items-center justify-center">
-                <i data-lucide="qr-code" class="w-24 h-24 text-gray-800"></i>
+            <div class="w-44 h-44 mx-auto bg-white p-2.5 border border-gray-200 rounded-2xl shadow-xs flex items-center justify-center">
+                <img src="{{ asset('images/qr-code.svg') }}" alt="QRIS Code Pembayaran" class="w-full h-full object-contain">
             </div>
             <p class="text-xs font-semibold text-gray-600">Scan QRIS menggunakan aplikasi E-Wallet (Gopay, OVO, Dana, ShopeePay) atau Mobile Banking Anda.</p>
         </div>
