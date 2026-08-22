@@ -70,7 +70,24 @@ class AdminApprovalController extends Controller
             'delivery_status' => 'required|in:belum_dikirim,sedang_dikirim,sudah_terkirim',
         ]);
 
+        $currentStatus = $transaction->delivery_status;
         $newDeliveryStatus = $request->input('delivery_status');
+
+        // Hierarchy rule: belum_dikirim (1) -> sedang_dikirim (2) -> sudah_terkirim (3)
+        $statusLevels = [
+            'belum_dikirim' => 1,
+            'sedang_dikirim' => 2,
+            'sudah_terkirim' => 3,
+        ];
+
+        if (($statusLevels[$currentStatus] ?? 1) === 3) {
+            return back()->withErrors(['delivery_status' => 'Transaksi yang sudah terkirim tidak dapat diubah lagi statusnya.']);
+        }
+
+        if (($statusLevels[$newDeliveryStatus] ?? 1) < ($statusLevels[$currentStatus] ?? 1)) {
+            return back()->withErrors(['delivery_status' => 'Status pengiriman tidak dapat diubah mundur ke status sebelumnya.']);
+        }
+
         $updateData = [
             'delivery_status' => $newDeliveryStatus,
         ];
@@ -100,18 +117,41 @@ class AdminApprovalController extends Controller
         $ids = $request->input('transaction_ids');
         $newStatus = $request->input('delivery_status');
 
-        $updateData = [
-            'delivery_status' => $newStatus,
+        $statusLevels = [
+            'belum_dikirim' => 1,
+            'sedang_dikirim' => 2,
+            'sudah_terkirim' => 3,
         ];
+        $newLevel = $statusLevels[$newStatus] ?? 1;
 
-        if ($newStatus === 'sudah_terkirim') {
-            $updateData['status'] = 'completed';
-            $updateData['user_id'] = Auth::id();
+        $transactions = Transaction::whereIn('id', $ids)->where('is_whatsapp', true)->get();
+
+        $updatedCount = 0;
+        $updatedIds = [];
+
+        foreach ($transactions as $trx) {
+            $currentLevel = $statusLevels[$trx->delivery_status] ?? 1;
+
+            // Bypass if already completed (level 3) or trying to downgrade status
+            if ($currentLevel === 3 || $newLevel < $currentLevel) {
+                continue;
+            }
+
+            $updateData = [
+                'delivery_status' => $newStatus,
+            ];
+
+            if ($newStatus === 'sudah_terkirim' && $trx->status === 'pending') {
+                $updateData['status'] = 'completed';
+                $updateData['user_id'] = Auth::id();
+            }
+
+            $trx->update($updateData);
+            $updatedCount++;
+            $updatedIds[] = $trx->id;
         }
 
-        Transaction::whereIn('id', $ids)->where('is_whatsapp', true)->update($updateData);
-
-        $transactions = Transaction::whereIn('id', $ids)->get();
+        $transactions = Transaction::whereIn('id', $updatedIds)->get();
         $queueData = [];
 
         foreach ($transactions as $trx) {
@@ -128,12 +168,12 @@ class AdminApprovalController extends Controller
         if ($request->wantsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => count($ids) . ' transaksi berhasil diperbarui!',
+                'message' => $updatedCount . ' transaksi berhasil diperbarui!',
                 'queue' => $queueData,
             ]);
         }
 
-        return back()->with('bulk_success', count($ids) . ' status transaksi berhasil diperbarui!')
+        return back()->with('bulk_success', $updatedCount . ' status transaksi berhasil diperbarui!')
                      ->with('wa_queue', $queueData);
     }
 

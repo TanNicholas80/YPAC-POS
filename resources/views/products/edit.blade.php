@@ -251,11 +251,15 @@
                                 @php
                                     $videoSrc = str_starts_with($product->video_path, 'http') ? $product->video_path : asset($product->video_path);
                                 @endphp
-                                <video src="{{ $videoSrc }}" controls class="w-full rounded-xl max-h-48 object-cover bg-black"></video>
-                                <label class="flex items-center gap-2 mt-2 text-xs font-semibold text-red-600 cursor-pointer">
-                                    <input type="checkbox" name="delete_video" value="1" class="w-4 h-4 accent-red-500 rounded">
-                                    <span>Hapus File Video saat disimpan</span>
-                                </label>
+                                <div id="video-preview-container" class="relative group">
+                                    <video src="{{ $videoSrc }}" controls class="w-full rounded-xl max-h-48 object-cover bg-black"></video>
+                                    <button type="button" onclick="toggleDeleteVideo()" id="delete-video-btn" title="Hapus Video"
+                                        class="absolute top-2 right-2 px-3 py-1.5 bg-red-500/90 hover:bg-red-600 active:scale-95 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-md transition-all cursor-pointer">
+                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                        <span id="delete-video-btn-text">Hapus Video</span>
+                                    </button>
+                                </div>
+                                <input type="hidden" name="delete_video" id="delete_video_input" value="0">
                             @elseif($product->video_url)
                                 <a href="{{ $product->video_url }}" target="_blank" class="text-xs text-[#0073E2] hover:underline flex items-center gap-1 font-semibold break-all">
                                     <i data-lucide="external-link" class="w-3.5 h-3.5 flex-shrink-0"></i>
@@ -533,6 +537,36 @@
         }
     }
 
+    // Delete Video Toggle
+    function toggleDeleteVideo() {
+        const deleteInput = document.getElementById('delete_video_input');
+        const container = document.getElementById('video-preview-container');
+        const btn = document.getElementById('delete-video-btn');
+        const btnText = document.getElementById('delete-video-btn-text');
+
+        if (!deleteInput) return;
+
+        if (deleteInput.value === "0") {
+            deleteInput.value = "1";
+            if (container) {
+                container.classList.add('opacity-40', 'grayscale');
+            }
+            if (btn) {
+                btn.className = "absolute top-2 right-2 px-3 py-1.5 bg-gray-700/90 hover:bg-gray-800 active:scale-95 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-md transition-all cursor-pointer";
+            }
+            if (btnText) btnText.textContent = "Batal Hapus";
+        } else {
+            deleteInput.value = "0";
+            if (container) {
+                container.classList.remove('opacity-40', 'grayscale');
+            }
+            if (btn) {
+                btn.className = "absolute top-2 right-2 px-3 py-1.5 bg-red-500/90 hover:bg-red-600 active:scale-95 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-md transition-all cursor-pointer";
+            }
+            if (btnText) btnText.textContent = "Hapus Video";
+        }
+    }
+
     // Accumulative Image Upload with Remove Icon
     let selectedImageFiles = [];
 
@@ -712,6 +746,16 @@
                         ['clean']
                     ]
                 }
+            });
+
+            quillDesc.on('text-change', () => {
+                const html = quillDesc.root.innerHTML;
+                document.getElementById('description').value = html === '<p><br></p>' ? '' : html;
+            });
+
+            quillStory.on('text-change', () => {
+                const html = quillStory.root.innerHTML;
+                document.getElementById('product_story').value = html === '<p><br></p>' ? '' : html;
             });
 
             const productForm = document.querySelector('form');

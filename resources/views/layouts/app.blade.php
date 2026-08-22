@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'SIKAS YPAC - Sistem Kasir YPAC Inklusif')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('images/LogoYPAC.png') }}">
     <!-- Vite Assets -->
