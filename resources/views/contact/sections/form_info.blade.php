@@ -43,9 +43,9 @@
                         </div>
                         <div>
                             <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Telepon</p>
-                            <a href="https://wa.me/6289682010990" target="_blank" rel="noopener noreferrer"
+                            <a href="https://wa.me/6285373479852" target="_blank" rel="noopener noreferrer"
                                 class="text-base sm:text-lg font-bold text-gray-700 hover:text-[#0073E2] transition-colors mt-0.5 block">
-                                +62 896-8201-0990
+                                +62 853-7347-9852
                             </a>
                             <p class="text-xs text-gray-400 font-semibold mt-0.5">WhatsApp Admin</p>
                         </div>
@@ -59,9 +59,9 @@
                         </div>
                         <div>
                             <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Email</p>
-                            <a href="mailto:ypacsemarangyes@gmail.com"
+                            <a href="mailto:ypacsemarang.ofc@gmail.com"
                                 class="text-base sm:text-lg font-bold text-gray-700 hover:text-[#e23cbf] transition-colors mt-0.5 block">
-                                ypacsemarangyes@gmail.com
+                                ypacsemarang.ofc@gmail.com
                             </a>
                         </div>
                     </div>

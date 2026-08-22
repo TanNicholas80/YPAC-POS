@@ -14,7 +14,7 @@
         <!-- Video Player Card -->
         <div class="mt-8 sm:mt-12 relative rounded-[2rem] overflow-hidden border border-gray-200/60 shadow-2xl bg-black aspect-[16/10] sm:aspect-video group">
             <!-- Video Tag -->
-            <video id="virtual-tour-video" class="w-full h-full object-cover" muted playsinline loop>
+            <video id="virtual-tour-video" class="w-full h-full object-cover" muted playsinline loop controlsList="nodownload novolume">
                 <source src="{{ asset('images/YPACSchoolTour.mp4') }}" type="video/mp4">
                 Browser Anda tidak mendukung tag video.
             </video>

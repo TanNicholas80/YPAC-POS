@@ -19,6 +19,17 @@
     @include('about.sections.cta')
 @endsection
 
+@push('styles')
+<style>
+    /* Sembunyikan tombol volume dan slider mute pada kontrol video browser */
+    #virtual-tour-video::-webkit-media-controls-volume-control-container,
+    #virtual-tour-video::-webkit-media-controls-mute-button,
+    #virtual-tour-video::-webkit-media-controls-volume-slider {
+        display: none !important;
+    }
+</style>
+@endpush
+
 @push('scripts')
 <script>
     function switchTab(activeTab) {
@@ -88,9 +99,21 @@
         const overlay = document.getElementById('video-overlay');
 
         if (video && overlay) {
+            video.muted = true;
+            video.volume = 0;
+
             video.addEventListener('play', () => {
+                video.muted = true;
+                video.volume = 0;
                 overlay.classList.add('opacity-0', 'pointer-events-none');
                 video.setAttribute('controls', 'true');
+            });
+
+            video.addEventListener('volumechange', () => {
+                if (!video.muted || video.volume > 0) {
+                    video.muted = true;
+                    video.volume = 0;
+                }
             });
 
             video.addEventListener('pause', () => {

@@ -23,7 +23,7 @@ class MailtrapService
         $this->inboxId = $inboxVal !== null ? (int) $inboxVal : null;
         
         // Recipient email for contact form submissions
-        $this->recipientEmail = 'ypacsemarangyes@gmail.com';
+        $this->recipientEmail = 'ypacsemarang.ofc@gmail.com';
     }
 
     /**

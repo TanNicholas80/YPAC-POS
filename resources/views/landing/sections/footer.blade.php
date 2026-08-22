@@ -39,21 +39,21 @@
                     <li class="flex items-start gap-3">
                         <i data-lucide="phone" class="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5"></i>
                         <div>
-                            <a href="https://wa.me/6289682010990" target="_blank"
+                            <a href="https://wa.me/6285373479852" target="_blank"
                                 class="text-sm font-bold text-gray-700 hover:text-[#0073E2] transition-colors">
-                                +62 896-8201-0990
+                                +62 853-7347-9852
                             </a>
                             <p class="text-[10px] text-gray-400 font-semibold mt-0.5">WhatsApp Admin</p>
                         </div>
                     </li>
                     <li class="flex items-start gap-3">
                         <i data-lucide="map-pin" class="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5"></i>
-                        <span class="text-sm font-semibold text-gray-500 leading-relaxed">
+                        <span class="text-sm font-semibold text-gray-550 leading-relaxed">
                             JL. KH. Ahmad Dahlan No. 4 Semarang
                         </span>
                     </li>
                     <li class="flex items-center gap-3.5 pt-2">
-                        <a href="https://www.instagram.com/ypacsemarangistimewa/" target="_blank"
+                        <a href="https://www.instagram.com/ypac.semarang/" target="_blank"
                             rel="noopener noreferrer"
                             class="w-8 h-8 rounded-full bg-gray-50 hover:bg-blue-50 text-gray-400 hover:text-[#0073E2] flex items-center justify-center transition-all"
                             aria-label="Instagram">
@@ -64,7 +64,7 @@
                                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                             </svg>
                         </a>
-                        <a href="https://www.facebook.com/share/g/17Gx8pBv5V/" target="_blank" rel="noopener noreferrer"
+                        <a href="https://www.facebook.com/ypacsemarang" target="_blank" rel="noopener noreferrer"
                             class="w-8 h-8 rounded-full bg-gray-50 hover:bg-blue-50 text-gray-400 hover:text-[#0073E2] flex items-center justify-center transition-all"
                             aria-label="Facebook">
                             <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"

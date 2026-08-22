@@ -5,7 +5,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center gap-6 sm:gap-8">
             <img src="{{ asset('images/LogoYPAC.png') }}" alt="Logo YPAC" class="h-8 sm:h-12 w-auto object-contain"
                 loading="lazy">
-            <img src="{{ asset('images/dikti_saintek.png') }}" alt="Logo Dikti Saintek"
+            <img src="{{ asset('images/bimaxunkartur.jpeg') }}" alt="Logo Dikti Saintek"
                 class="h-8 sm:h-12 w-auto object-contain" loading="lazy">
             <img src="{{ asset('images/unkartur_logo.png') }}" alt="Logo Universitas Karangturi"
                 class="h-8 sm:h-12 w-auto object-contain" loading="lazy">

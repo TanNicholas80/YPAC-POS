@@ -149,7 +149,7 @@ class WhatsAppCheckoutController extends Controller
 
             // Construct WhatsApp Message
             $paymentMethodLabel = $paymentMethod === 'qris' ? 'QRIS Code' : 'Transfer Bank Jateng (2088049139 a.n YPAC Semarang)';
-            $whatsappNumber = '6289682010990';
+            $whatsappNumber = '6285373479852';
 
             $msg = "*PESANAN BARU - KUBE YPAC*\n";
             $msg .= "*Nomor Invoice:* {$transaction->invoice_number}\n";
